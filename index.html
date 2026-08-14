@@ -2522,4 +2522,285 @@ document.getElementById("briefcaseOverlay").addEventListener("click",function(e)
   }
 });
    </script>
+<!-- AAMUSH PUBLIC ARCHIVE -->
+<div id="publicArchive" class="archive-overlay">
+
+  <div class="archive-panel">
+
+    <button class="archive-close" onclick="closePublicFolder()">×</button>
+
+    <button class="back-button" onclick="closePublicFolder()">‹ Back</button>
+
+    <div class="archive-heading">
+      <div class="archive-symbol">🌐</div>
+      <h2>AAMush Public Archive</h2>
+      <p>Information approved for public viewing</p>
+    </div>
+
+    <div class="public-items">
+
+      <button class="public-item" onclick="openPublicInfo('developer')">
+        <span class="public-item-icon">👤</span>
+        <span>
+          <strong>Developer Profile</strong>
+          <small>Developer identity and public profile</small>
+        </span>
+        <b>›</b>
+      </button>
+
+      <button class="public-item" onclick="openPublicInfo('project')">
+        <span class="public-item-icon">🚚</span>
+        <span>
+          <strong>AAMush Project</strong>
+          <small>East Africa autonomous logistics mesh</small>
+        </span>
+        <b>›</b>
+      </button>
+
+      <button class="public-item" onclick="openPublicInfo('mesh')">
+        <span class="public-item-icon">📡</span>
+        <span>
+          <strong>AAMush 01 — Mesh Feeder LIVE</strong>
+          <small>Live device and mesh information</small>
+        </span>
+        <b>›</b>
+      </button>
+
+      <button class="public-item" onclick="openPublicInfo('manual')">
+        <span class="public-item-icon">📖</span>
+        <span>
+          <strong>Operating Manual</strong>
+          <small>Public operating information</small>
+        </span>
+        <b>›</b>
+      </button>
+
+      <button class="public-item" onclick="openPublicInfo('ip')">
+        <span class="public-item-icon">©</span>
+        <span>
+          <strong>Intellectual Property Notice</strong>
+          <small>Public protection and ownership notice</small>
+        </span>
+        <b>›</b>
+      </button>
+
+    </div>
+
+    <div class="archive-footer">
+      AAMush • Public Information Archive
+    </div>
+
+  </div>
+</div>
+
+<style>
+.archive-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.archive-overlay.active{
+  display:flex;
+}
+
+.archive-panel{
+  width:100%;
+  max-width:390px;
+  max-height:88vh;
+  overflow-y:auto;
+  background:#fff;
+  border-radius:24px;
+  padding:22px;
+  position:relative;
+  box-shadow:0 25px 80px rgba(0,0,0,.35);
+  animation:archiveOpen .3s ease;
+}
+
+@keyframes archiveOpen{
+  from{
+    opacity:0;
+    transform:scale(.88) translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
+}
+
+.archive-close{
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:50%;
+  background:#f1f3f5;
+  color:#333;
+  font-size:24px;
+  cursor:pointer;
+}
+
+.back-button{
+  border:0;
+  background:none;
+  color:#2563eb;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  padding:5px 0;
+}
+
+.archive-heading{
+  text-align:center;
+  padding:8px 20px 18px;
+}
+
+.archive-symbol{
+  font-size:38px;
+  margin-bottom:5px;
+}
+
+.archive-heading h2{
+  margin:0;
+  font-size:20px;
+  font-weight:800;
+}
+
+.archive-heading p{
+  margin:5px 0 0;
+  font-size:11px;
+  color:#777;
+}
+
+.public-items{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.public-item{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  border:1px solid rgba(0,0,0,.07);
+  border-radius:14px;
+  background:#fafafa;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.public-item:hover{
+  background:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.public-item-icon{
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  background:#eaf3ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  flex:none;
+}
+
+.public-item span:nth-child(2){
+  flex:1;
+}
+
+.public-item strong{
+  display:block;
+  font-size:13px;
+  color:#111;
+  margin-bottom:3px;
+}
+
+.public-item small{
+  display:block;
+  font-size:10px;
+  color:#777;
+  line-height:1.35;
+}
+
+.public-item b{
+  color:#999;
+  font-size:22px;
+}
+
+.archive-footer{
+  text-align:center;
+  margin-top:16px;
+  font-size:10px;
+  color:#999;
+}
+</style>
+
+<script>
+function openPublicFolder(){
+  document.getElementById("briefcaseOverlay").classList.remove("active");
+  document.getElementById("publicArchive").classList.add("active");
+}
+
+function closePublicFolder(){
+  document.getElementById("publicArchive").classList.remove("active");
+  document.getElementById("briefcaseOverlay").classList.add("active");
+}
+
+function openPublicInfo(type){
+
+  if(type === "developer"){
+    alert(
+      "AAMush DEVELOPER PROFILE\n\n" +
+      "Developer: James Mushi\n\n" +
+      "Creator and developer of the AAMush autonomous commodity-logistics mesh concept."
+    );
+  }
+
+  if(type === "project"){
+    alert(
+      "AAMUSH PROJECT\n\n" +
+      "East Africa's autonomous commodity-logistics mesh connecting supply, demand, transportation capacity and connected assets."
+    );
+  }
+
+  if(type === "mesh"){
+    alert(
+      "AAMUSH 01 — MESH FEEDER LIVE\n\n" +
+      "Live device interface and mesh-feeder demonstration.\n\n" +
+      "This public section contains information intended for visitors and authorized public viewing."
+    );
+  }
+
+  if(type === "manual"){
+    alert(
+      "AAMUSH OPERATING MANUAL\n\n" +
+      "Public operating information will be presented here."
+    );
+  }
+
+  if(type === "ip"){
+    alert(
+      "INTELLECTUAL PROPERTY NOTICE\n\n" +
+      "AAMush concepts, designs, documentation, branding and associated development materials are protected intellectual property of their respective developer/owner.\n\n" +
+      "Public viewing does not grant permission to copy, reproduce, modify or commercially exploit protected materials."
+    );
+  }
+}
+  </script>
 </html>
+</body>
