@@ -2,1699 +2,2122 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#07111d">
-<title>AAMush Mesh-01 Feeder | East African Autonomous Commodity-Logistics Mesh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAMush — East Africa's Autonomous Commodity-Logistics Mesh</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{
+*{
   margin:0;
   padding:0;
-  background:#07111d;
-  color:#eef7ff;
-  font-family:Arial,Helvetica,sans-serif
+  box-sizing:border-box;
 }
+
+html,body{
+  min-height:100%;
+}
+
 body{
-  min-height:100vh;
-  overflow-x:hidden
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#f0f2f5 0%,#e8ecf1 45%,#dce3ea 100%);
+  color:#17212b;
 }
+
 button{
-  font:inherit
+  font:inherit;
 }
 
-/* =========================================================
-   AAMUSH LANDING SCREEN
-   ========================================================= */
-
-.landing{
+.app{
+  width:100%;
+  max-width:760px;
+  min-height:100vh;
+  margin:auto;
   position:relative;
-  width:100%;
-  max-width:1280px;
-  margin:0 auto;
-  background:#fff;
-  line-height:0
-}
-
-.landing img.hero-art{
-  display:block;
-  width:100%;
-  height:auto
-}
-
-/*
- Invisible controls positioned over the EXACT supplied
- AAMush landing artwork.
-*/
-.hotspot{
-  position:absolute;
-  border:0;
-  background:transparent;
-  cursor:pointer;
-  z-index:5;
-  border-radius:14px
-}
-
-.hotspot:focus{
-  outline:3px solid rgba(0,126,255,.65);
-  outline-offset:2px
-}
-
-/* Open feeder */
-#openFeederHot{
-  left:61.3%;
-  top:1.5%;
-  width:23.5%;
-  height:4.8%
-}
-
-/* Launch feeder device */
-#launchHot{
-  left:4%;
-  top:38.3%;
-  width:26%;
-  height:5.3%
-}
-
-/* Explore platform */
-#exploreHot{
-  left:27.8%;
-  top:38.3%;
-  width:23%;
-  height:5.3%
-}
-
-/* Large developer-briefcase artwork */
-#briefcaseHot{
-  left:49%;
-  top:40.8%;
-  width:48.5%;
-  height:56%;
-  border-radius:50%
-}
-
-/* =========================================================
-   FLOATING AAMUSH BUTTON
-   ========================================================= */
-
-.float-launch{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  width:78px;
-  height:78px;
-  border-radius:50%;
-  padding:0;
-  border:2px solid #ffe100;
-  background:#08111d;
   overflow:hidden;
-  z-index:100;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
-  cursor:pointer;
-  animation:aamushFloat 2.5s ease-in-out infinite
 }
 
-.float-launch img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:50% 45%;
-  display:block
-}
-
-@keyframes aamushFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-
-/* =========================================================
-   GENERAL MODALS
-   ========================================================= */
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(5px);
-  z-index:1000;
-  display:none;
-  padding:14px;
-  overflow:auto
-}
-
-.modal.open{
-  display:flex;
-  align-items:center;
-  justify-content:center
-}
-
-.panel{
-  width:min(1100px,100%);
-  max-height:calc(100vh - 28px);
-  overflow:hidden;
-  background:#0b1521;
-  border:1px solid #29465f;
-  border-radius:22px;
-  box-shadow:0 25px 80px rgba(0,0,0,.65)
-}
-
-.panel-head{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:15px 16px;
-  background:linear-gradient(135deg,#0e2232,#09121d);
-  border-bottom:1px solid #244159;
+header{
   position:sticky;
   top:0;
-  z-index:3
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 18px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,0,0,.06);
 }
 
-.panel-head h2{
-  font-size:20px;
-  margin:0;
-  flex:1
-}
-
-.close{
-  border:1px solid #45637a;
-  background:#102235;
-  color:#fff;
-  border-radius:10px;
-  padding:9px 12px;
-  cursor:pointer
-}
-
-/* =========================================================
-   DEVELOPER BRIEFCASE
-   ========================================================= */
-
-.briefcase-grid{
-  padding:16px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:12px;
-  overflow:auto
-}
-
-.brief-item{
-  border:1px solid #2c4b64;
-  background:linear-gradient(145deg,#112235,#0c1825);
-  color:#fff;
-  border-radius:16px;
-  padding:17px;
-  text-align:left;
-  cursor:pointer;
-  min-height:105px;
-  transition:.2s
-}
-
-.brief-item:hover{
-  border-color:#50a8ff;
-  transform:translateY(-1px)
-}
-
-.brief-item b{
-  display:block;
-  font-size:16px;
-  margin-bottom:7px
-}
-
-.brief-item span{
-  color:#9fb5c7;
-  font-size:13px;
-  line-height:1.45
-}
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-.profile{
-  padding:22px;
-  overflow:auto;
-  max-height:calc(100vh - 120px)
-}
-
-.profile-photo{
-  display:block;
-  width:min(260px,70vw);
-  aspect-ratio:3/4;
-  object-fit:cover;
-  border-radius:22px;
-  margin:0 auto 18px;
-  border:2px solid #41627c;
-  box-shadow:0 14px 35px rgba(0,0,0,.45)
-}
-
-.profile h3{
-  text-align:center;
-  font-size:25px;
-  margin:0 0 6px
-}
-
-.profile .role{
-  text-align:center;
-  color:#a9c0d2;
-  margin:0 0 18px;
-  font-weight:700
-}
-
-.card{
-  background:#0f1e2d;
-  border:1px solid #29465f;
-  border-radius:15px;
-  padding:16px;
-  line-height:1.65;
-  color:#d9e7f0;
-  margin-bottom:12px
-}
-
-/* =========================================================
-   MANUAL VIEWER
-   ========================================================= */
-
-.viewer-body{
-  padding:16px;
-  overflow:auto;
-  max-height:calc(100vh - 78px)
-}
-
-.manual{
-  white-space:pre-wrap;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:14px;
-  line-height:1.55;
-  background:#f7f8fa;
-  color:#17212b;
-  border-radius:14px;
-  padding:22px;
-  overflow:auto
-}
-
-.info{
-  padding:22px;
-  overflow:auto;
-  max-height:calc(100vh - 80px);
-  line-height:1.7;
-  color:#d5e4ee
-}
-
-/* =========================================================
-   LIVE MESH-01 FEEDER
-   ========================================================= */
-
-.feeder{
-  padding:14px;
-  overflow:auto;
-  max-height:calc(100vh - 78px);
-  background:#07111d
-}
-
-.live-banner{
+.logo{
   display:flex;
   align-items:center;
   gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:12px
 }
 
-.pill{
-  padding:8px 12px;
-  border-radius:999px;
-  border:1px solid #2d5a76;
-  background:#0d2232;
-  color:#cfeeff;
-  font-size:12px;
-  font-weight:700
-}
-
-.pill.live{
-  border-color:#20c87a;
-  color:#b8ffd9
-}
-
-.pill.demo{
-  border-color:#e8b53d;
-  color:#ffe7a4
-}
-
-.device-top{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:12px
-}
-
-.device-card,
-.telemetry-card,
-.events-card,
-.mesh-card{
-  background:linear-gradient(145deg,#0e1e2c,#091520);
-  border:1px solid #28485f;
-  border-radius:17px;
-  padding:15px
-}
-
-.device-card h3,
-.telemetry-card h3,
-.events-card h3,
-.mesh-card h3{
-  margin:0 0 12px;
-  font-size:15px;
-  color:#cde5f5
-}
-
-.device-id{
-  font-size:27px;
-  font-weight:800;
-  letter-spacing:1px;
-  margin-bottom:6px
-}
-
-.status{
-  color:#70f1ad;
-  font-weight:800
-}
-
-.metrics{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px
-}
-
-.metric{
-  background:#0a1825;
-  border:1px solid #203a4e;
-  border-radius:12px;
-  padding:12px
-}
-
-.metric small{
-  display:block;
-  color:#7894a9;
-  margin-bottom:5px
-}
-
-.metric strong{
-  font-size:18px
-}
-
-.actions{
+.layers{
+  width:32px;
+  height:32px;
   display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:12px
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
 
-.action{
-  border:1px solid #3b6684;
-  background:#10283a;
-  color:#fff;
+.layers div{
+  width:18px;
+  height:5px;
+  background:#17212b;
+  border-radius:2px;
+  margin-bottom:2px;
+  transform:perspective(8px) rotateX(20deg);
+}
+
+.layers div:nth-child(2){
+  width:24px;
+}
+
+.layers div:nth-child(3){
+  width:18px;
+  margin-bottom:0;
+}
+
+.header-title{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:-.5px;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.btn{
+  border:0;
   border-radius:10px;
-  padding:10px 12px;
-  cursor:pointer
+  padding:9px 16px;
+  background:#17212b;
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
 }
 
-.action.primary{
-  background:#0f6f52;
-  border-color:#1ab77f
+.menu-btn{
+  width:38px;
+  height:38px;
+  border:0;
+  background:transparent;
+  border-radius:9px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  cursor:pointer;
 }
 
-.action.warn{
-  background:#4e3d12;
-  border-color:#d9a72d
+.menu-btn span{
+  width:21px;
+  height:2.5px;
+  border-radius:3px;
+  background:#17212b;
 }
 
-.mesh-card{
-  margin-top:12px
+.hero{
+  padding:34px 20px 22px;
 }
 
-.mesh-chain{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:8px;
-  align-items:center
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 12px;
+  border-radius:20px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(0,0,0,.06);
+  margin-bottom:15px;
 }
 
-.mesh-node{
-  min-height:76px;
-  border:1px solid #31566e;
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#22c55e;
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(1.3)}
+}
+
+.hero h1{
+  max-width:650px;
+  font-size:clamp(30px,8vw,52px);
+  line-height:1.05;
+  letter-spacing:-1.5px;
+  margin-bottom:15px;
+}
+
+.hero p{
+  max-width:650px;
+  font-size:14px;
+  line-height:1.65;
+  color:#56616b;
+  margin-bottom:20px;
+}
+
+.cta-row{
+  display:flex;
+  gap:10px;
+}
+
+.cta-primary,
+.cta-secondary{
+  flex:1;
   border-radius:12px;
-  background:#0b1b29;
-  padding:10px 6px;
-  text-align:center;
-  font-size:11px;
-  color:#bcd5e5
+  padding:13px 15px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
 }
 
-.mesh-node.active{
-  border-color:#1fd58a;
-  box-shadow:0 0 15px rgba(31,213,138,.15)
+.cta-primary{
+  background:#17212b;
+  color:white;
+  border:0;
 }
 
-.events-card{
-  margin-top:12px
+.cta-secondary{
+  background:white;
+  color:#17212b;
+  border:1px solid #d5dce3;
 }
 
-.event-list{
-  max-height:260px;
-  overflow:auto
+.map-container{
+  height:220px;
+  margin:0 18px 24px;
+  border-radius:18px;
+  overflow:hidden;
+  background:linear-gradient(135deg,#09192c,#174b70,#0a2138);
+  box-shadow:0 12px 35px rgba(0,50,100,.2);
 }
 
-.event-row{
+.radar-section{
+  padding:8px 18px 24px;
+}
+
+.radar-wrap{
+  position:relative;
+  width:280px;
+  height:280px;
+  max-width:100%;
+  margin:auto;
+}
+
+.radar-svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.radar-node{
+  position:absolute;
+  width:46px;
+  height:46px;
+  border:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 5px 18px rgba(0,0,0,.22);
+  transition:transform .2s;
+  z-index:2;
+}
+
+.radar-node:hover{
+  transform:scale(1.12);
+}
+
+.radar-center{
+  width:54px;
+  height:54px;
+  background:#0f172a;
+}
+
+.cards{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:0 18px 18px;
+}
+
+.card{
+  min-width:190px;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:16px;
+  padding:16px;
+}
+
+.card-icon{
+  width:36px;
+  height:36px;
+  border-radius:10px;
   display:grid;
-  grid-template-columns:90px 1fr 90px;
-  gap:8px;
-  padding:9px 0;
-  border-bottom:1px solid #183247;
-  font-size:12px
+  place-items:center;
+  margin-bottom:10px;
 }
 
-.event-row:last-child{
-  border-bottom:0
+.card h3{
+  font-size:13px;
+  margin-bottom:6px;
 }
 
-.event-time{
-  color:#6f94ab
-}
-
-.event-name{
-  color:#d9edf9
-}
-
-.event-status{
-  color:#70f1ad;
-  text-align:right
-}
-
-.log{
-  margin-top:12px;
-  background:#050b11;
-  border:1px solid #1d3344;
-  border-radius:12px;
-  padding:12px;
-  height:150px;
-  overflow:auto;
-  font-family:monospace;
+.card p{
   font-size:11px;
-  color:#9fd3ef;
-  white-space:pre-wrap
+  line-height:1.5;
+  color:#66727c;
 }
+
+.status-bar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:4px 18px 110px;
+}
+
+.status-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 9px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.status-item span:first-child{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+}
+
+.status-item span:last-child{
+  font-size:12px;
+  font-weight:700;
+}
+
 
 /* =========================================================
-   RESPONSIVE
+   FLOATING AAMUSH BRIEFCASE BUTTON
    ========================================================= */
 
-@media(max-width:760px){
-  .device-top{
-    grid-template-columns:1fr
-  }
+.briefcase-btn{
+  position:fixed;
+  right:12px;
+  bottom:22px;
+  width:112px;
+  height:112px;
+  padding:0;
+  border:2px solid white;
+  border-radius:50%;
+  overflow:hidden;
+  background:#06100b;
+  cursor:pointer;
+  z-index:80;
+  box-shadow:
+    0 0 28px rgba(0,168,255,.42),
+    0 12px 35px rgba(0,0,0,.25);
+  animation:briefcaseFloat 2.8s ease-in-out infinite;
+}
 
-  .mesh-chain{
-    grid-template-columns:repeat(2,1fr)
-  }
+.briefcase-btn img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-  .event-row{
-    grid-template-columns:70px 1fr 70px
+@keyframes briefcaseFloat{
+  0%,100%{
+    transform:translateY(0);
   }
-
-  .float-launch{
-    width:68px;
-    height:68px;
-    right:12px;
-    bottom:12px
-  }
-
-  .panel{
-    border-radius:15px
+  50%{
+    transform:translateY(-9px);
   }
 }
+
+
+/* =========================================================
+   BRIEFCASE OVERLAY
+   ========================================================= */
+
+.briefcase-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  padding:12px;
+  overflow-y:auto;
+  background:rgba(0,8,18,.78);
+  backdrop-filter:blur(8px);
+}
+
+.briefcase-overlay.open{
+  display:block;
+}
+
+.briefcase-window{
+  width:100%;
+  max-width:700px;
+  margin:8px auto 35px;
+  background:#f5f8fb;
+  border-radius:21px;
+  overflow:hidden;
+  box-shadow:0 25px 80px rgba(0,0,0,.4);
+}
+
+.briefcase-header{
+  position:relative;
+  padding:22px 52px 20px 20px;
+  color:white;
+  background:linear-gradient(135deg,#061827,#0b3655);
+}
+
+.briefcase-header h2{
+  font-size:21px;
+  margin-bottom:6px;
+}
+
+.briefcase-header p{
+  color:#c9d8e6;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.close-briefcase{
+  position:absolute;
+  right:10px;
+  top:10px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  color:white;
+  background:rgba(255,255,255,.12);
+  font-size:25px;
+  cursor:pointer;
+}
+
+.briefcase-content{
+  padding:16px;
+}
+
+.folder{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+  border:1px solid #d8e0e7;
+  background:white;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:11px;
+  cursor:pointer;
+}
+
+.folder-icon{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#edf5ff;
+  font-size:23px;
+  flex:none;
+}
+
+.folder-text{
+  flex:1;
+}
+
+.folder-text strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.folder-text small{
+  display:block;
+  color:#68747f;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.folder-arrow{
+  font-size:25px;
+  color:#8996a2;
+}
+
+.back-button{
+  border:0;
+  background:none;
+  color:#176ba8;
+  font-weight:800;
+  cursor:pointer;
+  padding:4px 0 14px;
+}
+
+.level-title{
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:13px;
+}
+
+.public-item{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  border:1px solid #d8e0e7;
+  background:white;
+  border-radius:15px;
+  padding:14px;
+  margin-bottom:9px;
+  cursor:pointer;
+}
+
+.public-item-icon{
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  background:#edf5ff;
+  display:grid;
+  place-items:center;
+  font-size:19px;
+  flex:none;
+}
+
+.public-item-text{
+  flex:1;
+}
+
+.public-item-text strong{
+  display:block;
+  font-size:13px;
+  margin-bottom:3px;
+}
+
+.public-item-text small{
+  color:#66727e;
+  font-size:11px;
+  line-height:1.4;
+}
+
+.public-item-arrow{
+  color:#8b97a2;
+  font-size:22px;
+}
+
+.lock-box{
+  text-align:center;
+  background:white;
+  border:1px dashed #b9c4ce;
+  border-radius:17px;
+  padding:35px 18px;
+}
+
+.lock-box .lock-icon{
+  font-size:46px;
+  margin-bottom:10px;
+}
+
+.lock-box h3{
+  margin-bottom:8px;
+}
+
+.lock-box p{
+  color:#68747e;
+  line-height:1.6;
+  font-size:12px;
+}
+
+.document{
+  background:white;
+  border:1px solid #d8e0e7;
+  border-radius:16px;
+  padding:18px;
+  font-size:12px;
+  line-height:1.7;
+  color:#56616c;
+}
+
+.document h3{
+  color:#17212b;
+  font-size:17px;
+  margin-bottom:12px;
+}
+
+.document h4{
+  color:#17212b;
+  margin:17px 0 5px;
+}
+
+.document ul{
+  padding-left:20px;
+}
+
+.developer-profile{
+  background:white;
+  border:1px solid #d8e0e7;
+  border-radius:17px;
+  padding:16px;
+  margin-bottom:11px;
+}
+
+.developer-top{
+  display:flex;
+  gap:15px;
+  align-items:flex-start;
+}
+
+.developer-photo{
+  width:108px;
+  height:140px;
+  object-fit:cover;
+  border-radius:12px;
+  flex:none;
+}
+
+.developer-profile h3{
+  font-size:17px;
+  margin-bottom:5px;
+}
+
+.developer-role{
+  color:#176ba8;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.developer-profile p{
+  color:#596570;
+  font-size:12px;
+  line-height:1.6;
+}
+
+@media(max-width:520px){
+  .header-title{font-size:18px}
+  .btn{padding:8px 11px}
+  .cta-row{flex-direction:column}
+  .map-container{height:190px}
+  .developer-top{align-items:flex-start}
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- =======================================================
-     AAMUSH LANDING ARTWORK
-     ======================================================= -->
+<div class="app">
 
-<div class="landing">
+<header>
 
-  <!--
-    THE SUPPLIED AAMUSH LANDING ARTWORK IS INSERTED HERE.
-    The following image element is intentionally kept as the
-    single visual foundation of the landing page.
-  -->
+<div class="logo">
+<div class="layers">
+<div></div>
+<div></div>
+<div></div>
+</div>
 
-  <img
-    id="heroArtwork"
-    class="hero-art"
-    alt="AAMush Mesh-01 East African autonomous commodity-logistics mesh"
-  >
+<span class="header-title">AAMush</span>
+</div>
 
-  <!-- Invisible interactive areas over the supplied artwork -->
+<div class="header-right">
 
-  <button
-    id="openFeederHot"
-    class="hotspot"
-    aria-label="Open feeder"
-    title="Open feeder">
-  </button>
+<button class="btn" onclick="openFeeder()">
+Open feeder
+</button>
 
-  <button
-    id="launchHot"
-    class="hotspot"
-    aria-label="Launch feeder device"
-    title="Launch feeder device">
-  </button>
+<button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">
+<span></span>
+<span></span>
+<span></span>
+</button>
 
-  <button
-    id="exploreHot"
-    class="hotspot"
-    aria-label="Explore platform"
-    title="Explore platform">
-  </button>
+</div>
 
-  <button
-    id="briefcaseHot"
-    class="hotspot"
-    aria-label="Open Developer Briefcase"
-    title="Open Developer Briefcase">
-  </button>
+</header>
+
+
+<section class="hero">
+
+<div class="status-pill">
+<span class="status-dot"></span>
+<span style="font-size:12px;font-weight:700;color:#2563eb">
+Mesh network live
+</span>
+</div>
+
+<h1>
+East Africa's first autonomous commodity-logistics mesh
+</h1>
+
+<p>
+AAMush connects verified supply, predictive demand, and tokenized
+truck capacity into a single trust layer for traders, truckers,
+warehouses and connected logistics assets across East Africa.
+</p>
+
+<div class="cta-row">
+
+<button class="cta-primary" onclick="launchFeeder()">
+▶ Launch feeder device
+</button>
+
+<button class="cta-secondary" onclick="explorePlatform()">
+Explore platform →
+</button>
+
+</div>
+
+</section>
+
+
+<div class="map-container">
+
+<svg width="100%" height="100%" viewBox="0 0 400 220"
+preserveAspectRatio="xMidYMid slice">
+
+<defs>
+
+<radialGradient id="eastAfricaGlow" cx="70%" cy="40%">
+
+<stop offset="0%" stop-color="#2d8a4e"
+stop-opacity=".8"/>
+
+<stop offset="60%" stop-color="#1a5c32"
+stop-opacity=".5"/>
+
+<stop offset="100%" stop-color="#0a1628"
+stop-opacity="0"/>
+
+</radialGradient>
+
+</defs>
+
+<circle
+cx="280"
+cy="80"
+r="90"
+fill="url(#eastAfricaGlow)"
+/>
+
+<path
+d="M220 30 Q260 20 300 40
+Q340 60 350 100
+Q360 140 330 170
+Q300 200 260 190
+Q220 180 200 150
+Q180 120 190 80
+Q200 40 220 30Z"
+fill="#2d8a4e"
+opacity=".6"
+/>
+
+<line x1="260" y1="55"
+x2="320" y2="85"
+stroke="#ffd700"
+stroke-width="2"/>
+
+<line x1="230" y1="95"
+x2="260" y2="55"
+stroke="#ffd700"
+stroke-width="2"/>
+
+<line x1="320" y1="85"
+x2="340" y2="120"
+stroke="#ffd700"
+stroke-width="2"/>
+
+<g onclick="showCity('Kigali')" style="cursor:pointer">
+<circle cx="260" cy="55" r="6"
+fill="#e74c3c" stroke="white" stroke-width="1.5"/>
+<text x="260" y="45" fill="white"
+font-size="9" font-weight="700"
+text-anchor="middle">Kigali</text>
+</g>
+
+<g onclick="showCity('Bujumbura')" style="cursor:pointer">
+<circle cx="230" cy="95" r="5"
+fill="#e74c3c" stroke="white" stroke-width="1.5"/>
+<text x="230" y="115" fill="white"
+font-size="9" font-weight="700"
+text-anchor="middle">Bujumbura</text>
+</g>
+
+<g onclick="showCity('Mombasa')" style="cursor:pointer">
+<circle cx="320" cy="85" r="6"
+fill="#e74c3c" stroke="white" stroke-width="1.5"/>
+<text x="320" y="75" fill="white"
+font-size="9" font-weight="700"
+text-anchor="middle">Mombasa</text>
+</g>
+
+<g onclick="showCity('Dar es Salaam')" style="cursor:pointer">
+<circle cx="340" cy="120" r="6"
+fill="#e74c3c" stroke="white" stroke-width="1.5"/>
+<text x="340" y="140" fill="white"
+font-size="9" font-weight="700"
+text-anchor="middle">Dar es Salaam</text>
+</g>
+
+</svg>
 
 </div>
 
 
-<!-- =======================================================
-     FLOATING AAMUSH ARTWORK BUTTON
-     ======================================================= -->
+<section class="radar-section">
 
-<button
-  id="floatingBriefcase"
-  class="float-launch"
-  aria-label="Open AAMush Developer Briefcase"
-  title="Open AAMush Developer Briefcase">
+<div class="radar-wrap">
 
-  <img
-    id="floatingArtwork"
-    alt="AAMush"
-  >
+<svg class="radar-svg" viewBox="0 0 280 280">
+
+<circle cx="140" cy="140" r="118"
+fill="none"
+stroke="#cbd3dc"
+stroke-width="1"
+stroke-dasharray="5 5"/>
+
+<circle cx="140" cy="140" r="80"
+fill="none"
+stroke="#cbd3dc"
+stroke-width="1"
+stroke-dasharray="5 5"/>
+
+<circle cx="140" cy="140" r="42"
+fill="none"
+stroke="#cbd3dc"
+stroke-width="1"
+stroke-dasharray="5 5"/>
+
+<g stroke="#cbd3dc" stroke-width="1">
+
+<line x1="140" y1="140" x2="140" y2="12"/>
+<line x1="140" y1="140" x2="241" y2="81"/>
+<line x1="140" y1="140" x2="241" y2="199"/>
+<line x1="140" y1="140" x2="140" y2="268"/>
+<line x1="140" y1="140" x2="39" y2="199"/>
+<line x1="140" y1="140" x2="39" y2="81"/>
+
+</g>
+
+<polygon
+points="140,25 225,82 225,198 140,255 55,198 55,82"
+fill="none"
+stroke="#c0c8d4"
+stroke-width="1.5"
+/>
+
+</svg>
+
+
+<button class="radar-node"
+onclick="activateNode('truck')"
+style="top:8px;left:50%;transform:translateX(-50%);background:#2563eb"
+aria-label="Truck">
+
+<svg width="21" height="21"
+viewBox="0 0 24 24"
+fill="white">
+
+<rect x="2" y="8" width="15" height="8" rx="1"/>
+<rect x="17" y="10" width="4" height="6" rx="1"/>
+<circle cx="6" cy="17" r="2"/>
+<circle cx="18" cy="17" r="2"/>
+
+</svg>
 
 </button>
 
 
-<!-- =======================================================
-     DEVELOPER BRIEFCASE MODAL
-     ======================================================= -->
+<button class="radar-node"
+onclick="activateNode('satellite')"
+style="top:58px;right:20px;background:#22c55e"
+aria-label="Satellite">
 
-<div
-  id="briefcaseModal"
-  class="modal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="briefcaseTitle">
+<svg width="21" height="21"
+viewBox="0 0 24 24"
+fill="none"
+stroke="white"
+stroke-width="2">
 
-  <div class="panel">
+<circle cx="12" cy="5" r="3"/>
+<path d="M12 8v13"/>
+<path d="M5 12l7-5 7 5"/>
 
-    <div class="panel-head">
+</svg>
 
-      <div style="font-size:25px">💼</div>
-
-      <h2 id="briefcaseTitle">
-        OPEN DEVELOPER BRIEFCASE
-      </h2>
-
-      <button
-        class="close"
-        data-close="briefcaseModal">
-        Close
-      </button>
-
-    </div>
-
-    <div class="briefcase-grid">
-
-      <button
-        class="brief-item"
-        data-open="profileModal">
-
-        <b>👤 Developer Profile</b>
-
-        <span>
-          Inventor, Lead Developer & Systems Architect
-          profile and development record.
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="brief-item"
-        data-open="manualModal">
+<button class="radar-node"
+onclick="activateNode('shield')"
+style="bottom:58px;right:20px;background:#8b5cf6"
+aria-label="Security">
 
-        <b>📘 Master Operating Manual</b>
+<svg width="21" height="21"
+viewBox="0 0 24 24"
+fill="white">
 
-        <span>
-          AAMush Mesh-01 Master Operating, Development &
-          System Functional Manual — Version 1.0.
-        </span>
+<path d="M12 2L4 5v6c0 5.5 3.4 10.7 8 12
+4.6-1.3 8-6.5 8-12V5l-8-3z"/>
 
-      </button>
+</svg>
 
-
-      <button
-        class="brief-item"
-        data-open="ipModal">
-
-        <b>🔐 Intellectual Property</b>
-
-        <span>
-          Invention identity, authorship, development
-          documentation and IP notice.
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="brief-item"
-        data-open="developmentModal">
+<button class="radar-node"
+onclick="activateNode('location')"
+style="bottom:8px;left:50%;transform:translateX(-50%);background:#ef4444"
+aria-label="Location">
 
-        <b>🛠 Development History</b>
+<svg width="21" height="21"
+viewBox="0 0 24 24"
+fill="white">
 
-        <span>
-          Concept → Architecture → Prototype → Engineering
-          → Field Testing → Pilot → Validation → Launch.
-        </span>
+<path d="M12 2C8.1 2 5 5.1 5 9
+c0 5.2 7 13 7 13s7-7.8 7-13
+c0-3.9-3.1-7-7-7zm0 9.5
+c-1.4 0-2.5-1.1-2.5-2.5
+s1.1-2.5 2.5-2.5
+2.5 1.1 2.5 2.5
+-1.1 2.5-2.5 2.5z"/>
 
-      </button>
+</svg>
 
-
-      <button
-        class="brief-item"
-        data-open="architectureModal">
-
-        <b>🧩 System Architecture</b>
-
-        <span>
-          Mesh-01, AURA, REGEN, SURETY and NEXUS
-          relationship.
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="brief-item"
-        data-open="investorModal">
+<button class="radar-node"
+onclick="activateNode('chart')"
+style="bottom:58px;left:20px;background:#2563eb"
+aria-label="Analytics">
 
-        <b>📊 Investor Reference</b>
+<svg width="21" height="21"
+viewBox="0 0 24 24"
+fill="none"
+stroke="white"
+stroke-width="2.5">
 
-        <span>
-          One-minute explanation, system value proposition
-          and network-effect model.
-        </span>
+<line x1="18" y1="20" x2="18" y2="10"/>
+<line x1="12" y1="20" x2="12" y2="4"/>
+<line x1="6" y1="20" x2="6" y2="14"/>
 
-      </button>
+</svg>
 
-    </div>
+</button>
 
-  </div>
+
+<button class="radar-node"
+onclick="activateNode('warehouse')"
+style="top:58px;left:20px;background:#22c55e"
+aria-label="Warehouse">
+
+<svg width="21" height="21"
+viewBox="0 0 24 24"
+fill="none"
+stroke="white"
+stroke-width="2">
+
+<rect x="4" y="4" width="16" height="16" rx="2"/>
+<path d="M9 9h6v6H9z"/>
+
+</svg>
+
+</button>
+
+
+<button class="radar-node radar-center"
+onclick="activateNode('mesh')"
+style="top:50%;left:50%;transform:translate(-50%,-50%)"
+aria-label="Mesh">
+
+<svg width="27" height="27"
+viewBox="0 0 24 24"
+fill="none"
+stroke="#00d4ff"
+stroke-width="1.5">
+
+<circle cx="12" cy="5" r="2"/>
+<circle cx="19" cy="12" r="2"/>
+<circle cx="12" cy="19" r="2"/>
+<circle cx="5" cy="12" r="2"/>
+<circle cx="12" cy="12" r="2"/>
+
+<line x1="12" y1="7" x2="12" y2="10"/>
+<line x1="14" y1="12" x2="17" y2="12"/>
+<line x1="12" y1="14" x2="12" y2="17"/>
+<line x1="7" y1="12" x2="10" y2="12"/>
+
+</svg>
+
+</button>
+
 </div>
 
+</section>
 
-<!-- =======================================================
-     DEVELOPER PROFILE
-     ======================================================= -->
 
-<div id="profileModal" class="modal">
+<div class="cards">
 
-  <div class="panel">
+<div class="card" onclick="openCard('telemetry')">
 
-    <div class="panel-head">
+<div class="card-icon" style="background:#dcfce7">
+📡
+</div>
 
-      <div>👤</div>
+<h3>Real-time Telemetry</h3>
 
-      <h2>DEVELOPER PROFILE</h2>
-
-      <button
-        class="close"
-        data-close="profileModal">
-        Close
-      </button>
-
-    </div>
-
-    <div class="profile">
-
-      <img
-        id="developerPhoto"
-        class="profile-photo"
-        alt="AAMush developer profile">
-
-      <h3>Dr. James K. Mushi, PhD</h3>
-
-      <p class="role">
-        Lead Developer & Systems Architect
-      </p>
-
-      <div class="card">
-
-        <strong>AAMush Mesh-01</strong><br>
-
-        Invented by <strong>Aloyce & Mushi</strong>.<br><br>
-
-        AAMush identity:
-        <strong>AnnaAbigailMush Aloyce</strong><br>
-
-        Meaning:
-        <strong>“Always love you everyday.”</strong>
-
-      </div>
-
-      <div class="card">
-
-        <strong>System</strong><br>
-        AAMush Mesh-01 Feeder Device
-
-        <br><br>
-
-        <strong>Platform</strong><br>
-        AAMush East African Autonomous Commodity-
-        Logistics Mesh
-
-        <br><br>
-
-        <strong>Role</strong><br>
-        Lead Developer & Systems Architect
-
-      </div>
-
-      <div class="card">
-
-        <strong>Development principle</strong><br><br>
-
-        Concept → Architecture → Prototype →
-        Engineering → Field Testing → Pilot →
-        Validation → Investor Demonstration →
-        Commercial Launch → Continuous Development
-
-      </div>
-
-    </div>
-
-  </div>
+<p>
+Live tracking and IoT data from connected assets on the mesh.
+</p>
 
 </div>
 
 
-<!-- =======================================================
-     MASTER MANUAL
-     ======================================================= -->
+<div class="card" onclick="openCard('corridors')">
 
-<div id="manualModal" class="modal">
+<div class="card-icon" style="background:#dbeafe">
+🚚
+</div>
 
-  <div class="panel">
+<h3>Smart Corridors</h3>
 
-    <div class="panel-head">
+<p>
+AI-assisted route and capacity coordination across East Africa.
+</p>
 
-      <div>📘</div>
+</div>
 
-      <h2>
-        AAMUSH MESH-01 MASTER MANUAL v1.0
-      </h2>
 
-      <button
-        class="close"
-        data-close="manualModal">
-        Close
-      </button>
+<div class="card" onclick="openCard('trade')">
 
-    </div>
+<div class="card-icon" style="background:#ede9fe">
+🛡
+</div>
 
-    <div class="viewer-body">
+<h3>Secure Trade</h3>
 
-      <div id="manualContent" class="manual">
-PASTE THE MASTER MANUAL TEXT IN SECTION 3
-OF THIS HTML.
-      </div>
+<p>
+Verification, controlled records and tokenized capacity concepts.
+</p>
 
-    </div>
+</div>
 
-  </div>
+</div>
+
+
+<div class="status-bar">
+
+<div class="status-item" onclick="toggleStatus('Build')">
+<span style="background:#22c55e"></span>
+<span>Build</span>
+</div>
+
+<div class="status-item" onclick="toggleStatus('Connect')">
+<span style="background:#2563eb"></span>
+<span>Connect</span>
+</div>
+
+<div class="status-item" onclick="toggleStatus('Move')">
+<span style="background:#eab308"></span>
+<span>Move</span>
+</div>
+
+<div class="status-item" onclick="toggleStatus('Grow')">
+<span style="background:#8b5cf6"></span>
+<span>Grow</span>
+</div>
 
 </div>
 
 
 <!-- =======================================================
-     IP NOTICE
+     FLOATING BUTTON
+     The actual AAMush artwork is inserted in BLOCK 2.
      ======================================================= -->
 
-<div id="ipModal" class="modal">
+<button
+class="briefcase-btn"
+onclick="openBriefcase()"
+aria-label="Open AAMush Project Briefcase"
+title="AAMush Project Briefcase"><div id="briefcaseScreen">
+<section class="briefcase">
 
-  <div class="panel">
+<header class="briefcaseHeader">
+<button class="closeButton" id="closeBriefcase">×</button>
 
-    <div class="panel-head">
+<h2>AAMush Project Briefcase</h2>
 
-      <div>🔐</div>
+<p>
+Two-level project access: Public information is available for viewing.
+Private materials remain locked and are not publicly accessible.
+</p>
+</header>
 
-      <h2>INTELLECTUAL PROPERTY & DEVELOPMENT NOTICE</h2>
+<div class="briefcaseContents" id="briefcaseLevels">
 
-      <button
-        class="close"
-        data-close="ipModal">
-        Close
-      </button>
+<!-- =====================================================
+     LEVEL 1 — PUBLIC / PRIVATE
+     ===================================================== -->
 
-    </div>
+<div class="briefcaseLevel" id="briefcaseLevel1">
 
-    <div class="info">
+<button class="accessFolder publicFolder"
+onclick="openBriefcaseLevel('public')">
 
-      <h3>AAMush Mesh-01</h3>
+<div class="itemIcon">🌐</div>
 
-      <p>
-        This project documentation constitutes the
-        developer-defined technical and functional
-        description of the AAMush Mesh-01 system.
-      </p>
+<div class="itemText">
+<strong>PUBLIC</strong>
+<span>Information intended for public viewing.</span>
+</div>
 
-      <p>
-        The system is identified as an East African
-        autonomous commodity-logistics mesh infrastructure
-        with Mesh-01 functioning as its physical-edge
-        feeder and trusted logistics-event gateway.
-      </p>
+<div class="folderArrow">›</div>
 
-      <p>
-        Invented by:
-        <strong>Aloyce & Mushi</strong>
-      </p>
+</button>
 
-      <p>
-        Lead Developer & Systems Architect:
-        <strong>Dr. James K. Mushi, PhD</strong>
-      </p>
 
-      <p>
-        This documentation should be maintained together
-        with dated engineering files, source code, hardware
-        designs, circuit diagrams, photographs, prototypes,
-        test reports, repositories, demonstrations and
-        subsequent revisions.
-      </p>
+<button class="accessFolder privateFolder"
+onclick="showPrivateLocked()">
 
-      <p>
-        This technical notice is not itself a legal opinion
-        regarding patentability, copyright registration,
-        trademark rights or any other intellectual-property
-        right.
-      </p>
+<div class="itemIcon">🔒</div>
 
-    </div>
+<div class="itemText">
+<strong>PRIVATE</strong>
+<span>Restricted project materials — no public access.</span>
+</div>
 
-  </div>
+<div class="folderLock">LOCKED</div>
+
+</button>
 
 </div>
 
 
-<!-- =======================================================
-     DEVELOPMENT HISTORY
-     ======================================================= -->
+<!-- =====================================================
+     LEVEL 2 — PUBLIC FOLDER
+     ===================================================== -->
 
-<div id="developmentModal" class="modal">
+<div class="briefcaseLevel"
+id="publicLevel"
+style="display:none;">
 
-  <div class="panel">
+<button class="levelBack"
+onclick="showBriefcaseLevel1()">‹ Back</button>
 
-    <div class="panel-head">
+<div class="levelTitle">
+<span>🌐</span>
 
-      <div>🛠</div>
-
-      <h2>DEVELOPMENT HISTORY</h2>
-
-      <button
-        class="close"
-        data-close="developmentModal">
-        Close
-      </button>
-
-    </div>
-
-    <div class="info">
-
-      <h3>AAMush Mesh-01 Development Lifecycle</h3>
-
-      <p>
-        <strong>01 — Concept</strong><br>
-        Define invention, problem, users, use cases,
-        architecture, intellectual property and business
-        model.
-      </p>
-
-      <p>
-        <strong>02 — Architecture</strong><br>
-        Hardware, firmware, software, communications,
-        data, security and API architecture.
-      </p>
-
-      <p>
-        <strong>03 — Prototype</strong><br>
-        Physical Mesh-01 and software prototype.
-      </p>
-
-      <p>
-        <strong>04 — Engineering</strong><br>
-        Hardware, firmware, communications, event,
-        security and platform integration.
-      </p>
-
-      <p>
-        <strong>05 — Field Testing</strong><br>
-        Actual roads, network interruptions, power
-        interruption, route deviation, vibration and
-        environmental conditions.
-      </p>
-
-      <p>
-        <strong>06 — Pilot</strong><br>
-        Controlled participation by vehicle owners,
-        logistics operators, warehouses, traders and
-        technology partners.
-      </p>
-
-      <p>
-        <strong>07 — Validation</strong><br>
-        Functional, connectivity, security, scalability
-        and recovery validation.
-      </p>
-
-      <p>
-        <strong>08 — Investor Demonstration</strong><br>
-        Demonstrate the complete physical-to-digital
-        logistics chain.
-      </p>
-
-      <p>
-        <strong>09 — Commercial Launch</strong><br>
-        Production release following acceptance testing
-        and compliance review.
-      </p>
-
-      <p>
-        <strong>10 — Continuous Development</strong><br>
-        Sensor expansion, communications expansion,
-        AI and autonomous logistics capabilities.
-      </p>
-
-    </div>
-
-  </div>
+<div>
+<strong>PUBLIC</strong>
+<small>Public AAMush project information</small>
+</div>
 
 </div>
 
 
-<!-- =======================================================
-     ARCHITECTURE
-     ======================================================= -->
+<!-- DEVELOPER PROFILE -->
 
-<div id="architectureModal" class="modal">
+<button class="briefcaseItem"
+onclick="openInfo(
+'Developer Profile',
+'AAMush Mesh-01 Feeder project developer profile and system background.'
+)">
 
-  <div class="panel">
+<div class="itemIcon">👤</div>
 
-    <div class="panel-head">
+<div class="itemText">
+<strong>Developer Profile</strong>
+<span>Developer and project background.</span>
+</div>
 
-      <div>🧩</div>
+</button>
 
-      <h2>AAMUSH SYSTEM ARCHITECTURE</h2>
 
-      <button
-        class="close"
-        data-close="architectureModal">
-        Close
-      </button>
+<!-- PROJECT DOCUMENTATION -->
 
-    </div>
+<button class="briefcaseItem"
+onclick="openInfo(
+'Project Documentation',
+'AAMush Mesh-01 project documentation and system description.'
+)">
 
-    <div class="info">
+<div class="itemIcon">📁</div>
 
-      <h3>Physical-to-Digital Operating Chain</h3>
+<div class="itemText">
+<strong>Project Documentation</strong>
+<span>Core project and system documentation.</span>
+</div>
 
-      <p>
-        PHYSICAL WORLD
-        ↓
-        MESH-01 FEEDER
-        ↓
-        TELEMETRY & EVENT PROCESSING
-        ↓
-        SECURE COMMUNICATION
-        ↓
-        AAMUSH MESH
-        ↓
-        AURA / REGEN / SURETY / NEXUS
-        ↓
-        LOGISTICS / COMMODITY / FINANCIAL DECISION
-        ↓
-        PHYSICAL-WORLD ACTION
-      </p>
+</button>
 
-      <hr>
 
-      <h3>AURA ROUTING</h3>
-      <p>
-        Logistics routing, convoy orchestration,
-        transport-capacity coordination and backhaul.
-      </p>
+<!-- INTELLECTUAL PROPERTY -->
 
-      <h3>REGEN REGISTRY</h3>
-      <p>
-        Digital identity, logistics assets, warehouse
-        records and physical-world evidence.
-      </p>
+<button class="briefcaseItem"
+onclick="openInfo(
+'Intellectual-Property Notice',
+'AAMush Mesh-01 documentation and associated materials constitute project development and intellectual-property material. Treat the material as confidential unless disclosure is authorized.'
+)">
 
-      <h3>SURETY SETTLEMENT</h3>
-      <p>
-        Commercial execution and authorized settlement
-        workflows based on verified logistics events.
-      </p>
+<div class="itemIcon">©</div>
 
-      <h3>NEXUS GHOST INVENTORY</h3>
-      <p>
-        Predictive commodity availability and future
-        logistics demand.
-      </p>
+<div class="itemText">
+<strong>Intellectual-Property Notice</strong>
+<span>IP, confidentiality and controlled-use notice.</span>
+</div>
 
-    </div>
+</button>
 
-  </div>
+
+<!-- DEVELOPMENT HISTORY -->
+
+<button class="briefcaseItem"
+onclick="openInfo(
+'Development History',
+'Development history, milestones and evidence for the AAMush Mesh-01 project.'
+)">
+
+<div class="itemIcon">🕒</div>
+
+<div class="itemText">
+<strong>Development History</strong>
+<span>Project evolution and development record.</span>
+</div>
+
+</button>
+
+
+<!-- OPERATING MANUAL -->
+
+<button class="briefcaseItem"
+onclick="openManual()">
+
+<div class="itemIcon">📖</div>
+
+<div class="itemText">
+
+<strong>Operating Manual</strong>
+
+<span>
+Complete AAMush Mesh-01 Feeder Device
+Master Operating, Development &amp;
+System Functional Manual.
+</span>
+
+</div>
+
+</button>
+
+
+<!-- SYSTEM ARCHITECTURE -->
+
+<button class="briefcaseItem"
+onclick="openInfo(
+'System Architecture',
+'Mesh-01 physical-edge architecture, device interfaces and relationship to the wider AAMush mesh.'
+)">
+
+<div class="itemIcon">⚙</div>
+
+<div class="itemText">
+<strong>System Architecture</strong>
+<span>Architecture and system-level documentation.</span>
+</div>
+
+</button>
+
+
+<!-- TESTING -->
+
+<button class="briefcaseItem"
+onclick="openInfo(
+'Testing & Validation',
+'Testing, validation, commissioning and evidence records for the Mesh-01 device.'
+)">
+
+<div class="itemIcon">✓</div>
+
+<div class="itemText">
+<strong>Testing &amp; Validation</strong>
+<span>Validation and commissioning records.</span>
+</div>
+
+</button>
+
+
+<!-- FUTURE DEVELOPMENT -->
+
+<button class="briefcaseItem"
+onclick="openInfo(
+'Future Development',
+'Future features, extensibility and planned development for AAMush Mesh-01.'
+)">
+
+<div class="itemIcon">🚀</div>
+
+<div class="itemText">
+<strong>Future Development</strong>
+<span>Roadmap and future extensibility.</span>
+</div>
+
+</button>
+
+
+<!-- INVESTOR / DEMONSTRATION -->
+
+<button class="briefcaseItem"
+onclick="openInfo(
+'Investor / Demonstration Information',
+'Demonstration-ready AAMush project information and presentation material.'
+)">
+
+<div class="itemIcon">◆</div>
+
+<div class="itemText">
+<strong>Investor / Demonstration Information</strong>
+<span>Demonstration and presentation material.</span>
+</div>
+
+</button>
 
 </div>
 
 
-<!-- =======================================================
-     INVESTOR REFERENCE
-     ======================================================= -->
+<!-- =====================================================
+     PRIVATE FOLDER — LOCKED
+     ===================================================== -->
 
-<div id="investorModal" class="modal">
+<div class="briefcaseLevel"
+id="privateLevel"
+style="display:none;">
 
-  <div class="panel">
+<button class="levelBack"
+onclick="showBriefcaseLevel1()">‹ Back</button>
 
-    <div class="panel-head">
+<div class="privateLocked">
 
-      <div>📊</div>
+<div class="bigLock">🔒</div>
 
-      <h2>INVESTOR REFERENCE</h2>
+<h3>PRIVATE</h3>
 
-      <button
-        class="close"
-        data-close="investorModal">
-        Close
-      </button>
+<p>This folder is restricted.</p>
 
-    </div>
+<strong>No public access</strong>
 
-    <div class="info">
+<span>
+Private project materials are not opened, displayed,
+or exposed through the public Briefcase.
+</span>
 
-      <h3>One-Minute Explanation</h3>
+</div>
 
-      <p>
-        AAMush Mesh-01 is the physical device that
-        connects the real movement of goods and trucks
-        to the AAMush digital trade-logistics network.
-      </p>
+</div>
 
-      <p>
-        It collects and authenticates telemetry, converts
-        physical activity into structured logistics events,
-        stores those events when networks are unavailable,
-        and synchronizes them with the AAMush mesh.
-      </p>
+</div>
 
-      <p>
-        Those events can support AURA routing and convoy
-        management, REGEN digital registry functions,
-        SURETY commercial settlement workflows and NEXUS
-        predictive inventory.
-      </p>
+</section>
+</div>
 
-      <h3>Core Value</h3>
 
-      <p>
-        Mesh-01 is intended to bridge the physical economy
-        and the digital trade network.
-      </p>
+<!-- =====================================================
+     INFORMATION WINDOW
+     ===================================================== -->
 
-    </div>
+<div id="infoScreen" class="fullScreen">
 
-  </div>
+<div class="topBar">
+
+<button onclick="closeInfo()">← Back</button>
+
+<div id="infoTitle" class="topBarTitle">
+AAMush
+</div>
+
+</div>
+
+<div class="infoContent">
+
+<div id="infoText" class="infoBox">
+</div>
+
+</div>
 
 </div>
 
 
-<!-- =======================================================
-     LIVE FEEDER MODAL
-     ======================================================= -->
+<!-- =====================================================
+     OPERATING MANUAL WINDOW
+     ===================================================== -->
 
-<div id="feederModal" class="modal">
+<div id="manualScreen">
 
-  <div class="panel">
+<div class="topBar">
 
-    <div class="panel-head">
+<button onclick="closeManual()">
+← Briefcase
+</button>
 
-      <div>📡</div>
-
-      <h2>AAMUSH MESH-01 FEEDER</h2>
-
-      <button
-        class="close"
-        data-close="feederModal">
-        Close
-      </button>
-
-    </div>
-
-    <div class="feeder">
-
-      <div class="live-banner">
-
-        <span class="pill live">
-          ● MESH NETWORK LIVE
-        </span>
-
-        <span class="pill demo">
-          DEMONSTRATION / SIMULATED TELEMETRY
-        </span>
-
-        <span class="pill">
-          MESH-01
-        </span>
-
-      </div>
-
-
-      <div class="device-top">
-
-        <div class="device-card">
-
-          <h3>DEVICE STATUS</h3>
-
-          <div class="device-id">
-            MESH-01-001
-          </div>
-
-          <div class="status">
-            ● OPERATIONAL
-          </div>
-
-          <div class="actions">
-
-            <button
-              id="startTelemetry"
-              class="action primary">
-              Start telemetry
-            </button>
-
-            <button
-              id="stopTelemetry"
-              class="action">
-              Stop telemetry
-            </button>
-
-            <button
-              id="simulateOffline"
-              class="action warn">
-              Simulate offline
-            </button>
-
-            <button
-              id="syncEvents"
-              class="action primary">
-              Synchronize
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="telemetry-card">
-
-          <h3>LIVE TELEMETRY</h3>
-
-          <div class="metrics">
-
-            <div class="metric">
-              <small>Latitude</small>
-              <strong id="lat">-6.7924</strong>
-            </div>
-
-            <div class="metric">
-              <small>Longitude</small>
-              <strong id="lng">39.2083</strong>
-            </div>
-
-            <div class="metric">
-              <small>Speed</small>
-              <strong>
-                <span id="speed">42</span> km/h
-              </strong>
-            </div>
-
-            <div class="metric">
-              <small>Heading</small>
-              <strong>
-                <span id="heading">074</span>°
-              </strong>
-            </div>
-
-            <div class="metric">
-              <small>GNSS</small>
-              <strong id="gnss">LOCKED</strong>
-            </div>
-
-            <div class="metric">
-              <small>Network</small>
-              <strong id="network">ONLINE</strong>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="mesh-card">
-
-        <h3>
-          MESH-01 END-TO-END DATA FLOW
-        </h3>
-
-        <div class="mesh-chain">
-
-          <div class="mesh-node active">
-            VEHICLE
-          </div>
-
-          <div class="mesh-node active">
-            MESH-01
-          </div>
-
-          <div class="mesh-node active">
-            TELEMETRY
-          </div>
-
-          <div class="mesh-node active">
-            EVENT
-          </div>
-
-          <div class="mesh-node active">
-            SECURE
-          </div>
-
-          <div class="mesh-node active">
-            AAMUSH MESH
-          </div>
-
-          <div class="mesh-node active">
-            SERVICES
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="events-card">
-
-        <h3>
-          EVENT STREAM
-        </h3>
-
-        <div
-          id="eventList"
-          class="event-list">
-        </div>
-
-      </div>
-
-
-      <div
-        id="systemLog"
-        class="log">
-AAMush Mesh-01 initialization...
-Waiting for telemetry engine...
-      </div>
-
-    </div>
-
-  </div>
+<div class="topBarTitle">
+AAMush Mesh-01 Feeder Device — Master Manual
+</div>
 
 </div>
 
+<iframe
+id="manualFrame"
+title="AAMush Mesh-01 Feeder Device Master Manual">
+</iframe>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
 
 <script>
-/* =========================================================
-   AAMUSH APPLICATION ENGINE
-   ========================================================= */
 
-/*
- The supplied artwork and developer photograph are inserted
- by the next code section as embedded browser data.
-
- DO NOT remove the variables.
-*/
-
-let telemetryRunning = true;
-let offlineMode = false;
-let eventCounter = 1000;
-let telemetryTimer = null;
-
-const state = {
-  lat: -6.7924,
-  lng: 39.2083,
-  speed: 42,
-  heading: 74,
-  synced: 0,
-  stored: 0
-};
+const MANUAL_FILE =
+"AAMush-Mesh-01-Feeder-Manual.pdf";
 
 
-/* =========================================================
-   MODAL CONTROLS
-   ========================================================= */
+const floatingLogo =
+document.getElementById("floatingLogo");
 
-function openModal(id){
-  const el=document.getElementById(id);
-  if(el) el.classList.add("open");
-}
+const briefcaseScreen =
+document.getElementById("briefcaseScreen");
 
-function closeModal(id){
-  const el=document.getElementById(id);
-  if(el) el.classList.remove("open");
-}
+const infoScreen =
+document.getElementById("infoScreen");
 
-document.querySelectorAll("[data-close]").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    closeModal(btn.dataset.close);
-  });
-});
+const manualScreen =
+document.getElementById("manualScreen");
 
-document.querySelectorAll("[data-open]").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    openModal(btn.dataset.open);
-  });
-});
+const manualFrame =
+document.getElementById("manualFrame");
 
-document.querySelectorAll(".modal").forEach(modal=>{
-  modal.addEventListener("click",e=>{
-    if(e.target===modal){
-      modal.classList.remove("open");
-    }
-  });
+
+/* OPEN BRIEFCASE */
+
+floatingLogo.addEventListener("click", function(){
+
+briefcaseScreen.classList.add("active");
+
+document.body.style.overflow="hidden";
+
 });
 
 
-/* =========================================================
-   LANDING BUTTONS
-   ========================================================= */
+/* CLOSE BRIEFCASE */
 
-document.getElementById("openFeederHot")
-  .addEventListener("click",()=>{
-    openModal("feederModal");
-  });
-
-document.getElementById("launchHot")
-  .addEventListener("click",()=>{
-    openModal("feederModal");
-  });
-
-document.getElementById("exploreHot")
-  .addEventListener("click",()=>{
-    openModal("architectureModal");
-  });
-
-document.getElementById("briefcaseHot")
-  .addEventListener("click",()=>{
-    openModal("briefcaseModal");
-  });
-
-document.getElementById("floatingBriefcase")
-  .addEventListener("click",()=>{
-    openModal("briefcaseModal");
-  });
+document
+.getElementById("closeBriefcase")
+.addEventListener(
+"click",
+closeBriefcase
+);
 
 
-/* =========================================================
-   LIVE MESH-01 FUNCTIONS
-   ========================================================= */
+function closeBriefcase(){
 
-function logMessage(message){
+briefcaseScreen.classList.remove("active");
 
-  const log=document.getElementById("systemLog");
+document.body.style.overflow="";
 
-  const now=new Date().toLocaleTimeString();
-
-  log.textContent +=
-    "\n[" + now + "] " + message;
-
-  log.scrollTop=log.scrollHeight;
 }
 
 
-function addEvent(type,status="SYNCHRONIZED"){
+/* OPEN PUBLIC INFORMATION */
 
-  eventCounter++;
+function openInfo(title,text){
 
-  const row=document.createElement("div");
+document
+.getElementById("infoTitle")
+.textContent=title;
 
-  row.className="event-row";
+document
+.getElementById("infoText")
+.innerHTML=
+"<h2>"+title+"</h2><p>"+text+"</p>";
 
-  row.innerHTML=`
-    <div class="event-time">
-      ${new Date().toLocaleTimeString()}
-    </div>
+infoScreen.classList.add("active");
 
-    <div class="event-name">
-      EVENT-${eventCounter} —
-      ${type}
-    </div>
-
-    <div class="event-status">
-      ${status}
-    </div>
-  `;
-
-  const list=document.getElementById("eventList");
-
-  list.prepend(row);
-
-  if(list.children.length>50){
-    list.removeChild(list.lastChild);
-  }
-
-  if(status==="STORED"){
-    state.stored++;
-  }else{
-    state.synced++;
-  }
 }
 
 
-function generateTelemetry(){
+/* CLOSE INFORMATION */
 
-  if(!telemetryRunning){
-    return;
-  }
+function closeInfo(){
 
-  /*
-    Demonstration movement only.
-    Actual production telemetry will come from
-    the physical Mesh-01 hardware/backend.
-  */
+infoScreen.classList.remove("active");
 
-  state.lat += (Math.random()-.45)*0.0015;
-  state.lng += (Math.random()-.45)*0.0015;
-
-  state.speed =
-    Math.max(
-      0,
-      Math.round(
-        state.speed + (Math.random()-.5)*8
-      )
-    );
-
-  state.heading =
-    Math.round(
-      (state.heading + (Math.random()-.5)*12 + 360)%360
-    );
-
-  document.getElementById("lat").textContent=
-    state.lat.toFixed(5);
-
-  document.getElementById("lng").textContent=
-    state.lng.toFixed(5);
-
-  document.getElementById("speed").textContent=
-    state.speed;
-
-  document.getElementById("heading").textContent=
-    String(state.heading).padStart(3,"0");
-
-  if(offlineMode){
-
-    document.getElementById("network")
-      .textContent="OFFLINE";
-
-    addEvent("POSITION UPDATE","STORED");
-
-    logMessage(
-      "Network unavailable — event stored locally."
-    );
-
-  }else{
-
-    document.getElementById("network")
-      .textContent="ONLINE";
-
-    addEvent("POSITION UPDATE","SYNCHRONIZED");
-
-  }
 }
 
 
-document.getElementById("startTelemetry")
-  .addEventListener("click",()=>{
+/* OPEN OPERATING MANUAL */
 
-    telemetryRunning=true;
+function openManual(){
 
-    logMessage(
-      "Telemetry acquisition started."
-    );
+manualFrame.src=MANUAL_FILE;
 
-    addEvent(
-      "TELEMETRY STARTED",
-      "SYNCHRONIZED"
-    );
+manualScreen.classList.add("active");
 
-  });
+document.body.style.overflow="hidden";
+
+}
 
 
-document.getElementById("stopTelemetry")
-  .addEventListener("click",()=>{
+/* CLOSE OPERATING MANUAL */
 
-    telemetryRunning=false;
+function closeManual(){
 
-    logMessage(
-      "Telemetry acquisition paused."
-    );
+manualScreen.classList.remove("active");
 
-    addEvent(
-      "TELEMETRY PAUSED",
-      "SYNCHRONIZED"
-    );
+manualFrame.src="";
 
-  });
+document.body.style.overflow="";
+
+}
 
 
-document.getElementById("simulateOffline")
-  .addEventListener("click",()=>{
+/* =====================================================
+   BRIEFCASE LEVEL CONTROL
+   ===================================================== */
 
-    offlineMode=!offlineMode;
+function showBriefcaseLevel1(){
 
-    if(offlineMode){
+document
+.getElementById("briefcaseLevel1")
+.style.display="flex";
 
-      document.getElementById("network")
-        .textContent="OFFLINE";
+document
+.getElementById("publicLevel")
+.style.display="none";
 
-      logMessage(
-        "SIMULATION: communications unavailable."
-      );
+document
+.getElementById("privateLevel")
+.style.display="none";
 
-      addEvent(
-        "NETWORK OFFLINE",
-        "STORED"
-      );
-
-    }else{
-
-      document.getElementById("network")
-        .textContent="ONLINE";
-
-      logMessage(
-        "SIMULATION: communications restored."
-      );
-
-      addEvent(
-        "NETWORK RESTORED",
-        "SYNCHRONIZED"
-      );
-
-    }
-
-  });
+}
 
 
-document.getElementById("syncEvents")
-  .addEventListener("click",()=>{
+/* OPEN PUBLIC OR PRIVATE LEVEL */
 
-    if(offlineMode){
+function openBriefcaseLevel(level){
 
-      logMessage(
-        "Cannot synchronize while network is offline."
-      );
+document
+.getElementById("briefcaseLevel1")
+.style.display="none";
 
-      return;
-    }
+document
+.getElementById("publicLevel")
+.style.display=
+(level==="public")
+?"flex"
+:"none";
 
-    const storedEvents =
-      state.stored;
+document
+.getElementById("privateLevel")
+.style.display=
+(level==="private")
+?"flex"
+:"none";
 
-    state.stored=0;
-
-    logMessage(
-      "Synchronization completed. " +
-      storedEvents +
-      " stored events processed."
-    );
-
-    addEvent(
-      "SYNCHRONIZATION COMPLETED",
-      "SYNCHRONIZED"
-    );
-
-  });
+}
 
 
-/* Start demonstration telemetry */
+/* PRIVATE FOLDER */
 
-telemetryTimer=setInterval(
-  generateTelemetry,
-  3000
-);
+function showPrivateLocked(){
+
+openBriefcaseLevel("private");
+
+}
 
 
-/* Initial events */
+/* ESCAPE KEY */
 
-addEvent(
-  "DEVICE ONLINE",
-  "SYNCHRONIZED"
-);
+document.addEventListener(
+"keydown",
+function(event){
 
-addEvent(
-  "GNSS LOCK ACQUIRED",
-  "SYNCHRONIZED"
-);
+if(event.key==="Escape"){
 
-addEvent(
-  "MESH-01 REGISTERED",
-  "SYNCHRONIZED"
-);
+closeManual();
 
-logMessage(
-  "AAMush Mesh-01 feeder ready."
-);
+closeInfo();
+
+closeBriefcase();
+
+}
+
+});
 
 </script>
 
-<!-- =======================================================
-     END OF SECTION 1
-     ======================================================= -->
+<!-- =========================================================
+     BLOCK 3 — BRIEFCASE / PUBLIC DOCUMENT CONTENT
+     ========================================================= -->
+
+<style>
+
+/* BRIEFCASE SCREEN */
+
+#briefcaseScreen{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    background:
+        linear-gradient(
+            180deg,
+            #07111f 0%,
+            #0b1b2d 45%,
+            #06101c 100%
+        );
+    color:#fff;
+    display:none;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+#briefcaseScreen.active{
+    display:block;
+}
+
+.briefcase{
+    width:100%;
+    max-width:520px;
+    min-height:100vh;
+    margin:0 auto;
+    padding-bottom:40px;
+}
+
+.briefcaseHeader{
+    padding:22px 20px 18px;
+    background:rgba(8,20,34,.96);
+    border-bottom:1px solid rgba(255,255,255,.12);
+    position:sticky;
+    top:0;
+    z-index:5;
+}
+
+.briefcaseHeader h2{
+    margin:0 40px 8px 0;
+    font-size:21px;
+    font-weight:800;
+}
+
+.briefcaseHeader p{
+    margin:0;
+    color:#aebdca;
+    font-size:12px;
+    line-height:1.55;
+}
+
+.closeButton{
+    position:absolute;
+    right:14px;
+    top:14px;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:27px;
+    line-height:38px;
+    cursor:pointer;
+}
+
+/* FOLDER LEVEL */
+
+.briefcaseContents{
+    padding:18px;
+}
+
+.briefcaseLevel{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.accessFolder,
+.briefcaseItem{
+    width:100%;
+    min-height:72px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:15px;
+    background:rgba(255,255,255,.07);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    text-align:left;
+    padding:13px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.accessFolder:active,
+.briefcaseItem:active{
+    transform:scale(.98);
+}
+
+.publicFolder{
+    border-color:rgba(0,180,255,.35);
+}
+
+.privateFolder{
+    opacity:.72;
+}
+
+.itemIcon{
+    width:45px;
+    height:45px;
+    min-width:45px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.10);
+    font-size:21px;
+    margin-right:12px;
+}
+
+.itemText{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.itemText strong{
+    font-size:14px;
+    font-weight:800;
+}
+
+.itemText span{
+    font-size:11px;
+    line-height:1.45;
+    color:#aebdca;
+}
+
+.folderArrow{
+    font-size:28px;
+    color:#00c8ff;
+    padding-left:8px;
+}
+
+.folderLock{
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.8px;
+    color:#ffb4b4;
+}
+
+.levelBack{
+    border:0;
+    background:none;
+    color:#00c8ff;
+    text-align:left;
+    padding:5px 2px 12px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.levelTitle{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:4px 2px 12px;
+}
+
+.levelTitle>span{
+    font-size:28px;
+}
+
+.levelTitle strong{
+    display:block;
+    font-size:17px;
+}
+
+.levelTitle small{
+    color:#8fa2b4;
+    font-size:11px;
+}
+
+/* PRIVATE LOCKED */
+
+.privateLocked{
+    margin-top:20px;
+    min-height:280px;
+    border:1px solid rgba(255,80,80,.25);
+    border-radius:20px;
+    background:rgba(255,255,255,.045);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:30px 20px;
+}
+
+.bigLock{
+    font-size:52px;
+    margin-bottom:12px;
+}
+
+.privateLocked h3{
+    margin:0 0 8px;
+    font-size:20px;
+}
+
+.privateLocked p{
+    margin:0 0 6px;
+    color:#aebdca;
+}
+
+.privateLocked strong{
+    color:#ff9d9d;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.privateLocked span{
+    max-width:300px;
+    color:#8194a5;
+    font-size:11px;
+    line-height:1.6;
+}
+
+/* INFORMATION SCREEN */
+
+.fullScreen{
+    position:fixed;
+    inset:0;
+    z-index:220;
+    display:none;
+    background:#f2f5f8;
+    color:#17202a;
+    overflow-y:auto;
+}
+
+.fullScreen.active{
+    display:block;
+}
+
+.topBar{
+    min-height:58px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    background:#fff;
+    border-bottom:1px solid #dce2e8;
+    position:sticky;
+    top:0;
+    z-index:5;
+}
+
+.topBar button{
+    border:0;
+    background:#eef2f6;
+    border-radius:9px;
+    padding:9px 12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.topBarTitle{
+    font-size:14px;
+    font-weight:800;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.infoContent{
+    padding:20px;
+}
+
+.infoBox{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 5px 25px rgba(0,0,0,.08);
+}
+
+.infoBox h2{
+    margin:0 0 12px;
+    font-size:20px;
+}
+
+.infoBox p{
+    margin:0;
+    max-width:none;
+    color:#505b65;
+    font-size:14px;
+    line-height:1.7;
+}
+
+/* MASTER MANUAL */
+
+#manualScreen{
+    position:fixed;
+    inset:0;
+    z-index:230;
+    display:none;
+    background:#f4f6f8;
+    color:#151a1f;
+    overflow:hidden;
+}
+
+#manualScreen.active{
+    display:flex;
+    flex-direction:column;
+}
+
+#manualScreen .topBar{
+    flex-shrink:0;
+}
+
+#manualFrame{
+    width:100%;
+    flex:1;
+    border:0;
+    background:#fff;
+}
+
+/* MOBILE */
+
+@media(max-width:420px){
+
+    .briefcaseContents{
+        padding:14px;
+    }
+
+    .briefcaseHeader{
+        padding:18px 16px;
+    }
+
+    .accessFolder,
+    .briefcaseItem{
+        min-height:68px;
+    }
+
+}
+
+
+/* =========================================================
+   DEVELOPER PROFILE
+   ========================================================= */
+
+.developerProfile{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.09);
+}
+
+.developerPhoto{
+    width:100%;
+    max-height:390px;
+    object-fit:cover;
+    display:block;
+}
+
+.developerDetails{
+    padding:20px;
+}
+
+.developerDetails h2{
+    margin:0 0 6px;
+    font-size:21px;
+}
+
+.developerDetails .role{
+    color:#2563eb;
+    font-weight:700;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.developerDetails p{
+    max-width:none;
+    font-size:13px;
+    line-height:1.65;
+    color:#555;
+}
+
+
+/* =========================================================
+   PUBLIC DOCUMENT CARDS
+   ========================================================= */
+
+.publicDocument{
+    background:#fff;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.publicDocument h3{
+    margin:0 0 8px;
+    font-size:16px;
+}
+
+.publicDocument p{
+    max-width:none;
+    margin:0;
+    color:#59636d;
+    font-size:12.5px;
+    line-height:1.65;
+}
+
+.publicBadge{
+    display:inline-block;
+    margin-bottom:10px;
+    padding:5px 9px;
+    border-radius:20px;
+    background:#e7f7ee;
+    color:#168447;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.7px;
+}
+
+</style>
+
+
+<script>
+
+/* =========================================================
+   PUBLIC DEVELOPER PROFILE
+   ========================================================= */
+
+function openDeveloperProfile(){
+
+    document.getElementById("infoTitle")
+        .textContent="Developer Profile";
+
+    document.getElementById("infoText")
+        .innerHTML=`
+
+        <div class="developerProfile">
+
+            <img
+                class="developerPhoto"
+                src="DEVELOPER_PHOTO_HERE"
+                alt="AAMush project developer"
+            >
+
+            <div class="developerDetails">
+
+                <h2>AAMush Project Developer</h2>
+
+                <div class="role">
+                    Developer — AAMush Mesh-01 Feeder
+                </div>
+
+                <p>
+                    Developer profile for the AAMush Mesh-01
+                    autonomous commodity-logistics mesh project.
+                </p>
+
+                <p>
+                    This public profile is part of the
+                    AAMush project documentation and is
+                    presented for authorized public viewing.
+                </p>
+
+            </div>
+
+        </div>
+
+        `;
+
+    infoScreen.classList.add("active");
+
+}
+
+
+/* =========================================================
+   PUBLIC DOCUMENT CONTENT
+   ========================================================= */
+
+function openPublicDocument(title,badge,heading,text){
+
+    document.getElementById("infoTitle")
+        .textContent=title;
+
+    document.getElementById("infoText")
+        .innerHTML=`
+
+        <div class="publicDocument">
+
+            <div class="publicBadge">
+                ${badge}
+            </div>
+
+            <h3>${heading}</h3>
+
+            <p>${text}</p>
+
+        </div>
+
+        `;
+
+    infoScreen.classList.add("active");
+
+}
+
+
+/* =========================================================
+   OVERRIDE DEVELOPER PROFILE BUTTON
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    const buttons =
+        document.querySelectorAll(".briefcaseItem");
+
+    buttons.forEach(function(button){
+
+        const text =
+            button.innerText.trim();
+
+        if(text.includes("Developer Profile")){
+
+            button.onclick =
+                openDeveloperProfile;
+
+        }
+
+    });
+
+});
+
+  </script></body>
+</html>
