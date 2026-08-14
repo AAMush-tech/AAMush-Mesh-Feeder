@@ -3,1252 +3,2827 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AAMush — East African Trade-Logistics Mesh</title>
+<title>AAMush Mesh-01 | East African Autonomous Commodity Logistics Mesh</title>
+
 <style>
-  :root {
-    --text-primary: #0f0f0f;
-    --text-secondary: #3f3f3f;
-    --text-tertiary: #6b6b6b;
-    --text-quaternary: #9e9e9e;
-    --surface: #ffffff;
-    --surface-muted: #f7f7f7;
-    --surface-raised: #fafafa;
-    --surface-strong: #eeeeee;
-    --border: #e5e5e5;
-    --positive: #16a34a;
-    --danger: #dc2626;
-    --warning: #ca8a04;
-    --accent: #2563eb;
-    --chart-1: #2563eb;
-    --chart-2: #dc2626;
-    --chart-3: #16a34a;
-    --chart-4: #7c3aed;
-    --chart-5: #737373;
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text-primary: #f5f5f5;
-      --text-secondary: #d4d4d4;
-      --text-tertiary: #a3a3a3;
-      --text-quaternary: #737373;
-      --surface: #0a0a0a;
-      --surface-muted: #141414;
-      --surface-raised: #1a1a1a;
-      --surface-strong: #262626;
-      --border: #2a2a2a;
-      --positive: #22c55e;
-      --danger: #ef4444;
-      --warning: #eab308;
-      --accent: #3b82f6;
-      --chart-1: #3b82f6;
-      --chart-2: #ef4444;
-      --chart-3: #22c55e;
-      --chart-4: #a78bfa;
-      --chart-5: #a3a3a3;
-    }
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: var(--font-sans);
-    color: var(--text-primary);
-    background: var(--surface);
-    line-height: 1.6;
-  }
-  a { text-decoration: none; color: inherit; }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-  /* NAV */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  @media (prefers-color-scheme: dark) {
-    .nav { background: rgba(10,10,10,0.85); }
-  }
-  .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-  }
-  .nav-brand svg {
-    width: 26px;
-    height: 26px;
-  }
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-tertiary);
-  }
-  .nav-links a:hover { color: var(--text-primary); }
-  .nav-cta {
-    padding: 8px 18px;
-    border-radius: 8px;
-    background: var(--text-primary);
-    color: var(--surface);
-    font-size: 13px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .nav-cta:hover { opacity: 0.85; }
+html{
+  scroll-behavior:smooth;
+}
 
-  /* HERO */
-  .hero {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 24px 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: center;
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: rgba(37, 99, 235, 0.08);
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-  .hero-badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--positive);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  .hero h1 {
-    font-size: 42px;
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.8px;
-    margin-bottom: 16px;
-  }
-  .hero p {
-    font-size: 17px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-  .hero-btns {
-    display: flex;
-    gap: 12px;
-  }
-  .btn-primary {
-    padding: 12px 24px;
-    border-radius: 10px;
-    background: var(--text-primary);
-    color: var(--surface);
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-secondary {
-    padding: 12px 24px;
-    border-radius: 10px;
-    background: var(--surface-raised);
-    color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { border-color: var(--text-primary); }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f6f8;
+  color:#111;
+  line-height:1.55;
+}
 
-  /* FEEDER SECTION */
-  .feeder-section {
-    background: var(--surface-muted);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 60px 24px;
-  }
-  .feeder-section-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .feeder-section-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .feeder-section-header h2 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .feeder-section-header p {
-    font-size: 15px;
-    color: var(--text-tertiary);
-  }
-  .feeder-wrap {
-    max-width: 520px;
-    margin: 0 auto;
-  }
+button{
+  font-family:inherit;
+  cursor:pointer;
+}
 
-  /* FEEDER DEVICE STYLES (embedded) */
-  .feeder-root {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--surface-muted);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  }
-  .feeder-chrome {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: var(--surface-raised);
-    border-bottom: 1px solid var(--border);
-  }
-  .feeder-chrome-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .feeder-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--positive);
-    animation: feeder-pulse 2s ease-in-out infinite;
-  }
-  @keyframes feeder-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-  }
-  .feeder-chrome-title {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-  }
-  .feeder-chrome-meta {
-    font-size: 11px;
-    color: var(--text-quaternary);
-    font-variant-numeric: tabular-nums;
-    font-family: var(--font-mono);
-  }
-  .feeder-inventors {
-    font-size: 9px;
-    color: var(--text-quaternary);
-    text-align: center;
-    padding: 5px 14px 2px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    background: var(--surface-raised);
-    border-bottom: 1px solid var(--border);
-  }
-  .feeder-body {
-    padding: 14px;
-  }
-  .feeder-metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .feeder-metric {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    background: var(--surface);
-  }
-  .feeder-metric-label {
-    font-size: 10px;
-    color: var(--text-quaternary);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .feeder-metric-value {
-    font-size: 24px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-  }
-  .feeder-metric-delta {
-    font-size: 11px;
-    margin-top: 4px;
-    font-variant-numeric: tabular-nums;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  .feeder-positive { color: var(--positive); }
-  .feeder-mini-map {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface-raised);
-    gap: 4px;
-    margin-bottom: 14px;
-  }
-  .feeder-node {
-    text-align: center;
-    flex: 1;
-  }
-  .feeder-node-ring {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 4px;
-    font-size: 11px;
-    font-weight: 700;
-    transition: all 0.4s ease-out;
-    color: var(--text-tertiary);
-    background: var(--surface);
-  }
-  .feeder-node-ring.live {
-    border-color: var(--positive);
-    background: rgba(22, 163, 74, 0.08);
-    color: var(--positive);
-    box-shadow: 0 0 8px rgba(22, 163, 74, 0.2);
-  }
-  .feeder-node-ring.warn {
-    border-color: var(--warning);
-    background: rgba(202, 138, 4, 0.08);
-    color: var(--warning);
-    animation: feeder-blink 1s ease-in-out infinite;
-  }
-  @keyframes feeder-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-  .feeder-node-label {
-    font-size: 9px;
-    color: var(--text-quaternary);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .feeder-connector {
-    flex: 1;
-    height: 2px;
-    background: var(--border);
-    position: relative;
-    border-radius: 1px;
-    overflow: hidden;
-  }
-  .feeder-connector::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: var(--flow, 0%);
-    background: var(--positive);
-    border-radius: 1px;
-    transition: width 0.8s ease-out;
-  }
-  .feeder-ticker {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface);
-    overflow: hidden;
-  }
-  .feeder-ticker-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-raised);
-  }
-  .feeder-ticker-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-secondary);
-  }
-  .feeder-ticker-count {
-    font-size: 10px;
-    color: var(--text-quaternary);
-    font-variant-numeric: tabular-nums;
-    font-family: var(--font-mono);
-  }
-  .feeder-stream {
-    max-height: 240px;
-    overflow-y: auto;
-    padding: 0;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    line-height: 1.55;
-  }
-  .feeder-stream::-webkit-scrollbar { width: 4px; }
-  .feeder-stream::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .feeder-line {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 6px 12px;
-    border-bottom: 1px solid var(--border);
-    animation: feeder-slide 0.35s ease-out;
-  }
-  .feeder-line:last-child { border-bottom: none; }
-  @keyframes feeder-slide {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .feeder-line-time {
-    color: var(--text-quaternary);
-    font-variant-numeric: tabular-nums;
-    flex-shrink: 0;
-    min-width: 54px;
-  }
-  .feeder-line-tag {
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-  }
-  .feeder-tag-aura {
-    background: rgba(37, 99, 235, 0.1);
-    color: var(--chart-1);
-  }
-  .feeder-tag-regen {
-    background: rgba(22, 163, 74, 0.1);
-    color: var(--chart-3);
-  }
-  .feeder-tag-settle {
-    background: rgba(124, 58, 237, 0.1);
-    color: var(--chart-4);
-  }
-  .feeder-tag-alert {
-    background: rgba(202, 138, 4, 0.1);
-    color: var(--warning);
-  }
-  .feeder-tag-ghost {
-    background: rgba(37, 99, 235, 0.08);
-    color: var(--accent);
-  }
-  .feeder-line-msg {
-    color: var(--text-secondary);
-    word-break: break-word;
-  }
-  .feeder-line-msg strong {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-  .feeder-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px;
-    border-top: 1px solid var(--border);
-    background: var(--surface-raised);
-    font-size: 10px;
-    color: var(--text-quaternary);
-  }
-  .feeder-signal {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  .feeder-bar {
-    width: 3px;
-    background: var(--text-quaternary);
-    border-radius: 1px;
-    opacity: 0.4;
-  }
-  .feeder-bar.on {
-    background: var(--positive);
-    opacity: 1;
+/* HEADER */
+header{
+  height:94px;
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid #ddd;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brand-mark{
+  font-size:42px;
+  font-weight:900;
+  line-height:1;
+}
+
+.brand-name{
+  font-size:30px;
+  font-weight:800;
+}
+
+.header-button{
+  background:#050505;
+  color:white;
+  border:0;
+  border-radius:15px;
+  padding:16px 28px;
+  font-size:17px;
+  font-weight:700;
+}
+
+.menu{
+  font-size:34px;
+  font-weight:700;
+}
+
+/* HERO */
+.hero{
+  min-height:650px;
+  padding:65px 5%;
+  display:flex;
+  align-items:center;
+  background:
+    radial-gradient(circle at 85% 30%,rgba(0,125,255,.25),transparent 32%),
+    linear-gradient(135deg,#fff,#eef4fa);
+}
+
+.hero-left{
+  width:55%;
+  z-index:2;
+}
+
+.live{
+  display:inline-block;
+  background:#e8f1ff;
+  color:#145bc5;
+  border-radius:30px;
+  padding:10px 18px;
+  font-weight:700;
+  margin-bottom:25px;
+}
+
+.live span{
+  color:#12a83b;
+}
+
+.hero h1{
+  font-size:clamp(42px,5vw,72px);
+  line-height:1.02;
+  margin-bottom:25px;
+}
+
+.hero p{
+  font-size:20px;
+  color:#5d6670;
+  max-width:760px;
+  margin-bottom:30px;
+}
+
+.actions{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.primary,
+.secondary{
+  padding:18px 27px;
+  border-radius:15px;
+  font-size:17px;
+  font-weight:700;
+}
+
+.primary{
+  background:#050505;
+  color:white;
+  border:0;
+}
+
+.secondary{
+  background:white;
+  color:#111;
+  border:1px solid #ccd2d8;
+}
+
+/* HERO VISUAL */
+.hero-right{
+  width:45%;
+  min-height:520px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.globe{
+  width:min(520px,90%);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,#35d6ff,#0872d9 38%,#031b55 70%,#010617);
+  box-shadow:
+    0 0 30px #008cff,
+    0 0 80px rgba(0,140,255,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+.globe::after{
+  content:"AAMush";
+  position:absolute;
+  bottom:20%;
+  color:white;
+  font-size:42px;
+  font-weight:900;
+  text-shadow:0 0 12px #00d9ff;
+}
+
+/* FEATURES */
+.features{
+  padding:65px 5%;
+  background:white;
+}
+
+.feature-grid{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid #dfe3e7;
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+}
+
+.card-icon{
+  font-size:38px;
+  margin-bottom:15px;
+}
+
+.card h3{
+  margin-bottom:10px;
+}
+
+/* FLOATING BRIEFCASE */
+.briefcase-float{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  border:5px solid #ffd000;
+  background:
+    radial-gradient(circle,#111 0%,#050505 60%,#003f8f 100%);
+  box-shadow:
+    0 0 12px #00bfff,
+    0 0 35px #008cff,
+    0 0 65px rgba(0,140,255,.8);
+  z-index:3000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  animation:bounce 2.4s infinite;
+}
+
+.briefcase-icon{
+  font-size:48px;
+}
+
+.briefcase-label{
+  font-size:11px;
+  font-weight:900;
+  color:#ffd000;
+  text-align:center;
+  padding:0 8px;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-13px)}
+}
+
+/* BRIEFCASE MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  z-index:5000;
+  overflow:auto;
+  padding:25px;
+}
+
+.modal.show{
+  display:block;
+}
+
+.briefcase{
+  max-width:1100px;
+  margin:20px auto;
+  background:white;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+
+.briefcase-head{
+  background:linear-gradient(135deg,#020611,#073e8f);
+  color:white;
+  padding:30px;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.briefcase-head h2{
+  font-size:30px;
+  margin-bottom:5px;
+}
+
+.briefcase-head p{
+  color:#d8e8ff;
+}
+
+.close{
+  position:absolute;
+  right:20px;
+  top:18px;
+  width:45px;
+  height:45px;
+  border:0;
+  border-radius:50%;
+  background:white;
+  color:#111;
+  font-size:28px;
+  font-weight:bold;
+}
+
+.briefcase-content{
+  padding:25px;
+}
+
+.briefcase-menu{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.brief-item{
+  border:1px solid #d9dfe5;
+  background:#f8fafc;
+  border-radius:16px;
+  padding:18px;
+  text-align:left;
+  font-weight:700;
+  font-size:16px;
+}
+
+.brief-item:hover{
+  background:#edf5ff;
+}
+
+/* MANUAL */
+.manual{
+  display:none;
+  border-top:1px solid #ddd;
+  padding-top:25px;
+}
+
+.manual.show{
+  display:block;
+}
+
+.manual h1{
+  font-size:30px;
+  line-height:1.15;
+  margin-bottom:12px;
+}
+
+.manual h2{
+  margin-top:35px;
+  margin-bottom:12px;
+  color:#063d91;
+  border-bottom:2px solid #e5e9ee;
+  padding-bottom:7px;
+}
+
+.manual h3{
+  margin-top:22px;
+  margin-bottom:8px;
+}
+
+.manual p{
+  margin-bottom:12px;
+}
+
+.manual ul,
+.manual ol{
+  margin:10px 0 15px 28px;
+}
+
+.manual li{
+  margin-bottom:5px;
+}
+
+.manual-box{
+  background:#f3f7fb;
+  border-left:5px solid #087cff;
+  padding:18px;
+  margin:18px 0;
+  border-radius:8px;
+}
+
+.manual-title{
+  text-align:center;
+  padding:20px;
+  background:#f7f8fa;
+  border-radius:15px;
+  margin-bottom:25px;
+}
+
+.status{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:7px;
+  background:#e9f2ff;
+  color:#0757bd;
+  font-weight:bold;
+}
+
+.back-button{
+  background:#050505;
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:12px 18px;
+  margin-bottom:20px;
+  font-weight:bold;
+}
+
+/* FOOTER */
+footer{
+  padding:40px 5%;
+  background:#050505;
+  color:white;
+  text-align:center;
+}
+
+/* MOBILE */
+@media(max-width:850px){
+  header{
+    height:75px;
+    padding:0 18px;
   }
 
-  /* FEATURES */
-  .features {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 24px;
-  }
-  .features-header {
-    text-align: center;
-    margin-bottom: 48px;
-  }
-  .features-header h2 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .features-header p {
-    font-size: 15px;
-    color: var(--text-tertiary);
-  }
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .feature-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    background: var(--surface);
-    transition: border-color 0.2s;
-  }
-  .feature-card:hover {
-    border-color: var(--text-primary);
-  }
-  .feature-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 14px;
-  }
-  .feature-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-  .feature-card h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .feature-card p {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    line-height: 1.5;
+  .brand-name{
+    font-size:23px;
   }
 
-  /* STATS BAR */
-  .stats-bar {
-    background: var(--surface-muted);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 40px 24px;
-  }
-  .stats-bar-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    text-align: center;
-  }
-  .stat-item h3 {
-    font-size: 32px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    margin-bottom: 4px;
-  }
-  .stat-item p {
-    font-size: 13px;
-    color: var(--text-tertiary);
+  .brand-mark{
+    font-size:32px;
   }
 
-  /* DEVELOPER SIGNATURE */
-  .dev-signature {
-    background: var(--surface-muted);
-    border-top: 1px solid var(--border);
-    padding: 32px 24px;
-  }
-  .dev-signature-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .dev-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--surface-raised);
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
-    flex-shrink: 0;
-  }
-  .dev-info {
-    text-align: left;
-  }
-  .dev-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-  .dev-title {
-    font-size: 12px;
-    color: var(--text-tertiary);
-    margin-top: 2px;
-  }
-  .dev-email {
-    font-size: 12px;
-    color: var(--accent);
-    margin-top: 4px;
-    font-family: var(--font-mono);
-  }
-  .dev-email a:hover { text-decoration: underline; }
-  .dev-seal {
-    font-size: 11px;
-    color: var(--text-quaternary);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-weight: 600;
+  .header-button{
+    display:none;
   }
 
-  /* FOOTER */
-  .footer {
-    border-top: 1px solid var(--border);
-    padding: 40px 24px;
-    text-align: center;
-  }
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .footer-brand svg {
-    width: 24px;
-    height: 24px;
-  }
-  .footer-inventors {
-    font-size: 12px;
-    color: var(--text-quaternary);
-    margin-bottom: 20px;
-  }
-  .footer-copy {
-    font-size: 12px;
-    color: var(--text-quaternary);
+  .hero{
+    display:block;
+    padding:40px 22px;
   }
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; padding: 48px 24px 40px; }
-    .hero h1 { font-size: 32px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .stats-bar-inner { grid-template-columns: 1fr 1fr; }
-    .nav-links { display: none; }
-    .dev-signature-inner { flex-direction: column; text-align: center; }
-    .dev-info { text-align: center; }
+  .hero-left,
+  .hero-right{
+    width:100%;
   }
-  @media (max-width: 480px) {
-    .feeder-metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .feeder-metric-value { font-size: 20px; }
-    .feeder-body { padding: 10px; }
-    .stats-bar-inner { grid-template-columns: 1fr; }
+
+  .hero h1{
+    font-size:42px;
   }
+
+  .hero-right{
+    min-height:380px;
+    margin-top:30px;
+  }
+
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+
+  .briefcase-float{
+    width:105px;
+    height:105px;
+    right:12px;
+    bottom:12px;
+  }
+
+  .briefcase-icon{
+    font-size:32px;
+  }
+
+  .briefcase-label{
+    font-size:8px;
+  }
+
+  .modal{
+    padding:8px;
+  }
+
+  .briefcase-menu{
+    grid-template-columns:1fr;
+  }
+
+  .briefcase-head{
+    padding:22px 18px;
+  }
+
+  .briefcase-head h2{
+    font-size:23px;
+    padding-right:45px;
+  }
+
+  .briefcase-content{
+    padding:16px;
+  }
+
+  .manual h1{
+    font-size:25px;
+  }
+}
 </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-      AAMush
-    </div>
-    <div class="nav-links">
-      <a href="#mesh">Mesh</a>
-      <a href="#device">Device</a>
-      <a href="#features">Features</a>
-      <a href="#about">About</a>
-    </div>
-    <button class="nav-cta" onclick="document.getElementById('device').scrollIntoView({behavior:'smooth'})">Open feeder</button>
+<header>
+  <div class="brand">
+    <div class="brand-mark">◇</div>
+    <div class="brand-name">AAMush</div>
   </div>
-</nav>
 
-<!-- HERO -->
+  <button class="header-button" onclick="openBriefcase()">
+    Open feeder
+  </button>
+
+  <div class="menu">☰</div>
+</header>
+
 <section class="hero">
-  <div>
-    <div class="hero-badge"><span class="dot"></span> Mesh network live</div>
-    <h1>East Africa's first autonomous commodity-logistics mesh</h1>
-    <p>AAMush connects verified supply, predictive demand, and tokenized truck capacity into a single trustless transaction layer. Built for traders, truckers, and warehouses across the Northern and Central Corridors.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('device').scrollIntoView({behavior:'smooth'})">Launch feeder device</button>
-      <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore platform</button>
+
+  <div class="hero-left">
+
+    <div class="live">
+      <span>●</span> Mesh network live
     </div>
+
+    <h1>
+      East Africa's first autonomous commodity-logistics mesh
+    </h1>
+
+    <p>
+      AAMush connects verified supply, predictive demand, and tokenized
+      truck capacity into a single trustless transaction layer.
+      Built for traders, truckers, and warehouses across the Northern
+      and Central Corridors.
+    </p>
+
+    <div class="actions">
+      <button class="primary" onclick="openBriefcase()">
+        ▶ Launch feeder device
+      </button>
+
+      <button class="secondary" onclick="openBriefcase()">
+        Explore platform →
+      </button>
+    </div>
+
   </div>
-  <div style="display:flex;align-items:center;justify-content:center;">
-    <svg width="280" height="280" viewBox="0 0 200 200" fill="none" style="opacity:0.9;">
-      <circle cx="100" cy="100" r="80" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
-      <circle cx="100" cy="100" r="55" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
-      <circle cx="100" cy="100" r="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
-      <circle cx="100" cy="20" r="8" fill="var(--chart-1)" opacity="0.9"/>
-      <circle cx="170" cy="70" r="8" fill="var(--chart-3)" opacity="0.9"/>
-      <circle cx="170" cy="140" r="8" fill="var(--chart-4)" opacity="0.9"/>
-      <circle cx="100" cy="180" r="8" fill="var(--chart-2)" opacity="0.9"/>
-      <circle cx="30" cy="140" r="8" fill="var(--chart-1)" opacity="0.9"/>
-      <circle cx="30" cy="70" r="8" fill="var(--chart-3)" opacity="0.9"/>
-      <circle cx="100" cy="100" r="12" fill="var(--text-primary)"/>
-      <line x1="100" y1="20" x2="170" y2="70" stroke="var(--border)" stroke-width="1"/>
-      <line x1="170" y1="70" x2="170" y2="140" stroke="var(--border)" stroke-width="1"/>
-      <line x1="170" y1="140" x2="100" y2="180" stroke="var(--border)" stroke-width="1"/>
-      <line x1="100" y1="180" x2="30" y2="140" stroke="var(--border)" stroke-width="1"/>
-      <line x1="30" y1="140" x2="30" y2="70" stroke="var(--border)" stroke-width="1"/>
-      <line x1="30" y1="70" x2="100" y2="20" stroke="var(--border)" stroke-width="1"/>
-      <line x1="100" y1="20" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="170" y1="70" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="170" y1="140" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="100" y1="180" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="30" y1="140" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="30" y1="70" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-    </svg>
+
+  <div class="hero-right">
+    <div class="globe"></div>
   </div>
+
 </section>
 
-<!-- STATS BAR -->
-<section class="stats-bar" id="mesh">
-  <div class="stats-bar-inner">
-    <div class="stat-item">
-      <h3>7</h3>
-      <p>Active convoys</p>
+<section class="features">
+
+  <div class="feature-grid">
+
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <h3>Real-time Telemetry</h3>
+      <p>
+        Live tracking and IoT data from connected assets on the mesh.
+      </p>
     </div>
-    <div class="stat-item">
-      <h3>142</h3>
-      <p>Trucks staked</p>
+
+    <div class="card">
+      <div class="card-icon">🚚</div>
+      <h3>Smart Corridors</h3>
+      <p>
+        AI-optimized routes and capacity matching across East African
+        trade corridors.
+      </p>
     </div>
-    <div class="stat-item">
-      <h3>$2.4M</h3>
-      <p>Value flowing today</p>
+
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Secure Trade</h3>
+      <p>
+        Trusted logistics events and verification supporting authorized
+        commercial workflows.
+      </p>
     </div>
-    <div class="stat-item">
-      <h3>99.7%</h3>
-      <p>Settlement success</p>
-    </div>
+
   </div>
+
 </section>
 
-<!-- FEEDER DEVICE SECTION -->
-<section class="feeder-section" id="device">
-  <div class="feeder-section-inner">
-    <div class="feeder-section-header">
-      <h2>AAMush Mesh-01 Feeder Device</h2>
-      <p>Live telemetry from the East African trade-logistics mesh. Invented by Aloyce & Mushi.</p>
-    </div>
-    <div class="feeder-wrap">
-      <div class="feeder-root">
-        <div class="feeder-chrome">
-          <div class="feeder-chrome-left">
-            <div class="feeder-dot"></div>
-            <span class="feeder-chrome-title">AAMush Mesh-01</span>
-          </div>
-          <span class="feeder-chrome-meta" id="feeder-clock">--:--:--</span>
-        </div>
-        <div class="feeder-inventors">Invented by Aloyce & Mushi</div>
-
-        <div class="feeder-body">
-          <div class="feeder-metrics">
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                Convoys live
-              </div>
-              <div class="feeder-metric-value" id="f-convoys">7</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                +2 forming
-              </div>
-            </div>
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                Trucks staked
-              </div>
-              <div class="feeder-metric-value" id="f-trucks">142</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                +4 this hour
-              </div>
-            </div>
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M2 12h20"/></svg>
-                Value flowing
-              </div>
-              <div class="feeder-metric-value" id="f-value">$2.41M</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                +$18.2K/min
-              </div>
-            </div>
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Settlement rate
-              </div>
-              <div class="feeder-metric-value" id="f-rate">99.7%</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                0 fails today
-              </div>
-            </div>
-          </div>
-
-          <div class="feeder-mini-map">
-            <div class="feeder-node"><div class="feeder-node-ring live" id="node-mba">M</div><div class="feeder-node-label">MBA</div></div>
-            <div class="feeder-connector" style="--flow:100%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring live" id="node-nbo">N</div><div class="feeder-node-label">NBO</div></div>
-            <div class="feeder-connector" style="--flow:85%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring live" id="node-kla">K</div><div class="feeder-node-label">KLA</div></div>
-            <div class="feeder-connector" style="--flow:60%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring" id="node-kig">R</div><div class="feeder-node-label">KIG</div></div>
-            <div class="feeder-connector" style="--flow:30%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring" id="node-gom">G</div><div class="feeder-node-label">GOM</div></div>
-          </div>
-
-          <div class="feeder-ticker">
-            <div class="feeder-ticker-header">
-              <span class="feeder-ticker-title">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                Live mesh feed
-              </span>
-              <span class="feeder-ticker-count" id="f-count">847 events/hr</span>
-            </div>
-            <div class="feeder-stream" id="feeder-stream"></div>
-          </div>
-        </div>
-
-        <div class="feeder-footer">
-          <div class="feeder-signal">
-            <span>Signal</span>
-            <div class="feeder-bar on" style="height:6px;"></div>
-            <div class="feeder-bar on" style="height:10px;"></div>
-            <div class="feeder-bar on" style="height:14px;"></div>
-            <div class="feeder-bar on" style="height:10px;"></div>
-          </div>
-          <span>Node uptime: 99.98% | Last sync: <span id="f-sync">0s</span> ago</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="features-header">
-    <h2>Platform modules</h2>
-    <p>Four proprietary systems that power the AAMush mesh.</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(37,99,235,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-1)" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-      </div>
-      <h3>AURA Routing</h3>
-      <p>AI-orchestrated convoy contracts that circularize multi-leg routes and guarantee backhaul for independent truck owners.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(22,163,74,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-3)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <h3>REGEN Registry</h3>
-      <p>Three rare digital registries — dynamic warehouse receipt NFTs, zero-knowledge DIDs, and AI-predicted customs pre-clearance.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(124,58,237,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-4)" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>
-      </div>
-      <h3>SURETY Settlement</h3>
-      <p>Unified command layer with predictive commodity pricing, climate risk overlays, and omni-ledger settlement across fiat, stablecoin, and CBDC.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(37,99,235,0.06);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      </div>
-      <h3>NEXUS Ghost Inventory</h3>
-      <p>Bid on future harvests 30–90 days pre-harvest, backed by satellite-verified field data and weather derivatives.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(220,38,38,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-2)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      </div>
-      <h3>Idle-Capacity Staking</h3>
-      <p>Truck owners lock telematics into the mesh and receive instant liquidity advances — 60% of predicted earnings before the engine starts.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(115,115,115,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-5)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-      </div>
-      <h3>Cross-Border Trust</h3>
-      <p>Trustless transactions across Kenya, Uganda, Tanzania, Rwanda, Burundi, DRC, and Ethiopia — no cash-on-delivery fraud exposure.</p>
-    </div>
-  </div>
-</section>
-
-<!-- DEVELOPER SIGNATURE -->
-<section class="dev-signature">
-  <div class="dev-signature-inner">
-    <div class="dev-avatar">JM</div>
-    <div class="dev-info">
-      <div class="dev-name">Dr. James K. Mushi, PhD</div>
-      <div class="dev-title">Lead Developer & Systems Architect</div>
-      <div class="dev-email"><a href="mailto:jkuriyamush@aol.com">jkuriyamush@aol.com</a></div>
-    </div>
-    <div class="dev-seal">Verified Build</div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer" id="about">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-      AAMush
-    </div>
-    <div class="footer-inventors">Invented by Aloyce & Mushi</div>
-    <div class="footer-copy">AAMush Mesh-01 Feeder Device &mdash; East African Trade-Logistics Infrastructure. All systems operational.</div>
-  </div>
+<footer>
+  <strong>AAMush Mesh-01</strong><br>
+  Connect • Track • Deliver • East Africa
 </footer>
 
+
+<!-- FLOATING DEVELOPER BRIEFCASE -->
+
+<button class="briefcase-float" onclick="openBriefcase()" aria-label="Open AAMush Developer Briefcase">
+
+  <div class="briefcase-icon">💼</div>
+
+  <div class="briefcase-label">
+    OPEN DEVELOPER<br>
+    BRIEFCASE
+  </div>
+
+</button>
+
+
+<!-- DEVELOPER BRIEFCASE -->
+
+<div id="briefcaseModal" class="modal">
+
+  <div class="briefcase">
+
+    <div class="briefcase-head">
+
+      <button class="close" onclick="closeBriefcase()">×</button>
+
+      <h2>🧳 AAMush Developer Briefcase</h2>
+
+      <p>
+        AAMush Mesh-01 — Developer, Technical & Project Reference
+      </p>
+
+    </div>
+
+    <div class="briefcase-content">
+
+      <div id="briefcaseMenu" class="briefcase-menu">
+
+        <button class="brief-item" onclick="showManual()">
+          📘 Master Operating & Development Manual
+        </button>
+
+        <button class="brief-item" onclick="showInfo('developer')">
+          👨‍💻 Developer Profile
+        </button>
+
+        <button class="brief-item" onclick="showInfo('project')">
+          🏗️ Project Documentation
+        </button>
+
+        <button class="brief-item" onclick="showInfo('ip')">
+          🔐 Intellectual Property Notice
+        </button>
+
+        <button class="brief-item" onclick="showInfo('history')">
+          🕒 Development History
+        </button>
+
+        <button class="brief-item" onclick="showInfo('architecture')">
+          ⚙️ System Architecture
+        </button>
+
+      </div>
+
+
+      <!-- INFORMATION PANEL -->
+
+      <div id="infoPanel" class="manual"></div>
+
+
+      <!-- MASTER MANUAL -->
+
+      <div id="manual" class="manual">
+
+        <button class="back-button" onclick="backToBriefcase()">
+          ← Back to Briefcase
+        </button>
+
+        <div class="manual-title">
+
+          <h1>
+            AAMUSH MESH-01 FEEDER DEVICE
+          </h1>
+
+          <h3>
+            MASTER OPERATING, DEVELOPMENT & SYSTEM FUNCTIONAL MANUAL
+          </h3>
+
+          <p>
+            EAST AFRICAN AUTONOMOUS COMMODITY–LOGISTICS MESH INFRASTRUCTURE
+          </p>
+
+          <p>
+            <strong>Invented by: Aloyce & Mushi</strong>
+          </p>
+
+          <p>
+            AAMush: AnnaAbigailMush Aloyce
+          </p>
+
+          <p>
+            “Always love you everyday”
+          </p>
+
+          <p>
+            <strong>
+              Lead Developer & Systems Architect:
+              Dr. James K. Mushi, PhD
+            </strong>
+          </p>
+
+          <p>
+            Document Version: 1.0<br>
+            Date: 14 August 2026
+          </p>
+
+        </div>
+
+
+        <h2>DOCUMENT CONTROL</h2>
+
+        <p>
+          <strong>System Name:</strong>
+          AAMush Mesh-01 Feeder Device
+        </p>
+
+        <p>
+          <strong>Platform:</strong>
+          AAMush East African Autonomous Commodity–Logistics Mesh
+        </p>
+
+        <p>
+          <strong>Invention:</strong>
+          AAMush Mesh-01 Feeder Device — East African Trade-Logistics Infrastructure
+        </p>
+
+        <p>
+          <strong>Inventors:</strong>
+          Aloyce & Mushi
+        </p>
+
+        <p>
+          <strong>Lead Developer & Systems Architect:</strong>
+          Dr. James K. Mushi, PhD
+        </p>
+
+        <p>
+          <strong>System Purpose:</strong>
+          Physical-edge telemetry, trusted logistics event acquisition,
+          processing, storage, synchronization and communication between
+          physical logistics assets and the AAMush autonomous trade-logistics mesh.
+        </p>
+
+        <p>
+          <strong>Primary Geographic Scope:</strong>
+          East Africa and the Northern and Central Trade Corridors,
+          with capability for regional and international expansion.
+        </p>
+
+
+        <h2>INTELLECTUAL PROPERTY AND DEVELOPMENT NOTICE</h2>
+
+        <p>
+          This manual constitutes the master technical and functional
+          description of the AAMush Mesh-01 system as defined by its developer.
+        </p>
+
+        <p>
+          It is intended to document the identity of the system, purpose and
+          intended operation of the invention, relationship between the physical
+          Mesh-01 device and AAMush digital platform, required device functions,
+          intended architecture, development pathway, operational procedures,
+          testing requirements, platform relationships and intended commercial
+          applications.
+        </p>
+
+        <div class="manual-box">
+          <strong>IMPORTANT:</strong>
+          This document is a technical and authorship record. It does not by
+          itself constitute a legal opinion regarding patentability, copyright
+          registration, trademark rights or other intellectual-property rights.
+        </div>
+
+
+        <h2>PART I — INVENTION AND SYSTEM DEFINITION</h2>
+
+        <h2>1. INTRODUCTION</h2>
+
+        <p>
+          AAMush Mesh-01 is designed as a physical-edge feeder device forming
+          the connection between the physical world of transportation,
+          commodities, warehouses, vehicles and logistics operations and the
+          digital AAMush autonomous trade-logistics mesh.
+        </p>
+
+        <p>
+          The device is intended to continuously or periodically acquire
+          authorized operational information from a vehicle or other logistics
+          asset, convert that information into structured digital events,
+          authenticate and protect those events, retain them when communications
+          are unavailable, and transmit them to the AAMush network when
+          connectivity is available.
+        </p>
+
+        <div class="manual-box">
+          <strong>PHYSICAL WORLD</strong><br>
+          ↓<br>
+          <strong>MESH-01 FEEDER DEVICE</strong><br>
+          ↓<br>
+          TELEMETRY & EVENT PROCESSING<br>
+          ↓<br>
+          SECURE COMMUNICATION<br>
+          ↓<br>
+          AAMUSH MESH<br>
+          ↓<br>
+          AURA / REGEN / SURETY / NEXUS<br>
+          ↓<br>
+          LOGISTICS / COMMODITY / FINANCIAL DECISION<br>
+          ↓<br>
+          PHYSICAL-WORLD ACTION
+        </div>
+
+        <p>
+          The purpose is therefore not merely to track vehicles.
+          Mesh-01 is intended to create a trusted digital connection between
+          what is happening physically and what is happening commercially
+          and digitally.
+        </p>
+
+
+        <h2>2. THE AAMUSH CONCEPT</h2>
+
+        <p>
+          AAMush is the developer-defined identity of the technology platform.
+        </p>
+
+        <p>
+          The abbreviation/name AAMush stands for:
+          <strong>AnnaAbigailMush Aloyce</strong>
+          and carries the meaning:
+          <strong>“Always love you everyday.”</strong>
+        </p>
+
+        <p>
+          Within the technology architecture, AAMush represents the integrated
+          ecosystem through which physical logistics, digital identity,
+          predictive intelligence, transport capacity, commodity information
+          and commercial settlement can operate as a connected system.
+        </p>
+
+        <p>
+          Mesh-01 is the physical feeder component of this larger ecosystem.
+        </p>
+
+
+        <h2>3. WHAT IS AAMUSH MESH-01?</h2>
+
+        <p>AAMush Mesh-01 is an intelligent logistics-edge device designed to:</p>
+
+        <ul>
+          <li>identify a registered logistics asset;</li>
+          <li>acquire telemetry;</li>
+          <li>determine operational state;</li>
+          <li>record location and movement information;</li>
+          <li>generate structured logistics events;</li>
+          <li>timestamp events;</li>
+          <li>preserve event sequence;</li>
+          <li>store events locally;</li>
+          <li>communicate with the AAMush mesh;</li>
+          <li>synchronize events;</li>
+          <li>report device health;</li>
+          <li>support route and convoy monitoring;</li>
+          <li>provide physical-world evidence to authorized AAMush services;</li>
+          <li>support logistics contracts;</li>
+          <li>support cargo and warehouse workflows;</li>
+          <li>support cross-border logistics;</li>
+          <li>support commercial and settlement workflows;</li>
+          <li>support future AI and predictive logistics functions.</li>
+        </ul>
+
+
+        <h2>4. THE CORE INVENTIVE PRINCIPLE</h2>
+
+        <p>
+          Physical logistics activity can be converted into authenticated
+          digital events that can participate in an integrated logistics,
+          identity, inventory, routing and settlement environment.
+        </p>
+
+        <div class="manual-box">
+          Vehicle ↔ Telemetry ↔ Mesh Event ↔ Digital Identity ↔
+          Route/Convoy ↔ Cargo ↔ Warehouse ↔ Contract ↔ Settlement
+        </div>
+
+
+        <h2>5. PROBLEM THE INVENTION ADDRESSES</h2>
+
+        <p>
+          Traditional logistics systems frequently operate as disconnected
+          components. A truck may have a GPS tracker. A warehouse may have
+          an inventory system. A trader may have a purchase contract. A bank
+          may have a financing system. Customs may have another system.
+          Drivers may use mobile phones and commodity producers may have
+          agricultural data.
+        </p>
+
+        <p>
+          These systems can produce fragmented information.
+          AAMush is designed to connect these elements through a common
+          logistics-event architecture.
+        </p>
+
+        <p>
+          Mesh-01 provides the physical-world entry point.
+        </p>
+
+
+        <h2>6. MESH-01 AS THE PHYSICAL TRUST GATEWAY</h2>
+
+        <h3>6.1 Physical observation</h3>
+        <p>Acquire approved information from the vehicle and connected sensors.</p>
+
+        <h3>6.2 Edge processing</h3>
+        <p>Convert raw information into useful operational states and events.</p>
+
+        <h3>6.3 Identity</h3>
+        <p>Associate information with the correct Mesh-01 and authorized vehicle.</p>
+
+        <h3>6.4 Integrity</h3>
+        <p>Protect the integrity and sequence of events.</p>
+
+        <h3>6.5 Persistence</h3>
+        <p>Retain information when communications are temporarily unavailable.</p>
+
+        <h3>6.6 Communication</h3>
+        <p>Transmit information to the AAMush network.</p>
+
+        <h3>6.7 Synchronization</h3>
+        <p>Confirm receipt and maintain synchronization status.</p>
+
+        <h3>6.8 Evidence generation</h3>
+        <p>Provide machine-generated evidence of logistics activity.</p>
+
+
+        <h2>7. SYSTEM OPERATING STATES</h2>
+
+        <ol>
+          <li><strong>STATE 00 — Manufactured:</strong> Device hardware exists but has not yet been commissioned.</li>
+          <li><strong>STATE 01 — Provisioned:</strong> Device identity and security credentials have been assigned.</li>
+          <li><strong>STATE 02 — Registered:</strong> Device has been registered within AAMush.</li>
+          <li><strong>STATE 03 — Installed:</strong> Device has been physically installed on a vehicle or logistics asset.</li>
+          <li><strong>STATE 04 — Commissioned:</strong> Device has passed installation and communications tests.</li>
+          <li><strong>STATE 05 — Operational:</strong> Device is actively acquiring and transmitting approved telemetry.</li>
+          <li><strong>STATE 06 — Offline:</strong> Device remains operational locally but cannot currently communicate with the network.</li>
+          <li><strong>STATE 07 — Synchronizing:</strong> Previously stored events are being transmitted.</li>
+          <li><strong>STATE 08 — Maintenance:</strong> Device has been placed into an authorized maintenance state.</li>
+          <li><strong>STATE 09 — Suspended:</strong> Device is prevented from participating in normal operations.</li>
+          <li><strong>STATE 10 — Reassigned:</strong> Device identity remains intact while its vehicle/operator association changes.</li>
+          <li><strong>STATE 11 — Decommissioned:</strong> Device has been permanently removed from service.</li>
+        </ol>
+
+
+        <h2>8. MESH-01 END-TO-END OPERATION</h2>
+
+        <ol>
+          <li><strong>IDENTIFY</strong> — Mesh-01 identifies itself to the AAMush platform.</li>
+          <li><strong>CONNECT</strong> — Establish an authorized communications path.</li>
+          <li><strong>ACQUIRE</strong> — Receive telemetry from GNSS, vehicle systems and/or approved sensors.</li>
+          <li><strong>PROCESS</strong> — Interpret incoming information.</li>
+          <li><strong>GENERATE EVENT</strong> — Create a structured logistics event.</li>
+          <li><strong>AUTHENTICATE</strong> — Associate the event with device identity and integrity information.</li>
+          <li><strong>STORE</strong> — Store the event locally until successful synchronization.</li>
+          <li><strong>TRANSMIT</strong> — Send the event to the AAMush network.</li>
+          <li><strong>ACKNOWLEDGE</strong> — Network confirms receipt.</li>
+          <li><strong>SYNCHRONIZE</strong> — Mesh-01 records synchronization.</li>
+          <li><strong>INTERPRET</strong> — Platform services use the event according to authorized workflows.</li>
+          <li><strong>ACT</strong> — A route, convoy, warehouse, inventory, financing, settlement or other workflow may respond.</li>
+        </ol>
+
+
+        <h2>9. TELEMETRY FUNCTIONS</h2>
+
+        <ul>
+          <li>GPS/GNSS position</li>
+          <li>latitude</li>
+          <li>longitude</li>
+          <li>speed</li>
+          <li>direction</li>
+          <li>movement status</li>
+          <li>stopping status</li>
+          <li>idling</li>
+          <li>ignition status</li>
+          <li>engine status where supported</li>
+          <li>mileage</li>
+          <li>trip duration</li>
+          <li>route progress</li>
+          <li>estimated arrival</li>
+          <li>geofence events</li>
+          <li>communications status</li>
+          <li>device health</li>
+          <li>vehicle identity</li>
+          <li>driver/operator association</li>
+          <li>cargo association</li>
+          <li>convoy association</li>
+        </ul>
+
+
+        <h2>10. EVENT GENERATION</h2>
+
+        <h3>Vehicle Events</h3>
+        <p>
+          Vehicle started, stopped, moving, idling, parked and power interruption.
+        </p>
+
+        <h3>Location Events</h3>
+        <p>
+          Route entered, route exited, geofence entered, geofence exited,
+          checkpoint reached and border area reached.
+        </p>
+
+        <h3>Logistics Events</h3>
+        <p>
+          Cargo loaded, cargo unloaded, warehouse arrival, warehouse departure
+          and delivery completed.
+        </p>
+
+        <h3>Convoy Events</h3>
+        <p>
+          Convoy formed, convoy departed, convoy member joined,
+          convoy member separated and convoy arrived.
+        </p>
+
+        <h3>System Events</h3>
+        <p>
+          Device online, device offline, network restored,
+          synchronization completed, firmware update and maintenance required.
+        </p>
+
+
+        <h2>11. EVENT DATA STRUCTURE</h2>
+
+        <ul>
+          <li>Device ID</li>
+          <li>Event ID</li>
+          <li>Timestamp</li>
+          <li>Location</li>
+          <li>Event Type</li>
+          <li>Vehicle ID</li>
+          <li>Operator/Driver ID</li>
+          <li>Route ID</li>
+          <li>Convoy ID</li>
+          <li>Cargo/Commodity ID</li>
+          <li>Event Payload</li>
+          <li>Sequence Number</li>
+          <li>Integrity/Authentication Information</li>
+          <li>Transmission Status</li>
+          <li>Synchronization Status</li>
+        </ul>
+
+
+        <h2>12. OFFLINE OPERATION</h2>
+
+        <p>
+          Temporary loss of connectivity should not automatically result
+          in loss of logistics data.
+        </p>
+
+        <div class="manual-box">
+          <strong>STORE-AND-FORWARD OPERATION</strong><br><br>
+          Connectivity fails → telemetry continues → events are generated →
+          events are stored locally → reconnection is attempted →
+          stored events are transmitted → platform acknowledges receipt →
+          events are marked synchronized.
+        </div>
+
+
+        <h2>13. SECURITY PRINCIPLE</h2>
+
+        <ul>
+          <li>unique device identity</li>
+          <li>authenticated provisioning</li>
+          <li>protected credentials</li>
+          <li>secure communications</li>
+          <li>message integrity</li>
+          <li>event sequencing</li>
+          <li>replay/duplicate protection</li>
+          <li>controlled firmware</li>
+          <li>secure configuration</li>
+          <li>access control</li>
+          <li>device suspension</li>
+          <li>device revocation</li>
+          <li>audit records</li>
+        </ul>
+
+
+        <h2>14. AAMUSH PLATFORM RELATIONSHIP</h2>
+
+        <p>
+          Mesh-01 forms the edge layer. Above Mesh-01 are the principal
+          AAMush platform systems:
+        </p>
+
+        <div class="manual-box">
+          <strong>AURA ROUTING</strong><br>
+          Logistics routing, convoy orchestration and transport-capacity coordination.
+          <br><br>
+
+          <strong>REGEN REGISTRY</strong><br>
+          Digital identity, registry and logistics-asset/warehouse-record functions.
+          <br><br>
+
+          <strong>SURETY SETTLEMENT</strong><br>
+          Commercial settlement and associated risk/commodity information.
+          <br><br>
+
+          <strong>NEXUS GHOST INVENTORY</strong><br>
+          Predictive/future commodity inventory and supply intelligence.
+        </div>
+
+
+        <h2>15. AURA ROUTING</h2>
+
+        <p>
+          AURA is intended to coordinate logistics activity.
+        </p>
+
+        <div class="manual-box">
+          Demand<br>
+          ↓<br>
+          Cargo requirement<br>
+          ↓<br>
+          Available transport capacity<br>
+          ↓<br>
+          Route analysis<br>
+          ↓<br>
+          Truck selection<br>
+          ↓<br>
+          Convoy formation<br>
+          ↓<br>
+          Contract<br>
+          ↓<br>
+          Dispatch<br>
+          ↓<br>
+          Mesh-01 monitoring<br>
+          ↓<br>
+          Delivery<br>
+          ↓<br>
+          Backhaul<br>
+          ↓<br>
+          Completion
+        </div>
+
+
+        <h2>16. REGEN REGISTRY</h2>
+
+        <p>
+          REGEN is intended to establish trusted digital representations
+          of logistics assets and events.
+        </p>
+
+        <p>
+          Mesh-01 can provide physical logistics evidence associated with
+          vehicle, journey, warehouse arrival, cargo movement, custody transfer,
+          route and delivery.
+        </p>
+
+
+        <h2>17. SURETY SETTLEMENT</h2>
+
+        <p>
+          SURETY is intended to provide the commercial command and settlement layer.
+        </p>
+
+        <div class="manual-box">
+          Contract<br>
+          ↓<br>
+          Vehicle dispatched<br>
+          ↓<br>
+          Mesh-01 confirms movement<br>
+          ↓<br>
+          Warehouse arrival<br>
+          ↓<br>
+          Delivery evidence<br>
+          ↓<br>
+          Contract condition satisfied<br>
+          ↓<br>
+          Authorized settlement process
+        </div>
+
+        <p>
+          Mesh-01 is not itself the bank or payment institution. Its role is
+          to provide trusted physical-world events that can form part of the
+          conditions used by authorized settlement systems.
+        </p>
+
+
+        <h2>18. NEXUS GHOST INVENTORY</h2>
+
+        <p>
+          NEXUS is intended to connect predicted future commodity availability
+          with logistics and commercial demand.
+        </p>
+
+        <div class="manual-box">
+          Future production → Prediction → Demand → Commodity commitment →
+          Transport requirement → AURA logistics → Mesh-01 physical execution →
+          Warehouse → Settlement
+        </div>
+
+
+        <h2>19. IDLE-CAPACITY STAKING</h2>
+
+        <p>
+          AAMush defines an intended mechanism in which truck owners can make
+          available their vehicle telematics and transport capacity to the network.
+        </p>
+
+        <p>
+          The current public description refers to instant liquidity advances
+          based on predicted earnings, specifically 60% of predicted earnings
+          before the engine starts.
+        </p>
+
+        <div class="manual-box">
+          <strong>Development / legal qualification:</strong>
+          This is a business-rule requirement to be engineered, tested and
+          legally/financially validated, not a guarantee of financing.
+        </div>
+
+
+        <h2>20. CROSS-BORDER TRUST</h2>
+
+        <p>
+          AAMush is designed for cross-border trade-logistics.
+        </p>
+
+        <p>
+          Mesh-01 should maintain continuity of device identity, vehicle identity,
+          route, convoy, cargo, event chronology, warehouse events, custody events,
+          synchronization and authorized commercial records.
+        </p>
+
+
+        <h2>21. MESH-01'S ROLE IN THE COMPLETE AAMUSH ECOSYSTEM</h2>
+
+        <div class="manual-box">
+          PRODUCER<br>
+          ↓<br>
+          COMMODITY / INVENTORY<br>
+          ↓<br>
+          NEXUS<br>
+          ↓<br>
+          TRADE DEMAND<br>
+          ↓<br>
+          AURA<br>
+          ↓<br>
+          TRUCK / CONVOY<br>
+          ↓<br>
+          MESH-01<br>
+          ↓<br>
+          AAMUSH MESH<br>
+          ↓<br>
+          REGEN<br>
+          ↓<br>
+          WAREHOUSE / BORDER / DELIVERY<br>
+          ↓<br>
+          SURETY<br>
+          ↓<br>
+          SETTLEMENT<br>
+          ↓<br>
+          BACKHAUL / NEXT CONTRACT
+        </div>
+
+
+        <h2>PART II — HARDWARE, FIRMWARE, SOFTWARE AND COMMUNICATIONS ARCHITECTURE</h2>
+
+        <h2>22. MESH-01 TECHNICAL ARCHITECTURE</h2>
+
+        <p>
+          Mesh-01 shall be designed as a modular edge-computing and
+          communications device.
+        </p>
+
+        <ul>
+          <li>Physical enclosure</li>
+          <li>Power-management subsystem</li>
+          <li>Processing subsystem</li>
+          <li>Memory/storage subsystem</li>
+          <li>GNSS/location subsystem</li>
+          <li>Communications subsystem</li>
+          <li>Vehicle-interface subsystem</li>
+          <li>Optional sensor subsystem</li>
+          <li>Security/identity subsystem</li>
+          <li>Diagnostic subsystem</li>
+          <li>Firmware</li>
+          <li>Device-management interface</li>
+        </ul>
+
+
+        <h2>23. PROCESSING SUBSYSTEM</h2>
+
+        <p>
+          The processing subsystem is responsible for collecting telemetry,
+          interpreting sensor inputs, generating events, applying local rules,
+          maintaining device state, maintaining event sequence, managing
+          communications, local storage, security, health monitoring and
+          authorized firmware functions.
+        </p>
+
+
+        <h2>24. MEMORY AND LOCAL STORAGE</h2>
+
+        <p>
+          Mesh-01 shall contain sufficient non-volatile storage for operational
+          event retention during network failure, temporary power interruption,
+          server unavailability, communications instability and delayed
+          synchronization.
+        </p>
+
+
+        <h2>25. GNSS SUBSYSTEM</h2>
+
+        <p>
+          The GNSS subsystem provides location information for route tracking,
+          geofencing, ETA calculation, convoy monitoring, border events,
+          warehouse arrival, departure and route deviation.
+        </p>
+
+
+        <h2>26. COMMUNICATIONS SUBSYSTEM</h2>
+
+        <p>
+          The final architecture may support cellular, Wi-Fi, Bluetooth,
+          local mesh radio, satellite or other approved connectivity.
+        </p>
+
+        <div class="manual-box">
+          Connection → Authentication → Transmission →
+          Acknowledgement → Synchronization
+        </div>
+
+
+        <h2>27. MULTI-NETWORK OPERATION</h2>
+
+        <p>
+          Where multiple communication paths are available, Mesh-01 may select
+          according to signal strength, availability, cost, latency, reliability,
+          roaming, network policy and security.
+        </p>
+
+
+        <h2>28. VEHICLE INTERFACE</h2>
+
+        <p>
+          Possible sources include ignition, engine status, CAN bus,
+          OBD interface, auxiliary digital inputs and approved external sensors.
+        </p>
+
+        <p>
+          Mesh-01 shall preferably operate as a read-oriented telemetry system
+          unless an explicitly authorized control function has independently
+          been engineered and approved.
+        </p>
+
+
+        <h2>29. SENSOR EXPANSION</h2>
+
+        <p>
+          Possible sensors include temperature, humidity, door/open-close,
+          cargo compartment status, fuel-related sensors, vibration, impact,
+          weight, environmental sensors, refrigeration status and tamper sensors.
+        </p>
+
+
+        <h2>30. POWER SYSTEM</h2>
+
+        <p>
+          The power subsystem shall address input voltage, transient protection,
+          reverse polarity, over-voltage, under-voltage, thermal conditions,
+          power interruption and controlled restart.
+        </p>
+
+
+        <h2>31. DEVICE ENCLOSURE</h2>
+
+        <p>
+          The enclosure shall be engineered for vibration, dust, moisture,
+          temperature variation, mechanical shock and unauthorized access
+          according to the intended deployment environment.
+        </p>
+
+
+        <h2>32. STATUS INDICATION</h2>
+
+        <p>
+          Status indicators may include power, GNSS, network, synchronization,
+          fault and device state.
+        </p>
+
+
+        <h2>33. TAMPER DETECTION</h2>
+
+        <p>
+          Possible tamper events include enclosure opening, unauthorized
+          disconnection, power interruption, unusual device movement,
+          communications manipulation and unauthorized configuration change.
+        </p>
+
+
+        <h2>34. FIRMWARE ARCHITECTURE</h2>
+
+        <ul>
+          <li>Boot process</li>
+          <li>Hardware initialization</li>
+          <li>Device identity</li>
+          <li>Configuration management</li>
+          <li>Sensor management</li>
+          <li>GNSS management</li>
+          <li>Communications management</li>
+          <li>Event engine</li>
+          <li>Local storage</li>
+          <li>Synchronization engine</li>
+          <li>Security functions</li>
+          <li>Diagnostics</li>
+          <li>Update management</li>
+          <li>Fault recovery</li>
+        </ul>
+
+
+        <h2>35. SECURE BOOT AND FIRMWARE INTEGRITY</h2>
+
+        <p>
+          Production hardware should implement appropriate mechanisms for
+          preventing unauthorized firmware from being executed, potentially
+          including signed firmware, verified boot, secure key storage,
+          version control and rollback protection.
+        </p>
+
+
+        <h2>36. OVER-THE-AIR UPDATES</h2>
+
+        <p>
+          The controlled update process shall authenticate the update,
+          verify integrity, confirm compatibility, preserve critical configuration,
+          install safely, restart, verify operation and report the new version.
+        </p>
+
+
+        <h2>37. DEVICE CONFIGURATION</h2>
+
+        <p>
+          Configuration may include device identity, vehicle identity,
+          communication parameters, telemetry frequency, event thresholds,
+          geofence configuration, reporting policy, storage policy,
+          security configuration and firmware version.
+        </p>
+
+
+        <h2>38. EDGE INTELLIGENCE</h2>
+
+        <p>
+          Mesh-01 shall be capable of selected local processing such as
+          movement detection, idle detection, geofence detection,
+          route-deviation detection, event classification, communication
+          prioritization, anomaly detection, data compression and filtering.
+        </p>
+
+
+        <h2>39. DATA PRIORITIZATION</h2>
+
+        <p>
+          Events may be classified as:
+        </p>
+
+        <ul>
+          <li><strong>CRITICAL:</strong> emergency, tampering, security event, critical system failure.</li>
+          <li><strong>HIGH:</strong> route deviation, border event, delivery event.</li>
+          <li><strong>NORMAL:</strong> routine position and movement information.</li>
+          <li><strong>DIAGNOSTIC:</strong> temperature, device health and storage status.</li>
+        </ul>
+
+
+        <h2>40. DEVICE HEALTH MONITORING</h2>
+
+        <p>
+          Health information may include power status, processor status,
+          storage status, GNSS status, network status, temperature,
+          firmware version, synchronization status, error count and restart count.
+        </p>
+
+
+        <h2>PART III — DATA, EVENT AND TRUST ARCHITECTURE</h2>
+
+        <h2>41. DIGITAL EVENT MODEL</h2>
+
+        <div class="manual-box">
+          Physical Event → Digital Event → Authenticated Event →
+          Mesh Event → Platform Action
+        </div>
+
+        <p>
+          Example: a truck enters a warehouse. Mesh-01 detects location,
+          generates a geofence event, timestamps it, attaches device identity,
+          transmits it, receives acknowledgement and allows the warehouse
+          workflow to receive the event.
+        </p>
+
+
+        <h2>42. EVENT IDENTIFICATION</h2>
+
+        <p>
+          Every event should have a unique identifier so the system can determine
+          whether an event was received, duplicated, missed or synchronized.
+        </p>
+
+
+        <h2>43. EVENT SEQUENCING</h2>
+
+        <div class="manual-box">
+          EVENT 1001 — Vehicle started<br>
+          EVENT 1002 — Vehicle departed<br>
+          EVENT 1003 — Checkpoint reached<br>
+          EVENT 1004 — Warehouse entered<br>
+          EVENT 1005 — Vehicle stopped<br>
+          EVENT 1006 — Cargo unloaded<br>
+          EVENT 1007 — Delivery completed
+        </div>
+
+
+        <h2>44. TIME MANAGEMENT</h2>
+
+        <p>
+          The system should distinguish event occurrence time, device processing
+          time, transmission time, server receipt time and synchronization time.
+        </p>
+
+
+        <h2>45. LOCATION CONFIDENCE</h2>
+
+        <p>
+          The system should distinguish valid position, stale position,
+          unavailable position, degraded positioning and suspected anomaly.
+        </p>
+
+
+        <h2>46. DATA NORMALIZATION</h2>
+
+        <p>
+          Mesh-01 shall normalize data into a common AAMush event model.
+        </p>
+
+
+        <h2>47. DEVICE-TO-CLOUD/MESH DATA FLOW</h2>
+
+        <div class="manual-box">
+          Sensor<br>
+          ↓<br>
+          Mesh-01 processor<br>
+          ↓<br>
+          Event engine<br>
+          ↓<br>
+          Local event store<br>
+          ↓<br>
+          Security layer<br>
+          ↓<br>
+          Communications layer<br>
+          ↓<br>
+          AAMush ingestion<br>
+          ↓<br>
+          Event validation<br>
+          ↓<br>
+          Event routing<br>
+          ↓<br>
+          AURA / REGEN / SURETY / NEXUS
+        </div>
+
+
+        <h2>48. COMMAND FLOW</h2>
+
+        <p>
+          The reverse direction may also be supported. Commands must be
+          authenticated and authorized. Mesh-01 shall not execute arbitrary
+          or unauthenticated commands.
+        </p>
+
+
+        <h2>49. AUDIT TRAIL</h2>
+
+        <p>
+          Important operations shall be auditable, including device registration,
+          reassignment, configuration changes, firmware updates, event receipt,
+          administrative actions, suspension and reactivation.
+        </p>
+
+
+        <h2>50. DATA RETENTION</h2>
+
+        <p>
+          Retention requirements shall be determined according to operational,
+          contractual, regulatory, privacy, security and storage requirements.
+        </p>
+
+
+        <h2>PART IV — AAMUSH LOGISTICS OPERATING SYSTEM</h2>
+
+        <h2>51. AURA ROUTING — FULL OPERATING MODEL</h2>
+
+        <p>
+          AURA begins with cargo demand including origin, destination, cargo,
+          required date, required capacity, route and commercial conditions,
+          then searches available transport capacity.
+        </p>
+
+
+        <h2>52. TRUCK CAPACITY REGISTRATION</h2>
+
+        <p>
+          A truck owner registers vehicle, capacity, operating area,
+          availability, owner identity, Mesh-01 device and relevant telematics.
+        </p>
+
+
+        <h2>53. ROUTE MATCHING</h2>
+
+        <p>
+          AURA evaluates origin, destination, timing, truck capacity, route,
+          convoy compatibility, expected return cargo, risk and availability.
+        </p>
+
+
+        <h2>54. CONVOY CREATION</h2>
+
+        <p>
+          AURA may combine compatible vehicles into a convoy containing
+          convoy ID, participating vehicles, route, departure point,
+          destination, expected schedule, cargo associations,
+          contract information and operational status.
+        </p>
+
+
+        <h2>55. CONVOY MONITORING</h2>
+
+        <p>
+          Mesh-01 can provide current position, movement state, route progress,
+          separation, delays and arrival.
+        </p>
+
+
+        <h2>56. BACKHAUL</h2>
+
+        <div class="manual-box">
+          Outbound cargo → Delivery → Backhaul search →
+          Return cargo → Return journey → Next assignment
+        </div>
+
+
+        <h2>57. REGEN — DIGITAL LOGISTICS REGISTRY</h2>
+
+        <p>
+          Objects that may be represented include vehicle, driver, owner,
+          warehouse, cargo, receipt, route, contract and logistics event.
+        </p>
+
+
+        <h2>58. WAREHOUSE RECEIPTS</h2>
+
+        <p>
+          Vehicle arrival, location verification, vehicle recognition,
+          cargo inspection, acceptance, receipt generation and inventory
+          update may form a warehouse workflow.
+        </p>
+
+
+        <h2>59. DIGITAL IDENTITY</h2>
+
+        <p>
+          AAMush may use decentralized or other appropriate digital identity
+          mechanisms to establish trusted identities for vehicles,
+          organizations, operators, logistics assets and transactions.
+        </p>
+
+
+        <h2>60. SURETY — COMMERCIAL EXECUTION</h2>
+
+        <div class="manual-box">
+          Contract created → Performance monitored → Physical event received →
+          Condition verified → Settlement authorized →
+          Financial system executes → Transaction recorded
+        </div>
+
+
+        <h2>61. NEXUS — PREDICTIVE INVENTORY</h2>
+
+        <p>
+          NEXUS may consider production forecasts, field information,
+          satellite information, weather, market demand, warehouse capacity
+          and transport capacity.
+        </p>
+
+
+        <h2>62. NEXUS TO MESH-01 WORKFLOW</h2>
+
+        <div class="manual-box">
+          Commodity predicted → Demand identified → Transport requirement →
+          Truck capacity → Mesh-01 association → Contract →
+          Physical movement → Mesh-01 telemetry
+        </div>
+
+
+        <h2>PART V — FINANCIAL AND COMMERCIAL FUNCTIONS</h2>
+
+        <h2>63. IDLE CAPACITY ECONOMY</h2>
+
+        <p>
+          AAMush is designed to treat unused truck capacity as an economic resource.
+        </p>
+
+
+        <h2>64. PREDICTED EARNINGS</h2>
+
+        <p>
+          Expected earnings may be calculated from route, cargo, distance,
+          historical performance, market rates, truck capacity, expected demand
+          and risk. Prediction must be distinguished from guaranteed earnings.
+        </p>
+
+
+        <h2>65. LIQUIDITY ADVANCE</h2>
+
+        <p>
+          Where legally and commercially implemented, an approved financial
+          mechanism may advance part of expected earnings. The current
+          description refers to 60% of predicted earnings before the engine starts.
+        </p>
+
+
+        <h2>66. SETTLEMENT RECONCILIATION</h2>
+
+        <p>
+          Actual journey is assessed, delivery confirmed, contract conditions
+          evaluated, actual earnings calculated, advances reconciled and
+          remaining amounts settled.
+        </p>
+
+
+        <h2>67. COMMODITY-LOGISTICS LINK</h2>
+
+        <div class="manual-box">
+          Commodity ↔ Transport ↔ Warehouse ↔ Market ↔ Settlement
+        </div>
+
+
+        <h2>PART VI — CROSS-BORDER OPERATION</h2>
+
+        <h2>68. CROSS-BORDER JOURNEY</h2>
+
+        <p>
+          A typical journey may be Tanzania → Kenya → Uganda → Rwanda or
+          another approved corridor. Mesh-01 maintains continuous device
+          identity throughout the journey.
+        </p>
+
+
+        <h2>69. BORDER EVENT</h2>
+
+        <p>
+          Border-related events may contain vehicle, timestamp, location,
+          route, direction, convoy and cargo association.
+        </p>
+
+
+        <h2>70. CUSTOMS INTEGRATION</h2>
+
+        <p>
+          Mesh-01 may provide arrival, departure, route, vehicle identity
+          and physical movement evidence. Authorized customs systems remain
+          responsible for official customs decisions.
+        </p>
+
+
+        <h2>71. MULTI-JURISDICTION DATA</h2>
+
+        <p>
+          Each deployment must account for privacy law, telecommunications
+          requirements, financial regulation, customs law, transport regulations
+          and data localization where applicable.
+        </p>
+
+
+        <h2>PART VII — OPERATOR MANUAL</h2>
+
+        <h2>72. DAILY OPERATION</h2>
+
+        <ol>
+          <li>Vehicle is started.</li>
+          <li>Mesh-01 activates or continues operation.</li>
+          <li>Device establishes communications.</li>
+          <li>Telemetry begins.</li>
+          <li>Events are generated automatically.</li>
+          <li>Events are transmitted.</li>
+          <li>Dashboard reflects operational state.</li>
+        </ol>
+
+
+        <h2>73. DRIVER RESPONSIBILITIES</h2>
+
+        <ul>
+          <li>operate the vehicle normally;</li>
+          <li>avoid damaging the device;</li>
+          <li>report abnormal device behavior;</li>
+          <li>follow authorized route instructions;</li>
+          <li>complete required manual logistics confirmations;</li>
+          <li>report incidents;</li>
+          <li>not attempt unauthorized device modification.</li>
+        </ul>
+
+
+        <h2>74. OPERATOR RESPONSIBILITIES</h2>
+
+        <ul>
+          <li>maintain accurate vehicle records;</li>
+          <li>maintain driver records;</li>
+          <li>ensure device assignment is correct;</li>
+          <li>monitor exceptions;</li>
+          <li>respond to alerts;</li>
+          <li>maintain operational documentation;</li>
+          <li>coordinate maintenance.</li>
+        </ul>
+
+
+        <h2>75. ADMINISTRATOR RESPONSIBILITIES</h2>
+
+        <p>
+          Administrators control device registration, identity, permissions,
+          configuration, suspension, reassignment, firmware, security and audit access.
+        </p>
+
+
+        <h2>76. DEVICE STATUS</h2>
+
+        <ul>
+          <li><strong>ONLINE</strong> — Device communicating normally.</li>
+          <li><strong>OFFLINE</strong> — Device cannot currently communicate.</li>
+          <li><strong>SYNCING</strong> — Device is transmitting stored events.</li>
+          <li><strong>FAULT</strong> — Device detected an abnormal condition.</li>
+          <li><strong>MAINTENANCE</strong> — Device is undergoing authorized maintenance.</li>
+          <li><strong>SUSPENDED</strong> — Device is prevented from normal participation.</li>
+        </ul>
+
+
+        <h2>77. DASHBOARD</h2>
+
+        <p>
+          The AAMush dashboard may display active convoys, trucks staked,
+          value flowing, settlement rate, mesh events, signal, node uptime,
+          last synchronization, route nodes, vehicle status and exceptions.
+        </p>
+
+
+        <h2>PART VIII — FAILURE MANAGEMENT</h2>
+
+        <h2>78. NETWORK FAILURE</h2>
+
+        <div class="manual-box">
+          <strong>DO NOT ERASE LOCAL EVENTS.</strong><br><br>
+          Detect failure → continue local operation → store events →
+          retry communication → synchronize when restored.
+        </div>
+
+
+        <h2>79. GNSS FAILURE</h2>
+
+        <p>
+          Record GNSS failure, preserve last valid position, continue other
+          telemetry where possible, attempt recovery and record recovery.
+        </p>
+
+
+        <h2>80. POWER FAILURE</h2>
+
+        <p>
+          Record the power event where possible, preserve unsynchronized data,
+          shut down safely if supported, restart when power returns,
+          verify configuration and synchronize outstanding events.
+        </p>
+
+
+        <h2>81. DEVICE FAILURE</h2>
+
+        <p>
+          Identify device, record failure, preserve available data,
+          repair or replace device, recommission, verify identity,
+          restore vehicle association and test synchronization.
+        </p>
+
+
+        <h2>82. DEVICE THEFT</h2>
+
+        <p>
+          Suspend device identity, revoke credentials if necessary,
+          record incident, prevent unauthorized platform access,
+          replace device and maintain historical continuity.
+        </p>
+
+
+        <h2>PART IX — DEVELOPMENT PROGRAM</h2>
+
+        <h2>83. DEVELOPMENT PHASE 1 — CONCEPT</h2>
+
+        <p>
+          Define invention, problem, users, use cases, architecture,
+          intellectual property and business model.
+        </p>
+
+
+        <h2>84. DEVELOPMENT PHASE 2 — ENGINEERING ARCHITECTURE</h2>
+
+        <p>
+          Produce hardware architecture, firmware architecture, software
+          architecture, communications architecture, data model,
+          security architecture and API architecture.
+        </p>
+
+
+        <h2>85. DEVELOPMENT PHASE 3 — HARDWARE PROTOTYPE</h2>
+
+        <p>
+          Build the first physical prototype and test power, processor,
+          GNSS, communications, storage, sensors, enclosure and vehicle interface.
+        </p>
+
+
+        <h2>86. DEVELOPMENT PHASE 4 — SOFTWARE PROTOTYPE</h2>
+
+        <p>
+          Implement device registration, telemetry, event engine,
+          local storage, synchronization, dashboard and device monitoring.
+        </p>
+
+
+        <h2>87. DEVELOPMENT PHASE 5 — PLATFORM INTEGRATION</h2>
+
+        <p>
+          Integrate Mesh-01 with AURA, REGEN, SURETY and NEXUS using controlled
+          test data initially.
+        </p>
+
+
+        <h2>88. DEVELOPMENT PHASE 6 — FIELD PROTOTYPE</h2>
+
+        <p>
+          Install Mesh-01 on selected vehicles and test actual roads,
+          poor-network areas, border environments, weather, vibration,
+          power interruption and route deviation.
+        </p>
+
+
+        <h2>89. DEVELOPMENT PHASE 7 — PILOT</h2>
+
+        <p>
+          The pilot may involve truck owners, drivers, logistics operators,
+          warehouses, commodity traders and technology partners.
+        </p>
+
+
+        <h2>90. DEVELOPMENT PHASE 8 — SECURITY TESTING</h2>
+
+        <p>
+          Test authentication, unauthorized access, firmware integrity,
+          communications security, device cloning, event manipulation,
+          replay attacks, credential compromise and administrative access.
+        </p>
+
+
+        <h2>91. DEVELOPMENT PHASE 9 — SCALABILITY TESTING</h2>
+
+        <div class="manual-box">
+          1 device → 10 devices → 100 devices → 1,000 devices →
+          regional deployment
+        </div>
+
+
+        <h2>92. DEVELOPMENT PHASE 10 — INVESTOR DEMONSTRATION</h2>
+
+        <p>
+          The investor demonstration should show:
+        </p>
+
+        <div class="manual-box">
+          Vehicle → Mesh-01 → Telemetry → AAMush Mesh →
+          AURA → Route/Convoy → Warehouse → REGEN →
+          SURETY → Settlement
+        </div>
+
+        <p>
+          The demonstration must clearly distinguish LIVE DATA from
+          SIMULATED DATA and PLANNED FUNCTIONALITY.
+        </p>
+
+
+        <h2>PART X — FINAL LAUNCH</h2>
+
+        <h2>93. PRODUCTION RELEASE</h2>
+
+        <p>
+          Before launch, hardware revision, firmware version, identity system,
+          communications configuration, event schema, APIs, security controls,
+          dashboard, installation, maintenance and support procedures shall be frozen.
+        </p>
+
+
+        <h2>94. COMMERCIAL LAUNCH REQUIREMENTS</h2>
+
+        <ul>
+          <li>Hardware validation</li>
+          <li>Software validation</li>
+          <li>Firmware validation</li>
+          <li>Security validation</li>
+          <li>Field testing</li>
+          <li>Network testing</li>
+          <li>Data-integrity testing</li>
+          <li>Recovery testing</li>
+          <li>User training</li>
+          <li>Support readiness</li>
+          <li>Compliance review</li>
+          <li>Documentation approval</li>
+        </ul>
+
+
+        <h2>95. LAUNCH ACCEPTANCE</h2>
+
+        <div class="manual-box">
+          Physical Event → Device Capture → Event Generation →
+          Secure Transmission → Platform Receipt → Synchronization →
+          Correct Interpretation → Correct Business Workflow → Audit Record
+        </div>
+
+
+        <h2>PART XI — TESTING AND VALIDATION</h2>
+
+        <h2>96. FUNCTIONAL TESTING</h2>
+
+        <ul>
+          <li>Test M01: Device identity</li>
+          <li>Test M02: GNSS</li>
+          <li>Test M03: Event creation</li>
+          <li>Test M04: Local storage</li>
+          <li>Test M05: Communications</li>
+          <li>Test M06: Synchronization</li>
+          <li>Test M07: Vehicle association</li>
+          <li>Test M08: Security</li>
+        </ul>
+
+
+        <h2>97. CONNECTIVITY TEST</h2>
+
+        <p>
+          Network connectivity shall be deliberately interrupted.
+          Expected result: telemetry continues, events continue,
+          events are stored, outage is detected, communication is restored,
+          events synchronize and legitimate events are not silently lost.
+        </p>
+
+
+        <h2>98. POWER INTERRUPTION TEST</h2>
+
+        <p>
+          Vehicle power shall be interrupted under controlled laboratory
+          conditions. The device should respond safely, protect critical data,
+          restart, preserve identity and resume operation.
+        </p>
+
+
+        <h2>99. ROUTE DEVIATION TEST</h2>
+
+        <p>
+          A vehicle deliberately deviates from the approved route.
+          The system should detect the change, generate an event and
+          deliver the event to the platform.
+        </p>
+
+
+        <h2>100. GEOFENCE TEST</h2>
+
+        <p>
+          Entry generates GEOFENCE ENTER EVENT. Exit generates
+          GEOFENCE EXIT EVENT.
+        </p>
+
+
+        <h2>101. CONVOY TEST</h2>
+
+        <p>
+          Multiple vehicles are assigned to one convoy. Mesh-01 provides
+          vehicle-level telemetry, AURA receives the information and
+          separation events are recorded.
+        </p>
+
+
+        <h2>102. WAREHOUSE TEST</h2>
+
+        <p>
+          Mesh-01 records arrival, the warehouse system records receipt,
+          and the platform correlates the events.
+        </p>
+
+
+        <h2>103. SETTLEMENT TEST</h2>
+
+        <p>
+          A controlled test contract is created, required logistics events
+          occur, the settlement condition is reached and the authorized
+          settlement system executes the test transaction.
+        </p>
+
+
+        <h2>PART XII — REQUIREMENTS TRACEABILITY</h2>
+
+        <h2>104. MASTER FUNCTIONAL REQUIREMENTS</h2>
+
+        <ol>
+          <li><strong>M01 — Unique Device Identity</strong></li>
+          <li><strong>M02 — Telemetry Acquisition</strong></li>
+          <li><strong>M03 — Event Generation</strong></li>
+          <li><strong>M04 — Local Persistence</strong></li>
+          <li><strong>M05 — Secure Transmission</strong></li>
+          <li><strong>M06 — Synchronization</strong></li>
+          <li><strong>M07 — Vehicle Association</strong></li>
+          <li><strong>M08 — Device Management</strong></li>
+          <li><strong>M09 — Firmware Management</strong></li>
+          <li><strong>M10 — AURA Integration</strong></li>
+          <li><strong>M11 — REGEN Integration</strong></li>
+          <li><strong>M12 — SURETY Integration</strong></li>
+          <li><strong>M13 — NEXUS Integration</strong></li>
+          <li><strong>M14 — Offline Recovery</strong></li>
+          <li><strong>M15 — Auditability</strong></li>
+          <li><strong>M16 — Cross-Border Operation</strong></li>
+        </ol>
+
+
+        <h2>PART XIII — INVESTOR PRESENTATION</h2>
+
+        <h2>105. THE INVESTOR'S BASIC QUESTION</h2>
+
+        <div class="manual-box">
+          “AAMush Mesh-01 is the physical-edge device that connects
+          real-world logistics assets to the AAMush autonomous trade-logistics
+          mesh. It captures and authenticates physical logistics events,
+          preserves them during connectivity interruptions, synchronizes them
+          with the platform and makes them usable by AURA, REGEN, SURETY and NEXUS.”
+        </div>
+
+
+        <h2>106. WHY IT IS NOT JUST A GPS TRACKER</h2>
+
+        <p>
+          A conventional tracker primarily answers:
+          <strong>“Where is the vehicle?”</strong>
+        </p>
+
+        <p>Mesh-01 is intended to answer:</p>
+
+        <ul>
+          <li>Which vehicle is this?</li>
+          <li>Who is authorized to operate it?</li>
+          <li>Where is it?</li>
+          <li>What is it doing?</li>
+          <li>Which route is it performing?</li>
+          <li>Which convoy is it part of?</li>
+          <li>Which cargo or contract is associated with it?</li>
+          <li>Has it reached the warehouse?</li>
+          <li>Has the physical logistics condition occurred?</li>
+          <li>Has the event been synchronized?</li>
+          <li>Can the event be used by an authorized commercial workflow?</li>
+        </ul>
+
+
+        <h2>107. INVESTOR VALUE PROPOSITION</h2>
+
+        <div class="manual-box">
+          Transport Capacity + Commodity Supply + Logistics Demand +
+          Digital Identity + Physical Telemetry + Warehouse Records +
+          Predictive Intelligence + Commercial Settlement
+        </div>
+
+
+        <h2>108. THE AAMUSH NETWORK EFFECT</h2>
+
+        <p>
+          As more vehicles join, more telemetry becomes available,
+          more transport capacity becomes visible, more routes can be optimized,
+          more backhaul opportunities can be identified and more commercial
+          workflows can potentially be automated.
+        </p>
+
+
+        <h2>PART XIV — SECURITY AND GOVERNANCE</h2>
+
+        <h2>109. ADMINISTRATIVE ACCESS</h2>
+
+        <ul>
+          <li>System Administrator</li>
+          <li>Device Administrator</li>
+          <li>Fleet Operator</li>
+          <li>Logistics Operator</li>
+          <li>Warehouse Operator</li>
+          <li>Financial Operator</li>
+          <li>Security Administrator</li>
+          <li>Auditor</li>
+          <li>Developer</li>
+        </ul>
+
+
+        <h2>110. CREDENTIAL MANAGEMENT</h2>
+
+        <p>
+          Credentials must never be hard-coded into publicly distributed
+          documentation or demonstrations. Production credentials shall be
+          unique, protected, revocable and auditable.
+        </p>
+
+
+        <h2>111. DEMONSTRATION SECURITY</h2>
+
+        <p>
+          Investor demonstrations should use demonstration credentials,
+          test wallets/accounts where applicable, synthetic data where necessary,
+          controlled vehicles and controlled contracts.
+        </p>
+
+
+        <h2>112. INCIDENT RESPONSE</h2>
+
+        <div class="manual-box">
+          Detect → Classify → Isolate → Protect credentials →
+          Preserve evidence → Investigate → Recover →
+          Rotate credentials → Verify integrity → Document corrective action
+        </div>
+
+
+        <h2>PART XV — MAINTENANCE</h2>
+
+        <h2>113. PREVENTIVE MAINTENANCE</h2>
+
+        <p>
+          Periodic checks should include enclosure, power connection,
+          antenna, communications, GNSS, storage, firmware, device identity,
+          synchronization and physical mounting.
+        </p>
+
+
+        <h2>114. SOFTWARE MAINTENANCE</h2>
+
+        <p>
+          Software maintenance includes security updates, bug fixes,
+          performance improvements, compatibility updates, API changes
+          and analytics improvements.
+        </p>
+
+
+        <h2>115. HARDWARE REVISION CONTROL</h2>
+
+        <p>
+          Every hardware revision must receive a unique revision identifier,
+          such as MESH-01-HW-REV-A or MESH-01-HW-REV-B.
+        </p>
+
+
+        <h2>PART XVI — FUTURE EXTENSIBILITY</h2>
+
+        <h2>116. SENSOR EXPANSION</h2>
+
+        <p>
+          Mesh-01 may eventually support additional sensors without changing
+          its fundamental architecture.
+        </p>
+
+
+        <h2>117. NEW COMMUNICATION TECHNOLOGIES</h2>
+
+        <p>
+          Future versions may adopt improved communication technologies while
+          maintaining a stable application/event model.
+        </p>
+
+
+        <h2>118. AI EXPANSION</h2>
+
+        <ul>
+          <li>predictive maintenance</li>
+          <li>route optimization</li>
+          <li>anomaly detection</li>
+          <li>fuel optimization</li>
+          <li>ETA prediction</li>
+          <li>risk analysis</li>
+          <li>commodity logistics prediction</li>
+        </ul>
+
+
+        <h2>119. AUTONOMOUS LOGISTICS</h2>
+
+        <div class="manual-box">
+          Observe → Understand → Decide → Authorize → Execute → Verify
+        </div>
+
+
+        <h2>PART XVII — MASTER OPERATING WORKFLOW</h2>
+
+        <h2>120. COMPLETE AAMUSH OPERATING CYCLE</h2>
+
+        <ol>
+          <li><strong>PRODUCE</strong> — Commodity exists or is predicted.</li>
+          <li><strong>REGISTER</strong> — Commodity/asset information enters AAMush.</li>
+          <li><strong>PREDICT</strong> — NEXUS estimates future availability.</li>
+          <li><strong>MATCH</strong> — Demand and supply are matched.</li>
+          <li><strong>ROUTE</strong> — AURA determines logistics requirements.</li>
+          <li><strong>ASSIGN</strong> — Truck and Mesh-01 are assigned.</li>
+          <li><strong>STAKE</strong> — Approved capacity participates in the applicable mechanism.</li>
+          <li><strong>CONTRACT</strong> — Transport arrangement is established.</li>
+          <li><strong>DISPATCH</strong> — Vehicle begins journey.</li>
+          <li><strong>TELEMETRY</strong> — Mesh-01 records physical movement.</li>
+          <li><strong>MESH</strong> — Events enter AAMush.</li>
+          <li><strong>CONVOY</strong> — AURA monitors coordinated movement.</li>
+          <li><strong>BORDER</strong> — Cross-border events are recorded where applicable.</li>
+          <li><strong>WAREHOUSE</strong> — Arrival and custody events are recorded.</li>
+          <li><strong>DELIVERY</strong> — Delivery is confirmed.</li>
+          <li><strong>SETTLEMENT</strong> — SURETY workflow processes authorized settlement.</li>
+          <li><strong>BACKHAUL</strong> — AURA identifies return opportunity.</li>
+          <li><strong>NEXT JOURNEY</strong> — Truck re-enters the logistics economy.</li>
+        </ol>
+
+
+        <h2>PART XVIII — DEVELOPMENT EVIDENCE</h2>
+
+        <h2>121. REQUIRED DEVELOPMENT RECORDS</h2>
+
+        <ul>
+          <li>original concept documents</li>
+          <li>dated architecture documents</li>
+          <li>source code</li>
+          <li>hardware designs</li>
+          <li>PCB files</li>
+          <li>CAD files</li>
+          <li>firmware</li>
+          <li>software repositories</li>
+          <li>screenshots</li>
+          <li>prototype photographs</li>
+          <li>videos</li>
+          <li>test reports</li>
+          <li>field records</li>
+          <li>investor demonstrations</li>
+          <li>revision histories</li>
+          <li>meeting records</li>
+          <li>development notes</li>
+        </ul>
+
+
+        <h2>122. VERSION CONTROL</h2>
+
+        <p>
+          Every major revision shall record Version, Date, Author,
+          Changes, Reason for change and Approval.
+        </p>
+
+
+        <h2>123. AUTHORSHIP RECORD</h2>
+
+        <div class="manual-box">
+          <strong>AAMush Mesh-01</strong><br>
+          Invented by Aloyce & Mushi<br>
+          Lead Developer & Systems Architect: Dr. James K. Mushi, PhD<br><br>
+          AAMush — AnnaAbigailMush Aloyce<br>
+          “Always love you everyday.”
+        </div>
+
+
+        <h2>PART XIX — FINAL TECHNICAL PRINCIPLE</h2>
+
+        <h2>124. WHAT MESH-01 ULTIMATELY REPRESENTS</h2>
+
+        <div class="manual-box">
+          PHYSICAL ASSET<br>
+          ↓<br>
+          MESH-01<br>
+          ↓<br>
+          TRUSTED EVENT<br>
+          ↓<br>
+          AAMUSH MESH<br>
+          ↓<br>
+          INTELLIGENCE<br>
+          ↓<br>
+          CONTRACT<br>
+          ↓<br>
+          EXECUTION<br>
+          ↓<br>
+          VERIFICATION<br>
+          ↓<br>
+          SETTLEMENT<br>
+          ↓<br>
+          NEXT ECONOMIC ACTIVITY
+        </div>
+
+
+        <h2>125. FINAL SYSTEM DEFINITION</h2>
+
+        <p>
+          AAMush Mesh-01 is an intelligent physical-edge feeder device and
+          logistics gateway designed to acquire, process, authenticate,
+          preserve, communicate and synchronize physical-world logistics
+          information with an autonomous commodity and trade-logistics mesh.
+        </p>
+
+        <p>
+          The system is intended to enable physical logistics events to
+          participate in authorized digital workflows involving transportation,
+          convoy coordination, inventory, warehouse records, identity,
+          predictive commodity supply, financing/advance mechanisms and settlement.
+        </p>
+
+
+        <h2>126. FINAL LAUNCH PRINCIPLE</h2>
+
+        <div class="manual-box">
+          CONCEPT → DESIGN → PROTOTYPE → ENGINEERING →
+          FIELD TEST → PILOT → VALIDATION →
+          INVESTOR DEMONSTRATION → PRODUCTION →
+          COMMERCIAL LAUNCH → CONTINUOUS DEVELOPMENT
+        </div>
+
+        <p>
+          No function shall be represented as commercially operational until
+          the corresponding implementation and acceptance test have been completed.
+        </p>
+
+
+        <h2>127. CONCLUSION</h2>
+
+        <p>
+          AAMush Mesh-01 is intended to provide the physical edge of an
+          integrated East African trade-logistics infrastructure.
+        </p>
+
+        <p>
+          Its fundamental objective is to connect people, vehicles, cargo,
+          warehouses, routes, convoys, commodities, digital identities,
+          predictive intelligence, commercial contracts and financial settlement
+          through a common trusted logistics-event architecture.
+        </p>
+
+        <div class="manual-box">
+          <strong>
+            “What happens physically can become a trusted digital event,
+            and a trusted digital event can participate in an authorized
+            economic workflow.”
+          </strong>
+        </div>
+
+
+        <h2>APPENDIX A — MASTER FUNCTION LIST</h2>
+
+        <ul>
+          <li>Device identity</li>
+          <li>Device provisioning</li>
+          <li>Vehicle registration</li>
+          <li>Driver/operator association</li>
+          <li>GNSS/location acquisition</li>
+          <li>Vehicle telemetry</li>
+          <li>Sensor acquisition</li>
+          <li>Event generation</li>
+          <li>Event timestamping</li>
+          <li>Event sequencing</li>
+          <li>Local storage</li>
+          <li>Store-and-forward</li>
+          <li>Secure communications</li>
+          <li>Event acknowledgement</li>
+          <li>Synchronization</li>
+          <li>Device health monitoring</li>
+          <li>Geofencing</li>
+          <li>Route monitoring</li>
+          <li>Route deviation detection</li>
+          <li>Convoy monitoring</li>
+          <li>Warehouse arrival events</li>
+          <li>Cargo event association</li>
+          <li>Border event support</li>
+          <li>Digital identity association</li>
+          <li>AURA integration</li>
+          <li>REGEN integration</li>
+          <li>SURETY integration</li>
+          <li>NEXUS integration</li>
+          <li>Idle-capacity staking support</li>
+          <li>Predictive logistics support</li>
+          <li>Backhaul optimization</li>
+          <li>Cross-border logistics</li>
+          <li>Audit trail</li>
+          <li>Security management</li>
+          <li>Firmware management</li>
+          <li>Device suspension</li>
+          <li>Device reassignment</li>
+          <li>Device decommissioning</li>
+          <li>Diagnostics</li>
+          <li>Failure recovery</li>
+          <li>API integration</li>
+          <li>Dashboard integration</li>
+          <li>Commercial workflow support</li>
+          <li>Settlement-event support</li>
+          <li>Future AI integration</li>
+          <li>Future sensor expansion</li>
+          <li>Future communications expansion</li>
+          <li>Regional scalability</li>
+        </ul>
+
+
+        <h2>APPENDIX B — MASTER DEVELOPMENT STATUS CATEGORIES</h2>
+
+        <ul>
+          <li><strong>M — MANDATED:</strong> Required by the AAMush Mesh-01 specification.</li>
+          <li><strong>I — IMPLEMENTED:</strong> Already functioning in the current build.</li>
+          <li><strong>D — DEVELOPMENT:</strong> Currently being engineered.</li>
+          <li><strong>P — PILOT:</strong> Being tested in controlled field deployment.</li>
+          <li><strong>V — VALIDATED:</strong> Successfully tested against defined acceptance criteria.</li>
+          <li><strong>L — LAUNCH:</strong> Approved for commercial production.</li>
+          <li><strong>F — FUTURE:</strong> Reserved for future versions or expansion.</li>
+        </ul>
+
+
+        <h2>APPENDIX C — INVESTOR ONE-MINUTE EXPLANATION</h2>
+
+        <div class="manual-box">
+          “AAMush Mesh-01 is the physical device that connects the real
+          movement of goods and trucks to the AAMush digital trade-logistics
+          network. It collects and authenticates telemetry, converts physical
+          activity into structured logistics events, stores those events when
+          networks are unavailable, and synchronizes them with the AAMush mesh.
+          Those events can then support AURA routing and convoy management,
+          REGEN digital registry functions, SURETY commercial settlement
+          workflows and NEXUS predictive inventory. In simple terms,
+          Mesh-01 is the bridge between what is physically happening on the
+          road and what the digital trade network needs to know and act upon.”
+        </div>
+
+
+        <h2>APPENDIX D — IMPORTANT DEVELOPMENT NOTE</h2>
+
+        <p>
+          This master manual intentionally defines the full intended
+          AAMush Mesh-01 operating architecture rather than limiting the
+          specification to functions visibly demonstrated by the present website.
+        </p>
+
+        <p>
+          The public website should therefore be regarded as a current
+          platform presentation/prototype reference, while this manual is
+          the broader development-to-launch system specification.
+        </p>
+
+        <p>
+          Every future implementation must be tested and its status updated
+          before being described as operational.
+        </p>
+
+
+        <div class="manual-title">
+
+          <h2>END OF MASTER MANUAL — VERSION 1.0</h2>
+
+          <p>
+            <strong>AAMush Mesh-01</strong>
+          </p>
+
+          <p>
+            Invented by Aloyce & Mushi
+          </p>
+
+          <p>
+            Lead Developer & Systems Architect:
+            Dr. James K. Mushi, PhD
+          </p>
+
+          <p>
+            14 August 2026
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-(function(){
-  const stream = document.getElementById('feeder-stream');
-  const clock = document.getElementById('feeder-clock');
-  const sync = document.getElementById('f-sync');
-  const convoys = document.getElementById('f-convoys');
-  const trucks = document.getElementById('f-trucks');
-  const valueEl = document.getElementById('f-value');
-  let valueNum = 2410000;
-  let syncSec = 0;
-  let eventCount = 0;
 
-  const events = [
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Convoy <strong>#C-2841</strong> sealed — NBO→KGL, 4 trucks, 120 MT'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Title <strong>#8921</strong> minted — moisture 12.3%, GPS locked'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'$28,920 USDC advanced to 4 truck owners (60% stake)'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Backhaul match found — KGL→NBO fertilizer, 3 trucks'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Identity <strong>DID-ug-4412</strong> verified via ZK-proof'},
-    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'New bid on ghost inventory — Soybeans 500 MT @ $410/MT'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Cross-border settlement complete — KGL→GOM, $22,100'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Convoy <strong>#C-2839</strong> forming — 2/5 trucks matched'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Customs pre-clearance approved — manifest SM-7721'},
-    {tag:'ALERT', cls:'feeder-tag-alert', msg:'Climate oracle: flash-flood risk 45% on NBO→KLA route'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'IoT seal breach detected — Truck T-892, auto-escrow paused'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'M-Pesa↔USDC bridge settled — $4,200 @ 1 USD = 129.4 KES'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Warehouse receipt <strong>#8918</strong> collateral released'},
-    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'Satellite NDVI update — Iganga field index 0.82 (+0.03)'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Route optimization: alternate corridor saved 2h 14m'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Parametric insurance triggered — rainfall < 20mm, payout $1,200'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'DID cross-border attestation — Rwanda↔Uganda validated'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Truck T-445 joined staking pool — 72h window locked'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Smart contract repayment — $17,340 deducted, balance cleared'},
-    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'Forward contract executed — Maize 240 MT, delivery Day 45'},
-  ];
+/* OPEN BRIEFCASE */
+function openBriefcase(){
+  document.getElementById("briefcaseModal").classList.add("show");
+  document.body.style.overflow="hidden";
+}
 
-  function pushEvent(evt) {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const line = document.createElement('div');
-    line.className = 'feeder-line';
-    line.innerHTML = '<span class="feeder-line-time">'+time+'</span><span class="feeder-line-tag '+evt.cls+'">'+evt.tag+'</span><span class="feeder-line-msg">'+evt.msg+'</span>';
-    stream.insertBefore(line, stream.firstChild);
-    while (stream.children.length > 14) stream.removeChild(stream.lastChild);
-    eventCount++;
-    document.getElementById('f-count').textContent = eventCount + ' events';
+
+/* CLOSE BRIEFCASE */
+function closeBriefcase(){
+  document.getElementById("briefcaseModal").classList.remove("show");
+  document.body.style.overflow="";
+}
+
+
+/* SHOW MANUAL */
+function showManual(){
+
+  document.getElementById("briefcaseMenu").style.display="none";
+
+  document.getElementById("infoPanel").classList.remove("show");
+
+  document.getElementById("manual").classList.add("show");
+
+  window.scrollTo(0,0);
+}
+
+
+/* BACK TO BRIEFCASE */
+function backToBriefcase(){
+
+  document.getElementById("manual").classList.remove("show");
+
+  document.getElementById("infoPanel").classList.remove("show");
+
+  document.getElementById("briefcaseMenu").style.display="grid";
+
+  window.scrollTo(0,0);
+}
+
+
+/* INFORMATION PANELS */
+function showInfo(type){
+
+  document.getElementById("briefcaseMenu").style.display="none";
+
+  const panel=document.getElementById("infoPanel");
+
+  panel.classList.add("show");
+
+  let content="";
+
+  if(type==="developer"){
+
+    content=`
+      <button class="back-button" onclick="backToBriefcase()">← Back to Briefcase</button>
+
+      <h1>👨‍💻 Developer Profile</h1>
+
+      <div class="manual-box">
+        <strong>Lead Developer & Systems Architect</strong><br>
+        Dr. James K. Mushi, PhD
+      </div>
+
+      <h2>AAMush Mesh-01</h2>
+
+      <p>
+        Lead development, systems architecture, technical specification,
+        platform integration and continuing development of the AAMush
+        Mesh-01 physical-edge logistics infrastructure.
+      </p>
+
+      <h2>Inventors</h2>
+
+      <p>
+        Aloyce & Mushi
+      </p>
+
+      <h2>AAMush Meaning</h2>
+
+      <p>
+        AnnaAbigailMush Aloyce — “Always love you everyday.”
+      </p>
+    `;
   }
 
-  function updateClock() {
-    const now = new Date();
-    clock.textContent = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    syncSec++;
-    sync.textContent = syncSec + 's';
-    if (syncSec > 3) sync.textContent = '< 1s';
-    if (syncSec > 5) { syncSec = 0; }
+  if(type==="project"){
+
+    content=`
+      <button class="back-button" onclick="backToBriefcase()">← Back to Briefcase</button>
+
+      <h1>🏗️ Project Documentation</h1>
+
+      <p>
+        AAMush Mesh-01 is intended to serve as the physical edge of an
+        East African autonomous commodity-logistics mesh.
+      </p>
+
+      <div class="manual-box">
+        Concept → Architecture → Prototype → Engineering →
+        Field Testing → Pilot → Validation →
+        Investor Demonstration → Commercial Launch →
+        Continuous Development
+      </div>
+
+      <h2>Primary System Components</h2>
+
+      <ul>
+        <li>Mesh-01 physical feeder device</li>
+        <li>AURA Routing</li>
+        <li>REGEN Registry</li>
+        <li>SURETY Settlement</li>
+        <li>NEXUS Ghost Inventory</li>
+      </ul>
+    `;
   }
 
-  function tickValue() {
-    valueNum += Math.floor(Math.random() * 800) + 200;
-    valueEl.textContent = '$' + (valueNum / 1000000).toFixed(2) + 'M';
+  if(type==="ip"){
+
+    content=`
+      <button class="back-button" onclick="backToBriefcase()">← Back to Briefcase</button>
+
+      <h1>🔐 Intellectual Property & Development Notice</h1>
+
+      <p>
+        The AAMush Mesh-01 master manual is maintained as a technical,
+        authorship and development record.
+      </p>
+
+      <p>
+        It should be maintained together with dated engineering files,
+        source code, hardware designs, circuit diagrams, photographs,
+        prototypes, test reports, repositories, development records,
+        demonstrations and subsequent revisions.
+      </p>
+
+      <div class="manual-box">
+        This document does not by itself constitute a legal opinion regarding
+        patentability, copyright registration, trademark rights or other
+        intellectual-property rights.
+      </div>
+    `;
   }
 
-  function pulseNode() {
-    const nodes = ['node-mba','node-nbo','node-kla','node-kig','node-gom'];
-    const rand = nodes[Math.floor(Math.random() * nodes.length)];
-    const el = document.getElementById(rand);
-    if (el) {
-      el.classList.add('live');
-      setTimeout(() => el.classList.remove('live'), 2000);
-    }
+  if(type==="history"){
+
+    content=`
+      <button class="back-button" onclick="backToBriefcase()">← Back to Briefcase</button>
+
+      <h1>🕒 Development History</h1>
+
+      <div class="manual-box">
+        CONCEPT<br>
+        ↓<br>
+        ARCHITECTURE<br>
+        ↓<br>
+        PROTOTYPE<br>
+        ↓<br>
+        ENGINEERING<br>
+        ↓<br>
+        FIELD TESTING<br>
+        ↓<br>
+        PILOT<br>
+        ↓<br>
+        VALIDATION<br>
+        ↓<br>
+        INVESTOR DEMONSTRATION<br>
+        ↓<br>
+        COMMERCIAL LAUNCH<br>
+        ↓<br>
+        CONTINUOUS DEVELOPMENT
+      </div>
+
+      <p>
+        The master development record is intended to evolve with the
+        engineering project and should identify the status of each function.
+      </p>
+    `;
   }
 
-  for (let i = 4; i >= 0; i--) {
-    pushEvent(events[i]);
+  if(type==="architecture"){
+
+    content=`
+      <button class="back-button" onclick="backToBriefcase()">← Back to Briefcase</button>
+
+      <h1>⚙️ System Architecture</h1>
+
+      <div class="manual-box">
+        PHYSICAL LOGISTICS ASSET<br>
+        ↓<br>
+        MESH-01<br>
+        ↓<br>
+        TELEMETRY / EVENT ENGINE<br>
+        ↓<br>
+        SECURE COMMUNICATION<br>
+        ↓<br>
+        AAMUSH MESH<br>
+        ↓<br>
+        AURA / REGEN / SURETY / NEXUS<br>
+        ↓<br>
+        AUTHORIZED LOGISTICS / COMMERCIAL WORKFLOW
+      </div>
+
+      <h2>Core Principle</h2>
+
+      <p>
+        What happens physically can become a trusted digital event,
+        and a trusted digital event can participate in an authorized
+        economic workflow.
+      </p>
+    `;
   }
 
-  setInterval(updateClock, 1000);
-  setInterval(tickValue, 3000);
-  setInterval(pulseNode, 4000);
-  setInterval(() => {
-    const evt = events[Math.floor(Math.random() * events.length)];
-    pushEvent(evt);
-    if (Math.random() > 0.7) trucks.textContent = parseInt(trucks.textContent) + 1;
-    if (Math.random() > 0.85) convoys.textContent = parseInt(convoys.textContent) + (Math.random()>0.5?1:0);
-  }, 2500);
-})();
+  panel.innerHTML=content;
+
+  window.scrollTo(0,0);
+}
+
+
+/* CLOSE WHEN USER TAPS OUTSIDE */
+document.getElementById("briefcaseModal").addEventListener("click",function(e){
+
+  if(e.target===this){
+    closeBriefcase();
+  }
+
+});
+
+
+/* ESCAPE KEY */
+document.addEventListener("keydown",function(e){
+
+  if(e.key==="Escape"){
+    closeBriefcase();
+  }
+
+});
+
 </script>
 
-<!-- =====================================================
-     AAMUSH FLOATING DEVELOPER BRIEFCASE
-     ===================================================== -->
-
-<style>
-    .aamush-floating-briefcase {
-        position: fixed;
-        right: 16px;
-        bottom: 22px;
-
-        width: 115px;
-        height: 115px;
-
-        z-index: 999999;
-
-        display: block;
-
-        border-radius: 50%;
-
-        cursor: pointer;
-
-        text-decoration: none;
-
-        overflow: visible;
-
-        animation: aamushBounce 3.2s ease-in-out infinite;
-
-        filter:
-            drop-shadow(0 0 8px rgba(0, 210, 255, 0.9))
-            drop-shadow(0 0 20px rgba(0, 130, 255, 0.7));
-
-        transition:
-            transform 0.25s ease,
-            filter 0.25s ease;
-    }
-
-    .aamush-floating-briefcase img {
-        width: 100%;
-        height: 100%;
-
-        object-fit: contain;
-
-        display: block;
-
-        border-radius: 50%;
-    }
-
-    .aamush-floating-briefcase:hover {
-        transform: scale(1.08);
-
-        filter:
-            drop-shadow(0 0 12px rgba(0, 240, 255, 1))
-            drop-shadow(0 0 30px rgba(0, 130, 255, 0.95));
-    }
-
-    .aamush-floating-briefcase:active {
-        transform: scale(0.90);
-    }
-
-    /* Small glowing ring around the launcher */
-    .aamush-floating-briefcase::before {
-        content: "";
-
-        position: absolute;
-
-        inset: -5px;
-
-        border-radius: 50%;
-
-        border: 2px solid rgba(0, 220, 255, 0.75);
-
-        pointer-events: none;
-
-        animation: aamushRing 2.2s ease-in-out infinite;
-    }
-
-    /* "Developer Briefcase" label */
-    .aamush-briefcase-label {
-        position: absolute;
-
-        right: 0;
-
-        bottom: -32px;
-
-        white-space: nowrap;
-
-        padding: 6px 10px;
-
-        border-radius: 8px;
-
-        background: rgba(0, 10, 25, 0.94);
-
-        border: 1px solid rgba(0, 220, 255, 0.65);
-
-        color: white;
-
-        font-family: Arial, sans-serif;
-
-        font-size: 10px;
-
-        font-weight: 700;
-
-        letter-spacing: 0.4px;
-
-        box-shadow:
-            0 0 10px rgba(0, 180, 255, 0.35);
-
-        opacity: 0;
-
-        transform: translateY(5px);
-
-        transition: all 0.25s ease;
-
-        pointer-events: none;
-    }
-
-    .aamush-floating-briefcase:hover
-    .aamush-briefcase-label {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-
-    @keyframes aamushBounce {
-
-        0%, 100% {
-            transform: translateY(0);
-        }
-
-        25% {
-            transform: translateY(-7px);
-        }
-
-        50% {
-            transform: translateY(-15px);
-        }
-
-        75% {
-            transform: translateY(-6px);
-        }
-    }
-
-    @keyframes aamushRing {
-
-        0%, 100% {
-            transform: scale(1);
-
-            opacity: 0.45;
-        }
-
-        50% {
-            transform: scale(1.08);
-
-            opacity: 1;
-        }
-    }
-
-    @media (max-width: 480px) {
-
-        .aamush-floating-briefcase {
-            width: 92px;
-            height: 92px;
-
-            right: 12px;
-            bottom: 18px;
-        }
-
-        .aamush-briefcase-label {
-            font-size: 9px;
-            bottom: -28px;
-        }
-    }
-</style>
-
-
-<a
-    href="briefcase.html"
-    class="aamush-floating-briefcase"
-    aria-label="Open AAMush Developer Briefcase"
-    title="Open AAMush Developer Briefcase"
->
-
-    <img
-        src="aamush-briefcase-logo.png"
-        alt="AAMush Developer Briefcase"
-    >
-
-    <span class="aamush-briefcase-label">
-        Developer Briefcase
-    </span>
-
-</a>
-
-<!-- =====================================================
-     END AAMUSH FLOATING DEVELOPER BRIEFCASE
-     ===================================================== --></body>
+</body>
 </html>
