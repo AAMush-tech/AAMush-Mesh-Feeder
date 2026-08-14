@@ -2120,4 +2120,183 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
   </script></body>
+<!-- AAMush 01 — MESH FEEDER LIVE -->
+<section id="mesh-01-live" style="
+  margin:20px 18px 30px;
+  padding:18px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#071522,#102b40);
+  color:white;
+  box-shadow:0 12px 35px rgba(0,0,0,.22);
+">
+
+  <div style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+  ">
+    <div>
+      <div style="
+        font-size:11px;
+        font-weight:800;
+        letter-spacing:1.2px;
+        color:#00d4ff;
+      ">
+        AAMUSH 01
+      </div>
+
+      <div style="
+        font-size:20px;
+        font-weight:800;
+        margin-top:3px;
+      ">
+        MESH FEEDER
+      </div>
+    </div>
+
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:20px;
+      background:rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.3);
+      font-size:11px;
+      font-weight:800;
+      color:#4ade80;
+    ">
+      <span style="
+        width:8px;
+        height:8px;
+        border-radius:50%;
+        background:#22c55e;
+        box-shadow:0 0 10px #22c55e;
+        animation:meshLivePulse 1.5s infinite;
+      "></span>
+      LIVE
+    </div>
+  </div>
+
+  <div style="
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  ">
+
+    <div style="
+      padding:12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+    ">
+      <div style="font-size:10px;color:#94a3b8;">MESH STATUS</div>
+      <div style="font-size:14px;font-weight:800;color:#4ade80;margin-top:4px;">
+        ONLINE
+      </div>
+    </div>
+
+    <div style="
+      padding:12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+    ">
+      <div style="font-size:10px;color:#94a3b8;">FEEDER</div>
+      <div style="font-size:14px;font-weight:800;color:#00d4ff;margin-top:4px;">
+        AAMush 01
+      </div>
+    </div>
+
+    <div style="
+      padding:12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+    ">
+      <div style="font-size:10px;color:#94a3b8;">TELEMETRY</div>
+      <div style="font-size:14px;font-weight:800;margin-top:4px;">
+        ACTIVE
+      </div>
+    </div>
+
+    <div style="
+      padding:12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+    ">
+      <div style="font-size:10px;color:#94a3b8;">NETWORK</div>
+      <div style="font-size:14px;font-weight:800;margin-top:4px;">
+        CONNECTED
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+    margin-top:14px;
+    padding:12px;
+    border-radius:12px;
+    background:rgba(0,212,255,.06);
+    border:1px solid rgba(0,212,255,.15);
+  ">
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      font-size:11px;
+      margin-bottom:7px;
+    ">
+      <span style="color:#94a3b8;">LIVE MESH SIGNAL</span>
+      <span id="meshSignalValue" style="color:#00d4ff;font-weight:800;">
+        98%
+      </span>
+    </div>
+
+    <div style="
+      height:5px;
+      border-radius:10px;
+      background:rgba(255,255,255,.1);
+      overflow:hidden;
+    ">
+      <div id="meshSignalBar" style="
+        height:100%;
+        width:98%;
+        border-radius:10px;
+        background:#00d4ff;
+        box-shadow:0 0 12px rgba(0,212,255,.7);
+        transition:width .5s ease;
+      "></div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+@keyframes meshLivePulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.35;transform:scale(1.35)}
+}
+</style>
+
+<script>
+(function(){
+
+  function updateMeshLive(){
+
+    var signal = Math.floor(94 + Math.random() * 6);
+
+    var value = document.getElementById("meshSignalValue");
+    var bar = document.getElementById("meshSignalBar");
+
+    if(value) value.textContent = signal + "%";
+    if(bar) bar.style.width = signal + "%";
+  }
+
+  updateMeshLive();
+  setInterval(updateMeshLive,4000);
+
+})();
+  </script>
 </html>
