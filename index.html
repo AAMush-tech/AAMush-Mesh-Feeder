@@ -2299,4 +2299,227 @@ document.addEventListener("DOMContentLoaded",function(){
 
 })();
   </script>
+<!-- AAMUSH BRIEFCASE — TWO LEVEL PUBLIC / PRIVATE -->
+<div id="briefcaseOverlay" class="briefcase-overlay">
+  <div class="briefcase-panel">
+
+    <button class="briefcase-close" onclick="closeBriefcase()">×</button>
+
+    <div class="briefcase-title">
+      <div class="briefcase-icon">💼</div>
+      <h2>AAMush Briefcase</h2>
+      <p>Developer & Project Archive</p>
+    </div>
+
+    <div class="briefcase-folders">
+
+      <!-- PUBLIC FOLDER -->
+      <button class="folder-card public-folder" onclick="openPublicFolder()">
+        <div class="folder-icon">🌐</div>
+        <div>
+          <strong>PUBLIC</strong>
+          <span>Public AAMush information</span>
+        </div>
+        <b>›</b>
+      </button>
+
+      <!-- PRIVATE FOLDER -->
+      <button class="folder-card private-folder" onclick="openPrivateFolder()">
+        <div class="folder-icon">🔒</div>
+        <div>
+          <strong>PRIVATE</strong>
+          <span>Protected developer archive</span>
+        </div>
+        <b>›</b>
+      </button>
+
+    </div>
+
+    <div class="briefcase-footer">
+      AAMush • Protected Development Archive
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* AAMUSH BRIEFCASE */
+.briefcase-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.briefcase-overlay.active{
+  display:flex;
+}
+
+.briefcase-panel{
+  width:100%;
+  max-width:380px;
+  background:rgba(255,255,255,.97);
+  border-radius:24px;
+  padding:24px;
+  position:relative;
+  box-shadow:0 25px 80px rgba(0,0,0,.35);
+  animation:briefcaseOpen .3s ease;
+}
+
+@keyframes briefcaseOpen{
+  from{
+    opacity:0;
+    transform:scale(.88) translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
+}
+
+.briefcase-close{
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:50%;
+  background:#f1f3f5;
+  color:#333;
+  font-size:24px;
+  line-height:30px;
+  cursor:pointer;
+}
+
+.briefcase-title{
+  text-align:center;
+  padding:8px 25px 20px;
+}
+
+.briefcase-icon{
+  font-size:42px;
+  margin-bottom:5px;
+}
+
+.briefcase-title h2{
+  margin:0;
+  font-size:21px;
+  font-weight:800;
+  color:#111;
+}
+
+.briefcase-title p{
+  margin:5px 0 0;
+  font-size:12px;
+  color:#777;
+}
+
+.briefcase-folders{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.folder-card{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:15px;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  background:#fff;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.folder-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 22px rgba(0,0,0,.1);
+}
+
+.folder-card:active{
+  transform:scale(.98);
+}
+
+.folder-icon{
+  width:45px;
+  height:45px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  flex:none;
+}
+
+.public-folder .folder-icon{
+  background:#e0f2fe;
+}
+
+.private-folder .folder-icon{
+  background:#f3f4f6;
+}
+
+.folder-card div:nth-child(2){
+  flex:1;
+}
+
+.folder-card strong{
+  display:block;
+  font-size:14px;
+  color:#111;
+  margin-bottom:3px;
+}
+
+.folder-card span{
+  display:block;
+  font-size:11px;
+  color:#777;
+}
+
+.folder-card b{
+  font-size:24px;
+  color:#999;
+}
+
+.briefcase-footer{
+  text-align:center;
+  margin-top:18px;
+  font-size:10px;
+  color:#999;
+}
+</style>
+
+<script>
+function openBriefcase(){
+  document.getElementById("briefcaseOverlay").classList.add("active");
+}
+
+function closeBriefcase(){
+  document.getElementById("briefcaseOverlay").classList.remove("active");
+}
+
+function openPublicFolder(){
+  alert("PUBLIC folder will open the public AAMush information archive.");
+}
+
+function openPrivateFolder(){
+  alert("PRIVATE DEVELOPMENT ARCHIVE\n\nAccess restricted. Private source and confidential development materials are not stored in the public website.");
+}
+
+document.getElementById("briefcaseOverlay").addEventListener("click",function(e){
+  if(e.target === this){
+    closeBriefcase();
+  }
+});
+   </script>
 </html>
