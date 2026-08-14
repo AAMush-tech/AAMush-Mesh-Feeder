@@ -1055,5 +1055,200 @@
 })();
 </script>
 
-</body>
+<!-- =====================================================
+     AAMUSH FLOATING DEVELOPER BRIEFCASE
+     ===================================================== -->
+
+<style>
+    .aamush-floating-briefcase {
+        position: fixed;
+        right: 16px;
+        bottom: 22px;
+
+        width: 115px;
+        height: 115px;
+
+        z-index: 999999;
+
+        display: block;
+
+        border-radius: 50%;
+
+        cursor: pointer;
+
+        text-decoration: none;
+
+        overflow: visible;
+
+        animation: aamushBounce 3.2s ease-in-out infinite;
+
+        filter:
+            drop-shadow(0 0 8px rgba(0, 210, 255, 0.9))
+            drop-shadow(0 0 20px rgba(0, 130, 255, 0.7));
+
+        transition:
+            transform 0.25s ease,
+            filter 0.25s ease;
+    }
+
+    .aamush-floating-briefcase img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+
+        display: block;
+
+        border-radius: 50%;
+    }
+
+    .aamush-floating-briefcase:hover {
+        transform: scale(1.08);
+
+        filter:
+            drop-shadow(0 0 12px rgba(0, 240, 255, 1))
+            drop-shadow(0 0 30px rgba(0, 130, 255, 0.95));
+    }
+
+    .aamush-floating-briefcase:active {
+        transform: scale(0.90);
+    }
+
+    /* Small glowing ring around the launcher */
+    .aamush-floating-briefcase::before {
+        content: "";
+
+        position: absolute;
+
+        inset: -5px;
+
+        border-radius: 50%;
+
+        border: 2px solid rgba(0, 220, 255, 0.75);
+
+        pointer-events: none;
+
+        animation: aamushRing 2.2s ease-in-out infinite;
+    }
+
+    /* "Developer Briefcase" label */
+    .aamush-briefcase-label {
+        position: absolute;
+
+        right: 0;
+
+        bottom: -32px;
+
+        white-space: nowrap;
+
+        padding: 6px 10px;
+
+        border-radius: 8px;
+
+        background: rgba(0, 10, 25, 0.94);
+
+        border: 1px solid rgba(0, 220, 255, 0.65);
+
+        color: white;
+
+        font-family: Arial, sans-serif;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.4px;
+
+        box-shadow:
+            0 0 10px rgba(0, 180, 255, 0.35);
+
+        opacity: 0;
+
+        transform: translateY(5px);
+
+        transition: all 0.25s ease;
+
+        pointer-events: none;
+    }
+
+    .aamush-floating-briefcase:hover
+    .aamush-briefcase-label {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+    @keyframes aamushBounce {
+
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        25% {
+            transform: translateY(-7px);
+        }
+
+        50% {
+            transform: translateY(-15px);
+        }
+
+        75% {
+            transform: translateY(-6px);
+        }
+    }
+
+    @keyframes aamushRing {
+
+        0%, 100% {
+            transform: scale(1);
+
+            opacity: 0.45;
+        }
+
+        50% {
+            transform: scale(1.08);
+
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .aamush-floating-briefcase {
+            width: 92px;
+            height: 92px;
+
+            right: 12px;
+            bottom: 18px;
+        }
+
+        .aamush-briefcase-label {
+            font-size: 9px;
+            bottom: -28px;
+        }
+    }
+</style>
+
+
+<a
+    href="briefcase.html"
+    class="aamush-floating-briefcase"
+    aria-label="Open AAMush Developer Briefcase"
+    title="Open AAMush Developer Briefcase"
+>
+
+    <img
+        src="aamush-briefcase-logo.png"
+        alt="AAMush Developer Briefcase"
+    >
+
+    <span class="aamush-briefcase-label">
+        Developer Briefcase
+    </span>
+
+</a>
+
+<!-- =====================================================
+     END AAMUSH FLOATING DEVELOPER BRIEFCASE
+     ===================================================== --></body>
 </html>
