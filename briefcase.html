@@ -993,7 +993,783 @@
     </div>
 
 
-    <!-- COPYRIGHT -->
+    <!-- AAMUSH LIVE ORBITAL COMMAND LAYER -->
+
+<style>
+#aamush-live-orbital {
+    margin: 35px 0;
+    padding: 24px;
+    border-radius: 14px;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(0,150,255,.16), transparent 42%),
+        linear-gradient(145deg,#020711,#071522 55%,#02050a);
+    border: 1px solid rgba(0,200,255,.35);
+    box-shadow: 0 0 35px rgba(0,150,255,.12);
+    color:#dff8ff;
+    font-family:Inter,Arial,sans-serif;
+    overflow:hidden;
+}
+
+#aamush-live-orbital .orbital-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+#aamush-live-orbital .orbital-title {
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:2px;
+    color:#ffffff;
+}
+
+#aamush-live-orbital .orbital-title span {
+    color:#00eaff;
+}
+
+#aamush-live-orbital .live-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 12px;
+    border-radius:20px;
+    border:1px solid rgba(0,255,100,.35);
+    background:rgba(0,255,100,.08);
+    color:#55ff83;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+#aamush-live-orbital .live-dot {
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#32ff64;
+    box-shadow:0 0 12px #32ff64;
+}
+
+#aamush-live-orbital .orbital-grid {
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:18px;
+}
+
+#aamush-live-orbital .earth-panel {
+    position:relative;
+    min-height:390px;
+    border:1px solid rgba(0,190,255,.25);
+    border-radius:12px;
+    overflow:hidden;
+    background:#01060d;
+}
+
+#aamush-live-orbital #aamush-earth {
+    position:absolute;
+    inset:0;
+}
+
+#aamush-live-orbital .earth-label {
+    position:absolute;
+    left:18px;
+    bottom:16px;
+    z-index:5;
+    padding:8px 12px;
+    border-radius:8px;
+    background:rgba(0,8,18,.78);
+    border:1px solid rgba(0,220,255,.25);
+    font-size:11px;
+    letter-spacing:1px;
+    color:#6eefff;
+}
+
+#aamush-live-orbital .telemetry-panel {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+#aamush-live-orbital .telemetry-card {
+    min-height:88px;
+    padding:14px;
+    border-radius:10px;
+    background:rgba(4,20,34,.78);
+    border:1px solid rgba(0,190,255,.18);
+}
+
+#aamush-live-orbital .telemetry-card.wide {
+    grid-column:1 / -1;
+}
+
+#aamush-live-orbital .telemetry-label {
+    font-size:9px;
+    letter-spacing:1.5px;
+    color:#7195a6;
+    text-transform:uppercase;
+    margin-bottom:7px;
+}
+
+#aamush-live-orbital .telemetry-value {
+    font-size:18px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+#aamush-live-orbital .telemetry-value.green {
+    color:#55ff83;
+}
+
+#aamush-live-orbital .telemetry-value.blue {
+    color:#35ddff;
+}
+
+#aamush-live-orbital .telemetry-value.gold {
+    color:#ffd35a;
+}
+
+#aamush-live-orbital .telemetry-sub {
+    margin-top:4px;
+    font-size:10px;
+    color:#718b98;
+}
+
+#aamush-live-orbital .corridor-panel {
+    margin-top:18px;
+    padding:16px;
+    border-radius:10px;
+    background:rgba(0,12,22,.72);
+    border:1px solid rgba(0,190,255,.18);
+}
+
+#aamush-live-orbital .corridor-title {
+    margin-bottom:12px;
+    color:#00eaff;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+}
+
+#aamush-live-orbital .corridors {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+#aamush-live-orbital .corridor {
+    padding:8px 11px;
+    border-radius:8px;
+    background:#071827;
+    border:1px solid rgba(0,210,255,.2);
+    color:#d8f8ff;
+    font-size:11px;
+}
+
+#aamush-live-orbital .data-status {
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    font-size:10px;
+    color:#7893a0;
+}
+
+#aamush-live-orbital .genuine {
+    color:#55ff83;
+}
+
+#aamush-live-orbital .simulated {
+    color:#ffd35a;
+}
+
+@media (max-width:760px) {
+    #aamush-live-orbital .orbital-grid {
+        grid-template-columns:1fr;
+    }
+
+    #aamush-live-orbital .earth-panel {
+        min-height:320px;
+    }
+}
+</style>
+
+<div id="aamush-live-orbital">
+
+    <div class="orbital-head">
+
+        <div class="orbital-title">
+            AAMUSH <span>LIVE</span> ORBITAL COMMAND
+        </div>
+
+        <div class="live-badge">
+            <span class="live-dot"></span>
+            LIVE DATA ENGINE
+        </div>
+
+    </div>
+
+    <div class="orbital-grid">
+
+        <div class="earth-panel">
+
+            <div id="aamush-earth"></div>
+
+            <div class="earth-label">
+                EAST AFRICAN TRADE CORRIDOR / ORBITAL VIEW
+            </div>
+
+        </div>
+
+        <div class="telemetry-panel">
+
+            <div class="telemetry-card wide">
+                <div class="telemetry-label">Orbital Object</div>
+                <div class="telemetry-value blue" id="aamush-satellite-name">
+                    EUTELSAT 7B
+                </div>
+                <div class="telemetry-sub">
+                    NORAD 39163
+                </div>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="telemetry-label">Latitude</div>
+                <div class="telemetry-value" id="aamush-lat">—</div>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="telemetry-label">Longitude</div>
+                <div class="telemetry-value" id="aamush-lon">—</div>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="telemetry-label">Altitude</div>
+                <div class="telemetry-value green" id="aamush-alt">—</div>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="telemetry-label">Orbital Speed</div>
+                <div class="telemetry-value gold" id="aamush-speed">—</div>
+            </div>
+
+            <div class="telemetry-card wide">
+                <div class="telemetry-label">East Africa Time</div>
+                <div class="telemetry-value blue" id="aamush-clock">—</div>
+                <div class="telemetry-sub" id="aamush-date">—</div>
+            </div>
+
+            <div class="telemetry-card wide">
+                <div class="telemetry-label">Orbital Data Source</div>
+                <div class="telemetry-value green" id="aamush-orbit-status">
+                    CONNECTING...
+                </div>
+                <div class="telemetry-sub">
+                    CelesTrak public orbital elements
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="corridor-panel">
+
+        <div class="corridor-title">
+            AAMush Live Trade Corridors
+        </div>
+
+        <div class="corridors">
+
+            <div class="corridor">TANZANIA → MOMBASA</div>
+            <div class="corridor">TANZANIA → NAIROBI</div>
+            <div class="corridor">TANZANIA → KAMPALA</div>
+            <div class="corridor">TANZANIA → KIGALI</div>
+            <div class="corridor">TANZANIA → BUJUMBURA</div>
+
+        </div>
+
+    </div>
+
+    <div class="data-status">
+
+        <div>
+            ORBITAL POSITION:
+            <span class="genuine">GENUINE EXTERNAL DATA</span>
+        </div>
+
+        <div>
+            MESH-01 TELEMETRY:
+            <span class="simulated">SIMULATION / AWAITING DEVICE FEED</span>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/satellite.js/5.0.0/satellite.min.js"></script>
+
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.122/Build/Cesium/Cesium.js"></script>
+
+<link
+    href="https://cesium.com/downloads/cesiumjs/releases/1.122/Build/Cesium/Widgets/widgets.css"
+    rel="stylesheet">
+
+<script>
+
+(function () {
+
+    const SATELLITE_ID = "39163";
+
+    const TLE_URL =
+        "https://celestrak.org/NORAD/elements/gp.php?CATNR="
+        + SATELLITE_ID + "&FORMAT=JSON";
+
+    let satelliteRecord = null;
+    let satelliteEntity = null;
+    let viewer = null;
+
+    function byId(id) {
+        return document.getElementById(id);
+    }
+
+    function setText(id, value) {
+        const element = byId(id);
+        if (element) element.textContent = value;
+    }
+
+    function updateClock() {
+
+        const now = new Date();
+
+        const clock = new Intl.DateTimeFormat(
+            "en-GB",
+            {
+                timeZone: "Africa/Nairobi",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false
+            }
+        ).format(now);
+
+        const date = new Intl.DateTimeFormat(
+            "en-GB",
+            {
+                timeZone: "Africa/Nairobi",
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        ).format(now);
+
+        setText("aamush-clock", clock + " EAT");
+        setText("aamush-date", date);
+
+    }
+
+    function createCesiumViewer() {
+
+        if (!window.Cesium) {
+            setText(
+                "aamush-orbit-status",
+                "VISUAL ENGINE UNAVAILABLE"
+            );
+            return;
+        }
+
+        try {
+
+            viewer = new Cesium.Viewer(
+                "aamush-earth",
+                {
+                    animation:false,
+                    timeline:false,
+                    geocoder:false,
+                    homeButton:false,
+                    sceneModePicker:false,
+                    navigationHelpButton:false,
+                    fullscreenButton:false,
+                    baseLayerPicker:false,
+                    infoBox:false,
+                    selectionIndicator:false,
+                    terrainProvider: new Cesium.EllipsoidTerrainProvider()
+                }
+            );
+
+            viewer.scene.globe.enableLighting = true;
+
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(
+                    34.5,
+                    -3.5,
+                    4200000
+                )
+            });
+
+            addCorridorRoutes();
+
+        } catch (error) {
+
+            console.error(
+                "AAMush Cesium initialization error:",
+                error
+            );
+
+        }
+
+    }
+
+    function addCorridorRoutes() {
+
+        if (!viewer) return;
+
+        const routes = [
+
+            {
+                name:"Tanzania → Mombasa",
+                points:[
+                    [39.2,-6.8],
+                    [39.7,-5.5],
+                    [39.9,-4.1]
+                ]
+            },
+
+            {
+                name:"Tanzania → Nairobi",
+                points:[
+                    [39.2,-6.8],
+                    [37.9,-4.5],
+                    [36.8,-1.3]
+                ]
+            },
+
+            {
+                name:"Tanzania → Kampala",
+                points:[
+                    [39.2,-6.8],
+                    [34.9,-3.0],
+                    [32.6,0.3]
+                ]
+            },
+
+            {
+                name:"Tanzania → Kigali",
+                points:[
+                    [39.2,-6.8],
+                    [35.5,-3.0],
+                    [30.1,-1.9]
+                ]
+            },
+
+            {
+                name:"Tanzania → Bujumbura",
+                points:[
+                    [39.2,-6.8],
+                    [34.8,-4.2],
+                    [29.4,-3.4]
+                ]
+            }
+
+        ];
+
+        routes.forEach(function(route) {
+
+            const positions = route.points.map(
+                function(point) {
+                    return Cesium.Cartesian3.fromDegrees(
+                        point[0],
+                        point[1],
+                        15000
+                    );
+                }
+            );
+
+            viewer.entities.add({
+                name:route.name,
+                polyline:{
+                    positions:positions,
+                    width:4,
+                    material:new Cesium.PolylineGlowMaterialProperty({
+                        glowPower:.25,
+                        color:Cesium.Color.CYAN
+                    })
+                }
+            });
+
+        });
+
+    }
+
+    async function loadOrbitalData() {
+
+        try {
+
+            setText(
+                "aamush-orbit-status",
+                "CONNECTING TO CELESTRAK..."
+            );
+
+            const response = await fetch(
+                TLE_URL,
+                {
+                    cache:"no-store"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "CelesTrak HTTP " + response.status
+                );
+            }
+
+            const data = await response.json();
+
+            if (!data || !data.length) {
+                throw new Error(
+                    "No orbital record returned"
+                );
+            }
+
+            satelliteRecord = data[0];
+
+            setText(
+                "aamush-satellite-name",
+                satelliteRecord.NAME || "EUTELSAT 7B"
+            );
+
+            setText(
+                "aamush-orbit-status",
+                "ORBITAL FEED ACTIVE"
+            );
+
+            updateSatellite();
+
+        } catch (error) {
+
+            console.error(
+                "AAMush orbital data error:",
+                error
+            );
+
+            setText(
+                "aamush-orbit-status",
+                "FEED TEMPORARILY UNAVAILABLE"
+            );
+
+        }
+
+    }
+
+    function updateSatellite() {
+
+        if (
+            !satelliteRecord ||
+            !window.satellite
+        ) {
+            return;
+        }
+
+        try {
+
+            const line1 =
+                satelliteRecord.TLE_LINE1 ||
+                satelliteRecord.line1;
+
+            const line2 =
+                satelliteRecord.TLE_LINE2 ||
+                satelliteRecord.line2;
+
+            if (!line1 || !line2) {
+                throw new Error(
+                    "TLE unavailable"
+                );
+            }
+
+            const satrec =
+                satellite.twoline2satrec(
+                    line1,
+                    line2
+                );
+
+            const now = new Date();
+
+            const positionAndVelocity =
+                satellite.propagate(
+                    satrec,
+                    now
+                );
+
+            const position =
+                positionAndVelocity.position;
+
+            const velocity =
+                positionAndVelocity.velocity;
+
+            if (!position) return;
+
+            const gmst =
+                satellite.gstime(now);
+
+            const geodetic =
+                satellite.eciToGeodetic(
+                    position,
+                    gmst
+                );
+
+            const latitude =
+                satellite.degreesLat(
+                    geodetic.latitude
+                );
+
+            const longitude =
+                satellite.degreesLong(
+                    geodetic.longitude
+                );
+
+            const altitude =
+                geodetic.height;
+
+            let speed = 0;
+
+            if (velocity) {
+
+                speed =
+                    Math.sqrt(
+                        velocity.x * velocity.x +
+                        velocity.y * velocity.y +
+                        velocity.z * velocity.z
+                    );
+
+            }
+
+            setText(
+                "aamush-lat",
+                latitude.toFixed(3) + "°"
+            );
+
+            setText(
+                "aamush-lon",
+                longitude.toFixed(3) + "°"
+            );
+
+            setText(
+                "aamush-alt",
+                Math.round(altitude).toLocaleString() +
+                " km"
+            );
+
+            setText(
+                "aamush-speed",
+                speed.toFixed(2) +
+                " km/s"
+            );
+
+            updateCesiumSatellite(
+                longitude,
+                latitude,
+                altitude
+            );
+
+        } catch (error) {
+
+            console.error(
+                "AAMush satellite propagation error:",
+                error
+            );
+
+        }
+
+    }
+
+    function updateCesiumSatellite(
+        longitude,
+        latitude,
+        altitude
+    ) {
+
+        if (!viewer) return;
+
+        const position =
+            Cesium.Cartesian3.fromDegrees(
+                longitude,
+                latitude,
+                altitude * 1000
+            );
+
+        if (!satelliteEntity) {
+
+            satelliteEntity =
+                viewer.entities.add({
+
+                    name:"EUTELSAT 7B — NORAD 39163",
+
+                    position:position,
+
+                    point:{
+                        pixelSize:12,
+                        color:Cesium.Color.CYAN,
+                        outlineColor:Cesium.Color.WHITE,
+                        outlineWidth:2
+                    },
+
+                    label:{
+                        text:"EUTELSAT 7B",
+                        font:"12px sans-serif",
+                        fillColor:Cesium.Color.WHITE,
+                        showBackground:true,
+                        backgroundColor:
+                            Cesium.Color.fromAlpha(
+                                Cesium.Color.BLACK,
+                                .65
+                            ),
+                        pixelOffset:
+                            new Cesium.Cartesian2(
+                                0,
+                                -25
+                            )
+                    }
+
+                });
+
+        } else {
+
+            satelliteEntity.position =
+                position;
+
+        }
+
+    }
+
+    updateClock();
+
+    setInterval(
+        updateClock,
+        1000
+    );
+
+    createCesiumViewer();
+
+    loadOrbitalData();
+
+    setInterval(
+        updateSatellite,
+        1000
+    );
+
+    setInterval(
+        loadOrbitalData,
+        15 * 60 * 1000
+    );
+
+})();
+
+</script><!-- COPYRIGHT -->
 
     <div class="copyright-band">
 
