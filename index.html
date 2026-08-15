@@ -2676,6 +2676,48 @@ body > *:not(#aamush-live-mesh) {
   };
 
 })();
+<script>
+/* AAMush Live Intelligence Interaction */
+(function () {
+  const network = document.querySelector('.live-satellite-network');
+  const satellites = document.querySelectorAll('.satellite');
+
+  if (!network) return;
+
+  /* Gentle live movement */
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  document.addEventListener('pointermove', function (e) {
+    targetX = (e.clientX / window.innerWidth - 0.5) * 14;
+    targetY = (e.clientY / window.innerHeight - 0.5) * 14;
+  });
+
+  function animateNetwork() {
+    currentX += (targetX - currentX) * 0.035;
+    currentY += (targetY - currentY) * 0.035;
+
+    network.style.transform =
+      'translate3d(' + currentX + 'px,' + currentY + 'px,0)';
+
+    requestAnimationFrame(animateNetwork);
+  }
+
+  animateNetwork();
+
+  /* Satellite response when touched/clicked */
+  satellites.forEach(function (satellite) {
+    satellite.addEventListener('pointerdown', function () {
+      satellite.classList.add('satellite-active');
+
+      setTimeout(function () {
+        satellite.classList.remove('satellite-active');
+      }, 700);
+    });
+  });
+})();
 </script>
 <!-- END AAMUSH LIVE DEVELOPER BRIEFCASE -->
 </body>
