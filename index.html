@@ -1962,6 +1962,155 @@ body > *:not(#aamush-live-mesh) {
 <!-- =========================================================
      END AAMUSH LIVE INTERACTION LAYER
      ========================================================= --></body>
+<!-- AAMUSH LIVE SATELLITE BACKGROUND -->
+<style>
+#aamush-live-mesh{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(0,100,180,.12),transparent 35%),
+    linear-gradient(180deg,#020713,#030914 55%,#02050c);
+}
+
+.aamush-orbit{
+  position:absolute;
+  left:50%;
+  top:42%;
+  width:min(85vw,900px);
+  height:min(85vw,900px);
+  border:1px solid rgba(0,190,255,.16);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  animation:aamushOrbit 28s linear infinite;
+}
+
+.aamush-orbit:nth-child(2){
+  width:min(65vw,680px);
+  height:min(65vw,680px);
+  animation-duration:21s;
+  animation-direction:reverse;
+}
+
+.aamush-orbit:nth-child(3){
+  width:min(45vw,470px);
+  height:min(45vw,470px);
+  animation-duration:15s;
+}
+
+.aamush-satellite{
+  position:absolute;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#24d9ff;
+  box-shadow:
+    0 0 8px #24d9ff,
+    0 0 22px rgba(36,217,255,.8);
+  top:0;
+  left:50%;
+}
+
+.aamush-satellite::after{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1px solid rgba(36,217,255,.4);
+  border-radius:50%;
+  animation:aamushPulse 1.5s infinite;
+}
+
+.aamush-earth{
+  position:absolute;
+  left:50%;
+  top:42%;
+  width:min(20vw,180px);
+  height:min(20vw,180px);
+  min-width:110px;
+  min-height:110px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,
+      rgba(50,180,255,.9),
+      rgba(5,50,100,.75) 45%,
+      #010711 75%);
+  box-shadow:
+    0 0 35px rgba(0,160,255,.25),
+    inset -20px -20px 35px rgba(0,0,0,.65);
+  animation:aamushEarth 12s linear infinite;
+}
+
+.aamush-earth::after{
+  content:"";
+  position:absolute;
+  inset:-10px;
+  border-radius:50%;
+  border:1px solid rgba(0,210,255,.2);
+}
+
+@keyframes aamushOrbit{
+  from{transform:translate(-50%,-50%) rotate(0deg)}
+  to{transform:translate(-50%,-50%) rotate(360deg)}
+}
+
+@keyframes aamushEarth{
+  from{filter:hue-rotate(0deg)}
+  to{filter:hue-rotate(360deg)}
+}
+
+@keyframes aamushPulse{
+  0%,100%{transform:scale(.7);opacity:.2}
+  50%{transform:scale(1.5);opacity:1}
+}
+
+.aamush-star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 6px rgba(150,220,255,.8);
+  animation:aamushTwinkle 2.5s ease-in-out infinite;
+}
+
+@keyframes aamushTwinkle{
+  0%,100%{opacity:.2}
+  50%{opacity:1}
+}
+</style>
+
+<div id="aamush-live-mesh">
+
+  <div class="aamush-earth"></div>
+
+  <div class="aamush-orbit">
+    <div class="aamush-satellite"></div>
+  </div>
+
+  <div class="aamush-orbit">
+    <div class="aamush-satellite"></div>
+  </div>
+
+  <div class="aamush-orbit">
+    <div class="aamush-satellite"></div>
+  </div>
+
+  <span class="aamush-star" style="left:8%;top:16%"></span>
+  <span class="aamush-star" style="left:18%;top:72%"></span>
+  <span class="aamush-star" style="left:32%;top:22%"></span>
+  <span class="aamush-star" style="left:47%;top:9%"></span>
+  <span class="aamush-star" style="left:64%;top:18%"></span>
+  <span class="aamush-star" style="left:82%;top:28%"></span>
+  <span class="aamush-star" style="left:91%;top:67%"></span>
+  <span class="aamush-star" style="left:73%;top:82%"></span>
+  <span class="aamush-star" style="left:42%;top:88%"></span>
+  <span class="aamush-star" style="left:12%;top:46%"></span>
+
+</div>
+<!-- END LIVE SATELLITE BACKGROUND -->
 </body>
 </html>
 
