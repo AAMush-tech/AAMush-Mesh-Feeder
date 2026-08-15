@@ -1252,5 +1252,298 @@
      END AAMUSH FLOATING DEVELOPER BRIEFCASE
      ===================================================== --></body>
 </style>
+<!-- =========================================================
+     AAMUSH LIVE SATELLITE + MESH VISUALIZATION
+     ADD-ON ONLY — DOES NOT REPLACE EXISTING AAMush CONTENT
+     ========================================================= -->
+
+<style>
+#aamush-live-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgba(0,150,255,.07) 0%,
+      transparent 32%),
+    radial-gradient(circle at 20% 20%,
+      rgba(0,220,255,.04) 0%,
+      transparent 28%);
+}
+
+#aamush-live-mesh canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.aamush-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(85vw,850px);
+  height: min(85vw,850px);
+  transform: translate(-50%,-50%);
+  border: 1px solid rgba(0,180,255,.08);
+  border-radius: 50%;
+  animation: aamushOrbit 28s linear infinite;
+}
+
+.aamush-orbit:nth-child(2) {
+  width: min(65vw,650px);
+  height: min(65vw,650px);
+  animation-duration: 20s;
+  animation-direction: reverse;
+}
+
+.aamush-orbit:nth-child(3) {
+  width: min(45vw,450px);
+  height: min(45vw,450px);
+  animation-duration: 13s;
+}
+
+@keyframes aamushOrbit {
+  from { transform:translate(-50%,-50%) rotate(0deg); }
+  to   { transform:translate(-50%,-50%) rotate(360deg); }
+}
+
+.aamush-satellite {
+  position:absolute;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#00d9ff;
+  box-shadow:
+    0 0 8px #00d9ff,
+    0 0 22px rgba(0,217,255,.8);
+}
+
+.aamush-sat-1 {
+  top:-5px;
+  left:50%;
+}
+
+.aamush-sat-2 {
+  right:-5px;
+  top:50%;
+}
+
+.aamush-sat-3 {
+  bottom:-5px;
+  left:50%;
+}
+
+.aamush-sat-4 {
+  left:-5px;
+  top:50%;
+}
+
+.aamush-mesh-status {
+  position:fixed;
+  left:14px;
+  bottom:14px;
+  z-index:9998;
+  pointer-events:none;
+  padding:7px 11px;
+  border:1px solid rgba(0,210,255,.35);
+  border-radius:8px;
+  background:rgba(0,10,25,.72);
+  color:#9eeeff;
+  font:10px monospace;
+  letter-spacing:.5px;
+  backdrop-filter:blur(8px);
+}
+
+.aamush-mesh-dot {
+  display:inline-block;
+  width:6px;
+  height:6px;
+  margin-right:6px;
+  border-radius:50%;
+  background:#19e66b;
+  box-shadow:0 0 8px #19e66b;
+  animation:aamushLivePulse 1.5s infinite;
+}
+
+@keyframes aamushLivePulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:.35; transform:scale(.7); }
+}
+
+/* Keep the existing AAMush interface above the visualization */
+body > *:not(#aamush-live-mesh) {
+  position:relative;
+  z-index:1;
+}
+</style>
+
+<div id="aamush-live-mesh" aria-hidden="true">
+  <canvas id="aamush-mesh-canvas"></canvas>
+
+  <div class="aamush-orbit">
+    <div class="aamush-satellite aamush-sat-1"></div>
+    <div class="aamush-satellite aamush-sat-3"></div>
+  </div>
+
+  <div class="aamush-orbit">
+    <div class="aamush-satellite aamush-sat-2"></div>
+    <div class="aamush-satellite aamush-sat-4"></div>
+  </div>
+
+  <div class="aamush-orbit"></div>
+</div>
+
+<div class="aamush-mesh-status">
+  <span class="aamush-mesh-dot"></span>
+  AAMUSH MESH • SATELLITE LINK LIVE
+</div>
+
+<script>
+(function(){
+
+  const canvas = document.getElementById("aamush-mesh-canvas");
+  const ctx = canvas.getContext("2d");
+
+  let width = 0;
+  let height = 0;
+  let nodes = [];
+  let pulses = [];
+
+  function resize(){
+
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+
+    nodes = [];
+
+    const count = Math.min(
+      42,
+      Math.max(18, Math.floor(width / 28))
+    );
+
+    for(let i=0;i<count;i++){
+
+      nodes.push({
+        x:Math.random()*width,
+        y:Math.random()*height,
+        vx:(Math.random()-.5)*.22,
+        vy:(Math.random()-.5)*.22,
+        r:Math.random()*2+1,
+        phase:Math.random()*Math.PI*2
+      });
+
+    }
+  }
+
+  function pulse(){
+
+    if(nodes.length){
+
+      const n =
+        nodes[Math.floor(Math.random()*nodes.length)];
+
+      pulses.push({
+        x:n.x,
+        y:n.y,
+        r:2,
+        life:1
+      });
+
+    }
+  }
+
+  function draw(){
+
+    ctx.clearRect(0,0,width,height);
+
+    const maxDistance = 145;
+
+    for(let i=0;i<nodes.length;i++){
+
+      const a = nodes[i];
+
+      a.x += a.vx;
+      a.y += a.vy;
+      a.phase += .015;
+
+      if(a.x<0 || a.x>width) a.vx *= -1;
+      if(a.y<0 || a.y>height) a.vy *= -1;
+
+      for(let j=i+1;j<nodes.length;j++){
+
+        const b = nodes[j];
+
+        const dx=a.x-b.x;
+        const dy=a.y-b.y;
+        const distance=Math.sqrt(dx*dx+dy*dy);
+
+        if(distance < maxDistance){
+
+          const opacity =
+            (1-distance/maxDistance)*.20;
+
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=
+            "rgba(0,180,255,"+opacity+")";
+          ctx.lineWidth=.7;
+          ctx.stroke();
+        }
+      }
+
+      const glow =
+        0.45 + Math.sin(a.phase)*.25;
+
+      ctx.beginPath();
+      ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
+      ctx.fillStyle=
+        "rgba(0,210,255,"+glow+")";
+      ctx.shadowBlur=8;
+      ctx.shadowColor="#00d9ff";
+      ctx.fill();
+      ctx.shadowBlur=0;
+    }
+
+    for(let i=pulses.length-1;i>=0;i--){
+
+      const p=pulses[i];
+
+      p.r += 1.5;
+      p.life -= .025;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+
+      ctx.strokeStyle=
+        "rgba(0,220,255,"+p.life+")";
+
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+
+      if(p.life<=0)
+        pulses.splice(i,1);
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+
+  window.addEventListener("resize",resize);
+
+  setInterval(pulse,900);
+
+})();
+</script>
+
+<!-- =========================================================
+     END AAMUSH LIVE SATELLITE + MESH ADD-ON
+     ========================================================= --></body>
 </body>
 </html>
+
