@@ -2111,6 +2111,144 @@ body > *:not(#aamush-live-mesh) {
 
 </div>
 <!-- END LIVE SATELLITE BACKGROUND -->
+<!-- AAMUSH LIVE PLATFORM MODULES -->
+<script>
+(function(){
+
+  const modules = {
+    "AURA Routing": {
+      title:"AURA Routing — Live Route Intelligence",
+      text:"Monitor convoy formation, route matching, backhaul opportunities and corridor optimization.",
+      action:"Run Route Scan"
+    },
+    "REGEN Registry": {
+      title:"REGEN Registry — Live Asset Verification",
+      text:"Inspect warehouse receipts, digital identities and verification states within the AAMush demonstration mesh.",
+      action:"Run Registry Scan"
+    },
+    "SURETY Settlement": {
+      title:"SURETY Settlement — Live Settlement Monitor",
+      text:"Monitor settlement activity, transaction states and cross-border value movement.",
+      action:"Run Settlement Scan"
+    },
+    "NEXUS Ghost Inventory": {
+      title:"NEXUS Ghost Inventory — Live Inventory Intelligence",
+      text:"Explore projected commodity inventory, harvest intelligence and future cargo opportunities.",
+      action:"Scan Inventory"
+    },
+    "Idle-Capacity Staking": {
+      title:"Idle-Capacity Staking — Capacity Monitor",
+      text:"Monitor available truck capacity and simulated staking activity across the mesh.",
+      action:"Scan Capacity"
+    },
+    "Cross-Border Trust": {
+      title:"Cross-Border Trust — Network Monitor",
+      text:"Monitor participating corridor nodes and the status of cross-border trust connections.",
+      action:"Run Trust Scan"
+    }
+  };
+
+  function openModule(data){
+
+    const panel=document.getElementById("aamushInteractionPanel");
+    const title=document.getElementById("aamushPanelTitle");
+    const content=document.getElementById("aamushPanelContent");
+
+    if(!panel || !title || !content) return;
+
+    title.textContent=data.title;
+
+    content.innerHTML=`
+      <div class="aamush-panel-text">
+        ${data.text}
+      </div>
+
+      <div class="aamush-panel-grid" style="margin-top:18px">
+
+        <div class="aamush-panel-card">
+          <strong>LIVE</strong>
+          <small>MODULE STATUS</small>
+        </div>
+
+        <div class="aamush-panel-card">
+          <strong id="modulePulse">ACTIVE</strong>
+          <small>SYSTEM RESPONSE</small>
+        </div>
+
+      </div>
+
+      <button class="aamush-action" id="moduleAction">
+        ${data.action}
+      </button>
+
+      <div id="moduleResult"
+           class="aamush-panel-text"
+           style="display:none">
+      </div>
+    `;
+
+    panel.classList.add("open");
+
+    document
+      .getElementById("moduleAction")
+      .onclick=function(){
+
+        const result=document.getElementById("moduleResult");
+
+        result.style.display="block";
+        result.innerHTML=
+          "✓ Scan completed.<br><br>" +
+          "AAMush Mesh-01 has responded successfully. " +
+          "Live interface is operational.";
+
+        const pulse=document.getElementById("modulePulse");
+
+        if(pulse){
+          pulse.textContent="RESPONDING";
+        }
+      };
+  }
+
+  document.querySelectorAll(".feature-card").forEach(card=>{
+
+    const heading=card.querySelector("h3");
+
+    if(!heading) return;
+
+    const name=heading.textContent.trim();
+
+    if(!modules[name]) return;
+
+    card.classList.add("aamush-interactive");
+
+    card.setAttribute(
+      "role",
+      "button"
+    );
+
+    card.setAttribute(
+      "tabindex",
+      "0"
+    );
+
+    card.addEventListener("click",function(){
+      openModule(modules[name]);
+    });
+
+    card.addEventListener("keydown",function(e){
+
+      if(e.key==="Enter" || e.key===" "){
+        e.preventDefault();
+        openModule(modules[name]);
+      }
+
+    });
+
+  });
+
+})();
+</script>
+<!-- END AAMUSH LIVE PLATFORM MODULES -->
 </body>
 </html>
 
