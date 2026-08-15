@@ -680,7 +680,7 @@
     color: var(--text-quaternary);
   }
 
-  /* RESPONSIVE */
+  /* RESPONSIVE */Dr
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; padding: 48px 24px 40px; }
     .hero h1 { font-size: 32px; }
@@ -695,6 +695,167 @@
     .feeder-metric-value { font-size: 20px; }
     .feeder-body { padding: 10px; }
     .stats-bar-inner { grid-template-columns: 1fr; }
+  }
+/* =========================================================
+   AAMush LIVE SATELLITE NETWORK — BACKGROUND ENGINE
+   ========================================================= */
+
+.live-satellite-network {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.72;
+}
+
+.live-satellite-network::before,
+.live-satellite-network::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(0, 210, 255, 0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.live-satellite-network::before {
+  width: 72vmin;
+  height: 72vmin;
+  animation: aamush-pulse 5s ease-in-out infinite;
+}
+
+.live-satellite-network::after {
+  width: 105vmin;
+  height: 105vmin;
+  animation: aamush-pulse 8s ease-in-out infinite reverse;
+}
+
+.satellite-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(0, 190, 255, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+
+.orbit-1 {
+  width: 55vmin;
+  height: 55vmin;
+  animation: aamush-orbit-1 18s linear infinite;
+}
+
+.orbit-2 {
+  width: 78vmin;
+  height: 78vmin;
+  animation: aamush-orbit-2 27s linear infinite reverse;
+}
+
+.orbit-3 {
+  width: 100vmin;
+  height: 100vmin;
+  animation: aamush-orbit-3 36s linear infinite;
+}
+
+.satellite {
+  position: absolute;
+  left: 50%;
+  top: -9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  font-size: 9px;
+  color: #ffffff;
+  background: rgba(0, 190, 255, 0.9);
+  box-shadow:
+    0 0 8px rgba(0, 210, 255, 0.95),
+    0 0 20px rgba(0, 180, 255, 0.65),
+    0 0 40px rgba(0, 150, 255, 0.35);
+  animation: aamush-satellite-pulse 2.2s ease-in-out infinite;
+}
+
+.sat-2 {
+  background: rgba(80, 120, 255, 0.95);
+  animation-delay: 0.7s;
+}
+
+.sat-3 {
+  background: rgba(0, 255, 190, 0.95);
+  animation-delay: 1.4s;
+}
+
+@keyframes aamush-orbit-1 {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes aamush-orbit-2 {
+  from {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+
+@keyframes aamush-orbit-3 {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes aamush-satellite-pulse {
+  0%, 100% {
+    transform: scale(0.75);
+    box-shadow:
+      0 0 7px rgba(0, 210, 255, 0.8),
+      0 0 15px rgba(0, 180, 255, 0.45);
+  }
+
+  50% {
+    transform: scale(1.35);
+    box-shadow:
+      0 0 12px rgba(0, 230, 255, 1),
+      0 0 30px rgba(0, 190, 255, 0.8),
+      0 0 55px rgba(0, 150, 255, 0.45);
+  }
+}
+
+@keyframes aamush-pulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .satellite-orbit,
+  .satellite,
+  .live-satellite-network::before,
+  .live-satellite-network::after {
+    animation: none;
+  }
   }
 </style>
 </head>
