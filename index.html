@@ -3,2939 +3,1254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AAMush — East Africa's Autonomous Commodity-Logistics Mesh</title>
-
+<title>AAMush — East African Trade-Logistics Mesh</title>
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html,body{
-  min-height:100%;
-}
-
-body{
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:linear-gradient(180deg,#f0f2f5 0%,#e8ecf1 45%,#dce3ea 100%);
-  color:#17212b;
-}
-
-button{
-  font:inherit;
-}
-
-.app{
-  width:100%;
-  max-width:760px;
-  min-height:100vh;
-  margin:auto;
-  position:relative;
-  overflow:hidden;
-}
-
-header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:14px 18px;
-  background:rgba(255,255,255,.78);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(0,0,0,.06);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.layers{
-  width:32px;
-  height:32px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
-.layers div{
-  width:18px;
-  height:5px;
-  background:#17212b;
-  border-radius:2px;
-  margin-bottom:2px;
-  transform:perspective(8px) rotateX(20deg);
-}
-
-.layers div:nth-child(2){
-  width:24px;
-}
-
-.layers div:nth-child(3){
-  width:18px;
-  margin-bottom:0;
-}
-
-.header-title{
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:-.5px;
-}
-
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.btn{
-  border:0;
-  border-radius:10px;
-  padding:9px 16px;
-  background:#17212b;
-  color:white;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.menu-btn{
-  width:38px;
-  height:38px;
-  border:0;
-  background:transparent;
-  border-radius:9px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:5px;
-  cursor:pointer;
-}
-
-.menu-btn span{
-  width:21px;
-  height:2.5px;
-  border-radius:3px;
-  background:#17212b;
-}
-
-.hero{
-  padding:34px 20px 22px;
-}
-
-.status-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:6px 12px;
-  border-radius:20px;
-  background:rgba(255,255,255,.82);
-  border:1px solid rgba(0,0,0,.06);
-  margin-bottom:15px;
-}
-
-.status-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#22c55e;
-  animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:.5;transform:scale(1.3)}
-}
-
-.hero h1{
-  max-width:650px;
-  font-size:clamp(30px,8vw,52px);
-  line-height:1.05;
-  letter-spacing:-1.5px;
-  margin-bottom:15px;
-}
-
-.hero p{
-  max-width:650px;
-  font-size:14px;
-  line-height:1.65;
-  color:#56616b;
-  margin-bottom:20px;
-}
-
-.cta-row{
-  display:flex;
-  gap:10px;
-}
-
-.cta-primary,
-.cta-secondary{
-  flex:1;
-  border-radius:12px;
-  padding:13px 15px;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.cta-primary{
-  background:#17212b;
-  color:white;
-  border:0;
-}
-
-.cta-secondary{
-  background:white;
-  color:#17212b;
-  border:1px solid #d5dce3;
-}
-
-.map-container{
-  height:220px;
-  margin:0 18px 24px;
-  border-radius:18px;
-  overflow:hidden;
-  background:linear-gradient(135deg,#09192c,#174b70,#0a2138);
-  box-shadow:0 12px 35px rgba(0,50,100,.2);
-}
-
-.radar-section{
-  padding:8px 18px 24px;
-}
-
-.radar-wrap{
-  position:relative;
-  width:280px;
-  height:280px;
-  max-width:100%;
-  margin:auto;
-}
-
-.radar-svg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-}
-
-.radar-node{
-  position:absolute;
-  width:46px;
-  height:46px;
-  border:0;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  box-shadow:0 5px 18px rgba(0,0,0,.22);
-  transition:transform .2s;
-  z-index:2;
-}
-
-.radar-node:hover{
-  transform:scale(1.12);
-}
-
-.radar-center{
-  width:54px;
-  height:54px;
-  background:#0f172a;
-}
-
-.cards{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:0 18px 18px;
-}
-
-.card{
-  min-width:190px;
-  background:rgba(255,255,255,.86);
-  border:1px solid rgba(0,0,0,.06);
-  border-radius:16px;
-  padding:16px;
-}
-
-.card-icon{
-  width:36px;
-  height:36px;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  margin-bottom:10px;
-}
-
-.card h3{
-  font-size:13px;
-  margin-bottom:6px;
-}
-
-.card p{
-  font-size:11px;
-  line-height:1.5;
-  color:#66727c;
-}
-
-.status-bar{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  padding:4px 18px 110px;
-}
-
-.status-item{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 9px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.status-item span:first-child{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-}
-
-.status-item span:last-child{
-  font-size:12px;
-  font-weight:700;
-}
-
-
-/* =========================================================
-   FLOATING AAMUSH BRIEFCASE BUTTON
-   ========================================================= */
-
-.briefcase-btn{
-  position:fixed;
-  right:12px;
-  bottom:22px;
-  width:112px;
-  height:112px;
-  padding:0;
-  border:2px solid white;
-  border-radius:50%;
-  overflow:hidden;
-  background:#06100b;
-  cursor:pointer;
-  z-index:80;
-  box-shadow:
-    0 0 28px rgba(0,168,255,.42),
-    0 12px 35px rgba(0,0,0,.25);
-  animation:briefcaseFloat 2.8s ease-in-out infinite;
-}
-
-.briefcase-btn img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-@keyframes briefcaseFloat{
-  0%,100%{
-    transform:translateY(0);
+  :root {
+    --text-primary: #0f0f0f;
+    --text-secondary: #3f3f3f;
+    --text-tertiary: #6b6b6b;
+    --text-quaternary: #9e9e9e;
+    --surface: #ffffff;
+    --surface-muted: #f7f7f7;
+    --surface-raised: #fafafa;
+    --surface-strong: #eeeeee;
+    --border: #e5e5e5;
+    --positive: #16a34a;
+    --danger: #dc2626;
+    --warning: #ca8a04;
+    --accent: #2563eb;
+    --chart-1: #2563eb;
+    --chart-2: #dc2626;
+    --chart-3: #16a34a;
+    --chart-4: #7c3aed;
+    --chart-5: #737373;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
   }
-  50%{
-    transform:translateY(-9px);
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-primary: #f5f5f5;
+      --text-secondary: #d4d4d4;
+      --text-tertiary: #a3a3a3;
+      --text-quaternary: #737373;
+      --surface: #0a0a0a;
+      --surface-muted: #141414;
+      --surface-raised: #1a1a1a;
+      --surface-strong: #262626;
+      --border: #2a2a2a;
+      --positive: #22c55e;
+      --danger: #ef4444;
+      --warning: #eab308;
+      --accent: #3b82f6;
+      --chart-1: #3b82f6;
+      --chart-2: #ef4444;
+      --chart-3: #22c55e;
+      --chart-4: #a78bfa;
+      --chart-5: #a3a3a3;
+    }
   }
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    background: var(--surface);
+    line-height: 1.6;
+  }
+  a { text-decoration: none; color: inherit; }
 
+  /* NAV */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  @media (prefers-color-scheme: dark) {
+    .nav { background: rgba(10,10,10,0.85); }
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  .nav-brand svg {
+    width: 26px;
+    height: 26px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-cta {
+    padding: 8px 18px;
+    border-radius: 8px;
+    background: var(--text-primary);
+    color: var(--surface);
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
 
-/* =========================================================
-   BRIEFCASE OVERLAY
-   ========================================================= */
+  /* HERO */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--positive);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.8px;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+  }
+  .btn-primary {
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: var(--text-primary);
+    color: var(--surface);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: var(--surface-raised);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--text-primary); }
 
-.briefcase-overlay{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:none;
-  padding:12px;
-  overflow-y:auto;
-  background:rgba(0,8,18,.78);
-  backdrop-filter:blur(8px);
-}
+  /* FEEDER SECTION */
+  .feeder-section {
+    background: var(--surface-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px;
+  }
+  .feeder-section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .feeder-section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .feeder-section-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .feeder-section-header p {
+    font-size: 15px;
+    color: var(--text-tertiary);
+  }
+  .feeder-wrap {
+    max-width: 520px;
+    margin: 0 auto;
+  }
 
-.briefcase-overlay.open{
-  display:block;
-}
+  /* FEEDER DEVICE STYLES (embedded) */
+  .feeder-root {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface-muted);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  .feeder-chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--border);
+  }
+  .feeder-chrome-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .feeder-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--positive);
+    animation: feeder-pulse 2s ease-in-out infinite;
+  }
+  @keyframes feeder-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+  .feeder-chrome-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .feeder-chrome-meta {
+    font-size: 11px;
+    color: var(--text-quaternary);
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+  .feeder-inventors {
+    font-size: 9px;
+    color: var(--text-quaternary);
+    text-align: center;
+    padding: 5px 14px 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--border);
+  }
+  .feeder-body {
+    padding: 14px;
+  }
+  .feeder-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .feeder-metric {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    background: var(--surface);
+  }
+  .feeder-metric-label {
+    font-size: 10px;
+    color: var(--text-quaternary);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .feeder-metric-value {
+    font-size: 24px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+  .feeder-metric-delta {
+    font-size: 11px;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .feeder-positive { color: var(--positive); }
+  .feeder-mini-map {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-raised);
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .feeder-node {
+    text-align: center;
+    flex: 1;
+  }
+  .feeder-node-ring {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 4px;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all 0.4s ease-out;
+    color: var(--text-tertiary);
+    background: var(--surface);
+  }
+  .feeder-node-ring.live {
+    border-color: var(--positive);
+    background: rgba(22, 163, 74, 0.08);
+    color: var(--positive);
+    box-shadow: 0 0 8px rgba(22, 163, 74, 0.2);
+  }
+  .feeder-node-ring.warn {
+    border-color: var(--warning);
+    background: rgba(202, 138, 4, 0.08);
+    color: var(--warning);
+    animation: feeder-blink 1s ease-in-out infinite;
+  }
+  @keyframes feeder-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .feeder-node-label {
+    font-size: 9px;
+    color: var(--text-quaternary);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .feeder-connector {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    position: relative;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  .feeder-connector::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: var(--flow, 0%);
+    background: var(--positive);
+    border-radius: 1px;
+    transition: width 0.8s ease-out;
+  }
+  .feeder-ticker {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .feeder-ticker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-raised);
+  }
+  .feeder-ticker-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+  }
+  .feeder-ticker-count {
+    font-size: 10px;
+    color: var(--text-quaternary);
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+  .feeder-stream {
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  .feeder-stream::-webkit-scrollbar { width: 4px; }
+  .feeder-stream::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .feeder-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--border);
+    animation: feeder-slide 0.35s ease-out;
+  }
+  .feeder-line:last-child { border-bottom: none; }
+  @keyframes feeder-slide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .feeder-line-time {
+    color: var(--text-quaternary);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    min-width: 54px;
+  }
+  .feeder-line-tag {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .feeder-tag-aura {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--chart-1);
+  }
+  .feeder-tag-regen {
+    background: rgba(22, 163, 74, 0.1);
+    color: var(--chart-3);
+  }
+  .feeder-tag-settle {
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--chart-4);
+  }
+  .feeder-tag-alert {
+    background: rgba(202, 138, 4, 0.1);
+    color: var(--warning);
+  }
+  .feeder-tag-ghost {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--accent);
+  }
+  .feeder-line-msg {
+    color: var(--text-secondary);
+    word-break: break-word;
+  }
+  .feeder-line-msg strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .feeder-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-raised);
+    font-size: 10px;
+    color: var(--text-quaternary);
+  }
+  .feeder-signal {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .feeder-bar {
+    width: 3px;
+    background: var(--text-quaternary);
+    border-radius: 1px;
+    opacity: 0.4;
+  }
+  .feeder-bar.on {
+    background: var(--positive);
+    opacity: 1;
+  }
 
-.briefcase-window{
-  width:100%;
-  max-width:700px;
-  margin:8px auto 35px;
-  background:#f5f8fb;
-  border-radius:21px;
-  overflow:hidden;
-  box-shadow:0 25px 80px rgba(0,0,0,.4);
-}
+  /* FEATURES */
+  .features {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .features-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .features-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .features-header p {
+    font-size: 15px;
+    color: var(--text-tertiary);
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .feature-card:hover {
+    border-color: var(--text-primary);
+  }
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .feature-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .feature-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .feature-card p {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.5;
+  }
 
-.briefcase-header{
-  position:relative;
-  padding:22px 52px 20px 20px;
-  color:white;
-  background:linear-gradient(135deg,#061827,#0b3655);
-}
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--surface-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 24px;
+  }
+  .stats-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  .stat-item h3 {
+    font-size: 32px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 4px;
+  }
+  .stat-item p {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
 
-.briefcase-header h2{
-  font-size:21px;
-  margin-bottom:6px;
-}
+  /* DEVELOPER SIGNATURE */
+  .dev-signature {
+    background: var(--surface-muted);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+  }
+  .dev-signature-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .dev-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--surface-raised);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+  .dev-info {
+    text-align: left;
+  }
+  .dev-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .dev-title {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+  .dev-email {
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 4px;
+    font-family: var(--font-mono);
+  }
+  .dev-email a:hover { text-decoration: underline; }
+  .dev-seal {
+    font-size: 11px;
+    color: var(--text-quaternary);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
 
-.briefcase-header p{
-  color:#c9d8e6;
-  font-size:12px;
-  line-height:1.5;
-}
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .footer-brand svg {
+    width: 24px;
+    height: 24px;
+  }
+  .footer-inventors {
+    font-size: 12px;
+    color: var(--text-quaternary);
+    margin-bottom: 20px;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--text-quaternary);
+  }
 
-.close-briefcase{
-  position:absolute;
-  right:10px;
-  top:10px;
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:50%;
-  color:white;
-  background:rgba(255,255,255,.12);
-  font-size:25px;
-  cursor:pointer;
-}
-
-.briefcase-content{
-  padding:16px;
-}
-
-.folder{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  text-align:left;
-  border:1px solid #d8e0e7;
-  background:white;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:11px;
-  cursor:pointer;
-}
-
-.folder-icon{
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:#edf5ff;
-  font-size:23px;
-  flex:none;
-}
-
-.folder-text{
-  flex:1;
-}
-
-.folder-text strong{
-  display:block;
-  font-size:14px;
-  margin-bottom:4px;
-}
-
-.folder-text small{
-  display:block;
-  color:#68747f;
-  font-size:11px;
-  line-height:1.45;
-}
-
-.folder-arrow{
-  font-size:25px;
-  color:#8996a2;
-}
-
-.back-button{
-  border:0;
-  background:none;
-  color:#176ba8;
-  font-weight:800;
-  cursor:pointer;
-  padding:4px 0 14px;
-}
-
-.level-title{
-  font-size:15px;
-  font-weight:900;
-  margin-bottom:13px;
-}
-
-.public-item{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  text-align:left;
-  border:1px solid #d8e0e7;
-  background:white;
-  border-radius:15px;
-  padding:14px;
-  margin-bottom:9px;
-  cursor:pointer;
-}
-
-.public-item-icon{
-  width:40px;
-  height:40px;
-  border-radius:11px;
-  background:#edf5ff;
-  display:grid;
-  place-items:center;
-  font-size:19px;
-  flex:none;
-}
-
-.public-item-text{
-  flex:1;
-}
-
-.public-item-text strong{
-  display:block;
-  font-size:13px;
-  margin-bottom:3px;
-}
-
-.public-item-text small{
-  color:#66727e;
-  font-size:11px;
-  line-height:1.4;
-}
-
-.public-item-arrow{
-  color:#8b97a2;
-  font-size:22px;
-}
-
-.lock-box{
-  text-align:center;
-  background:white;
-  border:1px dashed #b9c4ce;
-  border-radius:17px;
-  padding:35px 18px;
-}
-
-.lock-box .lock-icon{
-  font-size:46px;
-  margin-bottom:10px;
-}
-
-.lock-box h3{
-  margin-bottom:8px;
-}
-
-.lock-box p{
-  color:#68747e;
-  line-height:1.6;
-  font-size:12px;
-}
-
-.document{
-  background:white;
-  border:1px solid #d8e0e7;
-  border-radius:16px;
-  padding:18px;
-  font-size:12px;
-  line-height:1.7;
-  color:#56616c;
-}
-
-.document h3{
-  color:#17212b;
-  font-size:17px;
-  margin-bottom:12px;
-}
-
-.document h4{
-  color:#17212b;
-  margin:17px 0 5px;
-}
-
-.document ul{
-  padding-left:20px;
-}
-
-.developer-profile{
-  background:white;
-  border:1px solid #d8e0e7;
-  border-radius:17px;
-  padding:16px;
-  margin-bottom:11px;
-}
-
-.developer-top{
-  display:flex;
-  gap:15px;
-  align-items:flex-start;
-}
-
-.developer-photo{
-  width:108px;
-  height:140px;
-  object-fit:cover;
-  border-radius:12px;
-  flex:none;
-}
-
-.developer-profile h3{
-  font-size:17px;
-  margin-bottom:5px;
-}
-
-.developer-role{
-  color:#176ba8;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-.developer-profile p{
-  color:#596570;
-  font-size:12px;
-  line-height:1.6;
-}
-
-@media(max-width:520px){
-  .header-title{font-size:18px}
-  .btn{padding:8px 11px}
-  .cta-row{flex-direction:column}
-  .map-container{height:190px}
-  .developer-top{align-items:flex-start}
-}
-
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: 48px 24px 40px; }
+    .hero h1 { font-size: 32px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .stats-bar-inner { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .dev-signature-inner { flex-direction: column; text-align: center; }
+    .dev-info { text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .feeder-metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .feeder-metric-value { font-size: 20px; }
+    .feeder-body { padding: 10px; }
+    .stats-bar-inner { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="app">
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+      AAMush
+    </div>
+    <div class="nav-links">
+      <a href="#mesh">Mesh</a>
+      <a href="#device">Device</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('device').scrollIntoView({behavior:'smooth'})">Open feeder</button>
+  </div>
+</nav>
 
-<header>
-
-<div class="logo">
-<div class="layers">
-<div></div>
-<div></div>
-<div></div>
-</div>
-
-<span class="header-title">AAMush</span>
-</div>
-
-<div class="header-right">
-
-<button class="btn" onclick="openFeeder()">
-Open feeder
-</button>
-
-<button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">
-<span></span>
-<span></span>
-<span></span>
-</button>
-
-</div>
-
-</header>
-
-
+<!-- HERO -->
 <section class="hero">
-
-<div class="status-pill">
-<span class="status-dot"></span>
-<span style="font-size:12px;font-weight:700;color:#2563eb">
-Mesh network live
-</span>
-</div>
-
-<h1>
-East Africa's first autonomous commodity-logistics mesh
-</h1>
-
-<p>
-AAMush connects verified supply, predictive demand, and tokenized
-truck capacity into a single trust layer for traders, truckers,
-warehouses and connected logistics assets across East Africa.
-</p>
-
-<div class="cta-row">
-
-<button class="cta-primary" onclick="launchFeeder()">
-▶ Launch feeder device
-</button>
-
-<button class="cta-secondary" onclick="explorePlatform()">
-Explore platform →
-</button>
-
-</div>
-
+  <div>
+    <div class="hero-badge"><span class="dot"></span> Mesh network live</div>
+    <h1>East Africa's first autonomous commodity-logistics mesh</h1>
+    <p>AAMush connects verified supply, predictive demand, and tokenized truck capacity into a single trustless transaction layer. Built for traders, truckers, and warehouses across the Northern and Central Corridors.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('device').scrollIntoView({behavior:'smooth'})">Launch feeder device</button>
+      <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore platform</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;">
+    <svg width="280" height="280" viewBox="0 0 200 200" fill="none" style="opacity:0.9;">
+      <circle cx="100" cy="100" r="80" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+      <circle cx="100" cy="100" r="55" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+      <circle cx="100" cy="100" r="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+      <circle cx="100" cy="20" r="8" fill="var(--chart-1)" opacity="0.9"/>
+      <circle cx="170" cy="70" r="8" fill="var(--chart-3)" opacity="0.9"/>
+      <circle cx="170" cy="140" r="8" fill="var(--chart-4)" opacity="0.9"/>
+      <circle cx="100" cy="180" r="8" fill="var(--chart-2)" opacity="0.9"/>
+      <circle cx="30" cy="140" r="8" fill="var(--chart-1)" opacity="0.9"/>
+      <circle cx="30" cy="70" r="8" fill="var(--chart-3)" opacity="0.9"/>
+      <circle cx="100" cy="100" r="12" fill="var(--text-primary)"/>
+      <line x1="100" y1="20" x2="170" y2="70" stroke="var(--border)" stroke-width="1"/>
+      <line x1="170" y1="70" x2="170" y2="140" stroke="var(--border)" stroke-width="1"/>
+      <line x1="170" y1="140" x2="100" y2="180" stroke="var(--border)" stroke-width="1"/>
+      <line x1="100" y1="180" x2="30" y2="140" stroke="var(--border)" stroke-width="1"/>
+      <line x1="30" y1="140" x2="30" y2="70" stroke="var(--border)" stroke-width="1"/>
+      <line x1="30" y1="70" x2="100" y2="20" stroke="var(--border)" stroke-width="1"/>
+      <line x1="100" y1="20" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="170" y1="70" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="170" y1="140" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="100" y1="180" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="30" y1="140" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="30" y1="70" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
+    </svg>
+  </div>
 </section>
 
-
-<div class="map-container">
-
-<svg width="100%" height="100%" viewBox="0 0 400 220"
-preserveAspectRatio="xMidYMid slice">
-
-<defs>
-
-<radialGradient id="eastAfricaGlow" cx="70%" cy="40%">
-
-<stop offset="0%" stop-color="#2d8a4e"
-stop-opacity=".8"/>
-
-<stop offset="60%" stop-color="#1a5c32"
-stop-opacity=".5"/>
-
-<stop offset="100%" stop-color="#0a1628"
-stop-opacity="0"/>
-
-</radialGradient>
-
-</defs>
-
-<circle
-cx="280"
-cy="80"
-r="90"
-fill="url(#eastAfricaGlow)"
-/>
-
-<path
-d="M220 30 Q260 20 300 40
-Q340 60 350 100
-Q360 140 330 170
-Q300 200 260 190
-Q220 180 200 150
-Q180 120 190 80
-Q200 40 220 30Z"
-fill="#2d8a4e"
-opacity=".6"
-/>
-
-<line x1="260" y1="55"
-x2="320" y2="85"
-stroke="#ffd700"
-stroke-width="2"/>
-
-<line x1="230" y1="95"
-x2="260" y2="55"
-stroke="#ffd700"
-stroke-width="2"/>
-
-<line x1="320" y1="85"
-x2="340" y2="120"
-stroke="#ffd700"
-stroke-width="2"/>
-
-<g onclick="showCity('Kigali')" style="cursor:pointer">
-<circle cx="260" cy="55" r="6"
-fill="#e74c3c" stroke="white" stroke-width="1.5"/>
-<text x="260" y="45" fill="white"
-font-size="9" font-weight="700"
-text-anchor="middle">Kigali</text>
-</g>
-
-<g onclick="showCity('Bujumbura')" style="cursor:pointer">
-<circle cx="230" cy="95" r="5"
-fill="#e74c3c" stroke="white" stroke-width="1.5"/>
-<text x="230" y="115" fill="white"
-font-size="9" font-weight="700"
-text-anchor="middle">Bujumbura</text>
-</g>
-
-<g onclick="showCity('Mombasa')" style="cursor:pointer">
-<circle cx="320" cy="85" r="6"
-fill="#e74c3c" stroke="white" stroke-width="1.5"/>
-<text x="320" y="75" fill="white"
-font-size="9" font-weight="700"
-text-anchor="middle">Mombasa</text>
-</g>
-
-<g onclick="showCity('Dar es Salaam')" style="cursor:pointer">
-<circle cx="340" cy="120" r="6"
-fill="#e74c3c" stroke="white" stroke-width="1.5"/>
-<text x="340" y="140" fill="white"
-font-size="9" font-weight="700"
-text-anchor="middle">Dar es Salaam</text>
-</g>
-
-</svg>
-
-</div>
-
-
-<section class="radar-section">
-
-<div class="radar-wrap">
-
-<svg class="radar-svg" viewBox="0 0 280 280">
-
-<circle cx="140" cy="140" r="118"
-fill="none"
-stroke="#cbd3dc"
-stroke-width="1"
-stroke-dasharray="5 5"/>
-
-<circle cx="140" cy="140" r="80"
-fill="none"
-stroke="#cbd3dc"
-stroke-width="1"
-stroke-dasharray="5 5"/>
-
-<circle cx="140" cy="140" r="42"
-fill="none"
-stroke="#cbd3dc"
-stroke-width="1"
-stroke-dasharray="5 5"/>
-
-<g stroke="#cbd3dc" stroke-width="1">
-
-<line x1="140" y1="140" x2="140" y2="12"/>
-<line x1="140" y1="140" x2="241" y2="81"/>
-<line x1="140" y1="140" x2="241" y2="199"/>
-<line x1="140" y1="140" x2="140" y2="268"/>
-<line x1="140" y1="140" x2="39" y2="199"/>
-<line x1="140" y1="140" x2="39" y2="81"/>
-
-</g>
-
-<polygon
-points="140,25 225,82 225,198 140,255 55,198 55,82"
-fill="none"
-stroke="#c0c8d4"
-stroke-width="1.5"
-/>
-
-</svg>
-
-
-<button class="radar-node"
-onclick="activateNode('truck')"
-style="top:8px;left:50%;transform:translateX(-50%);background:#2563eb"
-aria-label="Truck">
-
-<svg width="21" height="21"
-viewBox="0 0 24 24"
-fill="white">
-
-<rect x="2" y="8" width="15" height="8" rx="1"/>
-<rect x="17" y="10" width="4" height="6" rx="1"/>
-<circle cx="6" cy="17" r="2"/>
-<circle cx="18" cy="17" r="2"/>
-
-</svg>
-
-</button>
-
-
-<button class="radar-node"
-onclick="activateNode('satellite')"
-style="top:58px;right:20px;background:#22c55e"
-aria-label="Satellite">
-
-<svg width="21" height="21"
-viewBox="0 0 24 24"
-fill="none"
-stroke="white"
-stroke-width="2">
-
-<circle cx="12" cy="5" r="3"/>
-<path d="M12 8v13"/>
-<path d="M5 12l7-5 7 5"/>
-
-</svg>
-
-</button>
-
-
-<button class="radar-node"
-onclick="activateNode('shield')"
-style="bottom:58px;right:20px;background:#8b5cf6"
-aria-label="Security">
-
-<svg width="21" height="21"
-viewBox="0 0 24 24"
-fill="white">
-
-<path d="M12 2L4 5v6c0 5.5 3.4 10.7 8 12
-4.6-1.3 8-6.5 8-12V5l-8-3z"/>
-
-</svg>
-
-</button>
-
-
-<button class="radar-node"
-onclick="activateNode('location')"
-style="bottom:8px;left:50%;transform:translateX(-50%);background:#ef4444"
-aria-label="Location">
-
-<svg width="21" height="21"
-viewBox="0 0 24 24"
-fill="white">
-
-<path d="M12 2C8.1 2 5 5.1 5 9
-c0 5.2 7 13 7 13s7-7.8 7-13
-c0-3.9-3.1-7-7-7zm0 9.5
-c-1.4 0-2.5-1.1-2.5-2.5
-s1.1-2.5 2.5-2.5
-2.5 1.1 2.5 2.5
--1.1 2.5-2.5 2.5z"/>
-
-</svg>
-
-</button>
-
-
-<button class="radar-node"
-onclick="activateNode('chart')"
-style="bottom:58px;left:20px;background:#2563eb"
-aria-label="Analytics">
-
-<svg width="21" height="21"
-viewBox="0 0 24 24"
-fill="none"
-stroke="white"
-stroke-width="2.5">
-
-<line x1="18" y1="20" x2="18" y2="10"/>
-<line x1="12" y1="20" x2="12" y2="4"/>
-<line x1="6" y1="20" x2="6" y2="14"/>
-
-</svg>
-
-</button>
-
-
-<button class="radar-node"
-onclick="activateNode('warehouse')"
-style="top:58px;left:20px;background:#22c55e"
-aria-label="Warehouse">
-
-<svg width="21" height="21"
-viewBox="0 0 24 24"
-fill="none"
-stroke="white"
-stroke-width="2">
-
-<rect x="4" y="4" width="16" height="16" rx="2"/>
-<path d="M9 9h6v6H9z"/>
-
-</svg>
-
-</button>
-
-
-<button class="radar-node radar-center"
-onclick="activateNode('mesh')"
-style="top:50%;left:50%;transform:translate(-50%,-50%)"
-aria-label="Mesh">
-
-<svg width="27" height="27"
-viewBox="0 0 24 24"
-fill="none"
-stroke="#00d4ff"
-stroke-width="1.5">
-
-<circle cx="12" cy="5" r="2"/>
-<circle cx="19" cy="12" r="2"/>
-<circle cx="12" cy="19" r="2"/>
-<circle cx="5" cy="12" r="2"/>
-<circle cx="12" cy="12" r="2"/>
-
-<line x1="12" y1="7" x2="12" y2="10"/>
-<line x1="14" y1="12" x2="17" y2="12"/>
-<line x1="12" y1="14" x2="12" y2="17"/>
-<line x1="7" y1="12" x2="10" y2="12"/>
-
-</svg>
-
-</button>
-
-</div>
-
+<!-- STATS BAR -->
+<section class="stats-bar" id="mesh">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <h3>7</h3>
+      <p>Active convoys</p>
+    </div>
+    <div class="stat-item">
+      <h3>142</h3>
+      <p>Trucks staked</p>
+    </div>
+    <div class="stat-item">
+      <h3>$2.4M</h3>
+      <p>Value flowing today</p>
+    </div>
+    <div class="stat-item">
+      <h3>99.7%</h3>
+      <p>Settlement success</p>
+    </div>
+  </div>
 </section>
 
-
-<div class="cards">
-
-<div class="card" onclick="openCard('telemetry')">
-
-<div class="card-icon" style="background:#dcfce7">
-📡
-</div>
-
-<h3>Real-time Telemetry</h3>
-
-<p>
-Live tracking and IoT data from connected assets on the mesh.
-</p>
-
-</div>
-
-
-<div class="card" onclick="openCard('corridors')">
-
-<div class="card-icon" style="background:#dbeafe">
-🚚
-</div>
-
-<h3>Smart Corridors</h3>
-
-<p>
-AI-assisted route and capacity coordination across East Africa.
-</p>
-
-</div>
-
-
-<div class="card" onclick="openCard('trade')">
-
-<div class="card-icon" style="background:#ede9fe">
-🛡
-</div>
-
-<h3>Secure Trade</h3>
-
-<p>
-Verification, controlled records and tokenized capacity concepts.
-</p>
-
-</div>
-
-</div>
-
-
-<div class="status-bar">
-
-<div class="status-item" onclick="toggleStatus('Build')">
-<span style="background:#22c55e"></span>
-<span>Build</span>
-</div>
-
-<div class="status-item" onclick="toggleStatus('Connect')">
-<span style="background:#2563eb"></span>
-<span>Connect</span>
-</div>
-
-<div class="status-item" onclick="toggleStatus('Move')">
-<span style="background:#eab308"></span>
-<span>Move</span>
-</div>
-
-<div class="status-item" onclick="toggleStatus('Grow')">
-<span style="background:#8b5cf6"></span>
-<span>Grow</span>
-</div>
-
-</div>
-
-
-<!-- =======================================================
-     FLOATING BUTTON
-     The actual AAMush artwork is inserted in BLOCK 2.
-     ======================================================= -->
-
-<button
-class="briefcase-btn"
-onclick="openBriefcase()"
-aria-label="Open AAMush Project Briefcase"
-title="AAMush Project Briefcase"><div id="briefcaseScreen">
-<section class="briefcase">
-
-<header class="briefcaseHeader">
-<button class="closeButton" id="closeBriefcase">×</button>
-
-<h2>AAMush Project Briefcase</h2>
-
-<p>
-Two-level project access: Public information is available for viewing.
-Private materials remain locked and are not publicly accessible.
-</p>
-</header>
-
-<div class="briefcaseContents" id="briefcaseLevels">
-
-<!-- =====================================================
-     LEVEL 1 — PUBLIC / PRIVATE
-     ===================================================== -->
-
-<div class="briefcaseLevel" id="briefcaseLevel1">
-
-<button class="accessFolder publicFolder"
-onclick="openBriefcaseLevel('public')">
-
-<div class="itemIcon">🌐</div>
-
-<div class="itemText">
-<strong>PUBLIC</strong>
-<span>Information intended for public viewing.</span>
-</div>
-
-<div class="folderArrow">›</div>
-
-</button>
-
-
-<button class="accessFolder privateFolder"
-onclick="showPrivateLocked()">
-
-<div class="itemIcon">🔒</div>
-
-<div class="itemText">
-<strong>PRIVATE</strong>
-<span>Restricted project materials — no public access.</span>
-</div>
-
-<div class="folderLock">LOCKED</div>
-
-</button>
-
-</div>
-
-
-<!-- =====================================================
-     LEVEL 2 — PUBLIC FOLDER
-     ===================================================== -->
-
-<div class="briefcaseLevel"
-id="publicLevel"
-style="display:none;">
-
-<button class="levelBack"
-onclick="showBriefcaseLevel1()">‹ Back</button>
-
-<div class="levelTitle">
-<span>🌐</span>
-
-<div>
-<strong>PUBLIC</strong>
-<small>Public AAMush project information</small>
-</div>
-
-</div>
-
-
-<!-- DEVELOPER PROFILE -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Developer Profile',
-'AAMush Mesh-01 Feeder project developer profile and system background.'
-)">
-
-<div class="itemIcon">👤</div>
-
-<div class="itemText">
-<strong>Developer Profile</strong>
-<span>Developer and project background.</span>
-</div>
-
-</button>
-
-
-<!-- PROJECT DOCUMENTATION -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Project Documentation',
-'AAMush Mesh-01 project documentation and system description.'
-)">
-
-<div class="itemIcon">📁</div>
-
-<div class="itemText">
-<strong>Project Documentation</strong>
-<span>Core project and system documentation.</span>
-</div>
-
-</button>
-
-
-<!-- INTELLECTUAL PROPERTY -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Intellectual-Property Notice',
-'AAMush Mesh-01 documentation and associated materials constitute project development and intellectual-property material. Treat the material as confidential unless disclosure is authorized.'
-)">
-
-<div class="itemIcon">©</div>
-
-<div class="itemText">
-<strong>Intellectual-Property Notice</strong>
-<span>IP, confidentiality and controlled-use notice.</span>
-</div>
-
-</button>
-
-
-<!-- DEVELOPMENT HISTORY -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Development History',
-'Development history, milestones and evidence for the AAMush Mesh-01 project.'
-)">
-
-<div class="itemIcon">🕒</div>
-
-<div class="itemText">
-<strong>Development History</strong>
-<span>Project evolution and development record.</span>
-</div>
-
-</button>
-
-
-<!-- OPERATING MANUAL -->
-
-<button class="briefcaseItem"
-onclick="openManual()">
-
-<div class="itemIcon">📖</div>
-
-<div class="itemText">
-
-<strong>Operating Manual</strong>
-
-<span>
-Complete AAMush Mesh-01 Feeder Device
-Master Operating, Development &amp;
-System Functional Manual.
-</span>
-
-</div>
-
-</button>
-
-
-<!-- SYSTEM ARCHITECTURE -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'System Architecture',
-'Mesh-01 physical-edge architecture, device interfaces and relationship to the wider AAMush mesh.'
-)">
-
-<div class="itemIcon">⚙</div>
-
-<div class="itemText">
-<strong>System Architecture</strong>
-<span>Architecture and system-level documentation.</span>
-</div>
-
-</button>
-
-
-<!-- TESTING -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Testing & Validation',
-'Testing, validation, commissioning and evidence records for the Mesh-01 device.'
-)">
-
-<div class="itemIcon">✓</div>
-
-<div class="itemText">
-<strong>Testing &amp; Validation</strong>
-<span>Validation and commissioning records.</span>
-</div>
-
-</button>
-
-
-<!-- FUTURE DEVELOPMENT -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Future Development',
-'Future features, extensibility and planned development for AAMush Mesh-01.'
-)">
-
-<div class="itemIcon">🚀</div>
-
-<div class="itemText">
-<strong>Future Development</strong>
-<span>Roadmap and future extensibility.</span>
-</div>
-
-</button>
-
-
-<!-- INVESTOR / DEMONSTRATION -->
-
-<button class="briefcaseItem"
-onclick="openInfo(
-'Investor / Demonstration Information',
-'Demonstration-ready AAMush project information and presentation material.'
-)">
-
-<div class="itemIcon">◆</div>
-
-<div class="itemText">
-<strong>Investor / Demonstration Information</strong>
-<span>Demonstration and presentation material.</span>
-</div>
-
-</button>
-
-</div>
-
-
-<!-- =====================================================
-     PRIVATE FOLDER — LOCKED
-     ===================================================== -->
-
-<div class="briefcaseLevel"
-id="privateLevel"
-style="display:none;">
-
-<button class="levelBack"
-onclick="showBriefcaseLevel1()">‹ Back</button>
-
-<div class="privateLocked">
-
-<div class="bigLock">🔒</div>
-
-<h3>PRIVATE</h3>
-
-<p>This folder is restricted.</p>
-
-<strong>No public access</strong>
-
-<span>
-Private project materials are not opened, displayed,
-or exposed through the public Briefcase.
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-</div>
-
-
-<!-- =====================================================
-     INFORMATION WINDOW
-     ===================================================== -->
-
-<div id="infoScreen" class="fullScreen">
-
-<div class="topBar">
-
-<button onclick="closeInfo()">← Back</button>
-
-<div id="infoTitle" class="topBarTitle">
-AAMush
-</div>
-
-</div>
-
-<div class="infoContent">
-
-<div id="infoText" class="infoBox">
-</div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     OPERATING MANUAL WINDOW
-     ===================================================== -->
-
-<div id="manualScreen">
-
-<div class="topBar">
-
-<button onclick="closeManual()">
-← Briefcase
-</button>
-
-<div class="topBarTitle">
-AAMush Mesh-01 Feeder Device — Master Manual
-</div>
-
-</div>
-
-<iframe
-id="manualFrame"
-title="AAMush Mesh-01 Feeder Device Master Manual">
-</iframe>
-
-</div>
-
-
-<!-- =====================================================
-     JAVASCRIPT
-     ===================================================== -->
-
-<script>
-
-const MANUAL_FILE =
-"AAMush-Mesh-01-Feeder-Manual.pdf";
-
-
-const floatingLogo =
-document.getElementById("floatingLogo");
-
-const briefcaseScreen =
-document.getElementById("briefcaseScreen");
-
-const infoScreen =
-document.getElementById("infoScreen");
-
-const manualScreen =
-document.getElementById("manualScreen");
-
-const manualFrame =
-document.getElementById("manualFrame");
-
-
-/* OPEN BRIEFCASE */
-
-floatingLogo.addEventListener("click", function(){
-
-briefcaseScreen.classList.add("active");
-
-document.body.style.overflow="hidden";
-
-});
-
-
-/* CLOSE BRIEFCASE */
-
-document
-.getElementById("closeBriefcase")
-.addEventListener(
-"click",
-closeBriefcase
-);
-
-
-function closeBriefcase(){
-
-briefcaseScreen.classList.remove("active");
-
-document.body.style.overflow="";
-
-}
-
-
-/* OPEN PUBLIC INFORMATION */
-
-function openInfo(title,text){
-
-document
-.getElementById("infoTitle")
-.textContent=title;
-
-document
-.getElementById("infoText")
-.innerHTML=
-"<h2>"+title+"</h2><p>"+text+"</p>";
-
-infoScreen.classList.add("active");
-
-}
-
-
-/* CLOSE INFORMATION */
-
-function closeInfo(){
-
-infoScreen.classList.remove("active");
-
-}
-
-
-/* OPEN OPERATING MANUAL */
-
-function openManual(){
-
-manualFrame.src=MANUAL_FILE;
-
-manualScreen.classList.add("active");
-
-document.body.style.overflow="hidden";
-
-}
-
-
-/* CLOSE OPERATING MANUAL */
-
-function closeManual(){
-
-manualScreen.classList.remove("active");
-
-manualFrame.src="";
-
-document.body.style.overflow="";
-
-}
-
-
-/* =====================================================
-   BRIEFCASE LEVEL CONTROL
-   ===================================================== */
-
-function showBriefcaseLevel1(){
-
-document
-.getElementById("briefcaseLevel1")
-.style.display="flex";
-
-document
-.getElementById("publicLevel")
-.style.display="none";
-
-document
-.getElementById("privateLevel")
-.style.display="none";
-
-}
-
-
-/* OPEN PUBLIC OR PRIVATE LEVEL */
-
-function openBriefcaseLevel(level){
-
-document
-.getElementById("briefcaseLevel1")
-.style.display="none";
-
-document
-.getElementById("publicLevel")
-.style.display=
-(level==="public")
-?"flex"
-:"none";
-
-document
-.getElementById("privateLevel")
-.style.display=
-(level==="private")
-?"flex"
-:"none";
-
-}
-
-
-/* PRIVATE FOLDER */
-
-function showPrivateLocked(){
-
-openBriefcaseLevel("private");
-
-}
-
-
-/* ESCAPE KEY */
-
-document.addEventListener(
-"keydown",
-function(event){
-
-if(event.key==="Escape"){
-
-closeManual();
-
-closeInfo();
-
-closeBriefcase();
-
-}
-
-});
-
-</script>
-
-<!-- =========================================================
-     BLOCK 3 — BRIEFCASE / PUBLIC DOCUMENT CONTENT
-     ========================================================= -->
-
-<style>
-
-/* BRIEFCASE SCREEN */
-
-#briefcaseScreen{
-    position:fixed;
-    inset:0;
-    z-index:200;
-    background:
-        linear-gradient(
-            180deg,
-            #07111f 0%,
-            #0b1b2d 45%,
-            #06101c 100%
-        );
-    color:#fff;
-    display:none;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-}
-
-#briefcaseScreen.active{
-    display:block;
-}
-
-.briefcase{
-    width:100%;
-    max-width:520px;
-    min-height:100vh;
-    margin:0 auto;
-    padding-bottom:40px;
-}
-
-.briefcaseHeader{
-    padding:22px 20px 18px;
-    background:rgba(8,20,34,.96);
-    border-bottom:1px solid rgba(255,255,255,.12);
-    position:sticky;
-    top:0;
-    z-index:5;
-}
-
-.briefcaseHeader h2{
-    margin:0 40px 8px 0;
-    font-size:21px;
-    font-weight:800;
-}
-
-.briefcaseHeader p{
-    margin:0;
-    color:#aebdca;
-    font-size:12px;
-    line-height:1.55;
-}
-
-.closeButton{
-    position:absolute;
-    right:14px;
-    top:14px;
-    width:38px;
-    height:38px;
-    border:0;
-    border-radius:50%;
-    background:rgba(255,255,255,.1);
-    color:#fff;
-    font-size:27px;
-    line-height:38px;
-    cursor:pointer;
-}
-
-/* FOLDER LEVEL */
-
-.briefcaseContents{
-    padding:18px;
-}
-
-.briefcaseLevel{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.accessFolder,
-.briefcaseItem{
-    width:100%;
-    min-height:72px;
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:15px;
-    background:rgba(255,255,255,.07);
-    color:#fff;
-    display:flex;
-    align-items:center;
-    text-align:left;
-    padding:13px;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.accessFolder:active,
-.briefcaseItem:active{
-    transform:scale(.98);
-}
-
-.publicFolder{
-    border-color:rgba(0,180,255,.35);
-}
-
-.privateFolder{
-    opacity:.72;
-}
-
-.itemIcon{
-    width:45px;
-    height:45px;
-    min-width:45px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(255,255,255,.10);
-    font-size:21px;
-    margin-right:12px;
-}
-
-.itemText{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-}
-
-.itemText strong{
-    font-size:14px;
-    font-weight:800;
-}
-
-.itemText span{
-    font-size:11px;
-    line-height:1.45;
-    color:#aebdca;
-}
-
-.folderArrow{
-    font-size:28px;
-    color:#00c8ff;
-    padding-left:8px;
-}
-
-.folderLock{
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:.8px;
-    color:#ffb4b4;
-}
-
-.levelBack{
-    border:0;
-    background:none;
-    color:#00c8ff;
-    text-align:left;
-    padding:5px 2px 12px;
-    font-size:13px;
-    font-weight:700;
-    cursor:pointer;
-}
-
-.levelTitle{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:4px 2px 12px;
-}
-
-.levelTitle>span{
-    font-size:28px;
-}
-
-.levelTitle strong{
-    display:block;
-    font-size:17px;
-}
-
-.levelTitle small{
-    color:#8fa2b4;
-    font-size:11px;
-}
-
-/* PRIVATE LOCKED */
-
-.privateLocked{
-    margin-top:20px;
-    min-height:280px;
-    border:1px solid rgba(255,80,80,.25);
-    border-radius:20px;
-    background:rgba(255,255,255,.045);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:30px 20px;
-}
-
-.bigLock{
-    font-size:52px;
-    margin-bottom:12px;
-}
-
-.privateLocked h3{
-    margin:0 0 8px;
-    font-size:20px;
-}
-
-.privateLocked p{
-    margin:0 0 6px;
-    color:#aebdca;
-}
-
-.privateLocked strong{
-    color:#ff9d9d;
-    font-size:13px;
-    margin-bottom:15px;
-}
-
-.privateLocked span{
-    max-width:300px;
-    color:#8194a5;
-    font-size:11px;
-    line-height:1.6;
-}
-
-/* INFORMATION SCREEN */
-
-.fullScreen{
-    position:fixed;
-    inset:0;
-    z-index:220;
-    display:none;
-    background:#f2f5f8;
-    color:#17202a;
-    overflow-y:auto;
-}
-
-.fullScreen.active{
-    display:block;
-}
-
-.topBar{
-    min-height:58px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 14px;
-    background:#fff;
-    border-bottom:1px solid #dce2e8;
-    position:sticky;
-    top:0;
-    z-index:5;
-}
-
-.topBar button{
-    border:0;
-    background:#eef2f6;
-    border-radius:9px;
-    padding:9px 12px;
-    font-weight:700;
-    cursor:pointer;
-}
-
-.topBarTitle{
-    font-size:14px;
-    font-weight:800;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.infoContent{
-    padding:20px;
-}
-
-.infoBox{
-    background:#fff;
-    border-radius:16px;
-    padding:20px;
-    box-shadow:0 5px 25px rgba(0,0,0,.08);
-}
-
-.infoBox h2{
-    margin:0 0 12px;
-    font-size:20px;
-}
-
-.infoBox p{
-    margin:0;
-    max-width:none;
-    color:#505b65;
-    font-size:14px;
-    line-height:1.7;
-}
-
-/* MASTER MANUAL */
-
-#manualScreen{
-    position:fixed;
-    inset:0;
-    z-index:230;
-    display:none;
-    background:#f4f6f8;
-    color:#151a1f;
-    overflow:hidden;
-}
-
-#manualScreen.active{
-    display:flex;
-    flex-direction:column;
-}
-
-#manualScreen .topBar{
-    flex-shrink:0;
-}
-
-#manualFrame{
-    width:100%;
-    flex:1;
-    border:0;
-    background:#fff;
-}
-
-/* MOBILE */
-
-@media(max-width:420px){
-
-    .briefcaseContents{
-        padding:14px;
-    }
-
-    .briefcaseHeader{
-        padding:18px 16px;
-    }
-
-    .accessFolder,
-    .briefcaseItem{
-        min-height:68px;
-    }
-
-}
-
-
-/* =========================================================
-   DEVELOPER PROFILE
-   ========================================================= */
-
-.developerProfile{
-    background:#fff;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 8px 30px rgba(0,0,0,.09);
-}
-
-.developerPhoto{
-    width:100%;
-    max-height:390px;
-    object-fit:cover;
-    display:block;
-}
-
-.developerDetails{
-    padding:20px;
-}
-
-.developerDetails h2{
-    margin:0 0 6px;
-    font-size:21px;
-}
-
-.developerDetails .role{
-    color:#2563eb;
-    font-weight:700;
-    font-size:13px;
-    margin-bottom:15px;
-}
-
-.developerDetails p{
-    max-width:none;
-    font-size:13px;
-    line-height:1.65;
-    color:#555;
-}
-
-
-/* =========================================================
-   PUBLIC DOCUMENT CARDS
-   ========================================================= */
-
-.publicDocument{
-    background:#fff;
-    border-radius:16px;
-    padding:18px;
-    margin-bottom:12px;
-    box-shadow:0 5px 20px rgba(0,0,0,.06);
-}
-
-.publicDocument h3{
-    margin:0 0 8px;
-    font-size:16px;
-}
-
-.publicDocument p{
-    max-width:none;
-    margin:0;
-    color:#59636d;
-    font-size:12.5px;
-    line-height:1.65;
-}
-
-.publicBadge{
-    display:inline-block;
-    margin-bottom:10px;
-    padding:5px 9px;
-    border-radius:20px;
-    background:#e7f7ee;
-    color:#168447;
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:.7px;
-}
-
-</style>
-
-
-<script>
-
-/* =========================================================
-   PUBLIC DEVELOPER PROFILE
-   ========================================================= */
-
-function openDeveloperProfile(){
-
-    document.getElementById("infoTitle")
-        .textContent="Developer Profile";
-
-    document.getElementById("infoText")
-        .innerHTML=`
-
-        <div class="developerProfile">
-
-            <img
-                class="developerPhoto"
-                src="DEVELOPER_PHOTO_HERE"
-                alt="AAMush project developer"
-            >
-
-            <div class="developerDetails">
-
-                <h2>AAMush Project Developer</h2>
-
-                <div class="role">
-                    Developer — AAMush Mesh-01 Feeder
-                </div>
-
-                <p>
-                    Developer profile for the AAMush Mesh-01
-                    autonomous commodity-logistics mesh project.
-                </p>
-
-                <p>
-                    This public profile is part of the
-                    AAMush project documentation and is
-                    presented for authorized public viewing.
-                </p>
-
+<!-- FEEDER DEVICE SECTION -->
+<section class="feeder-section" id="device">
+  <div class="feeder-section-inner">
+    <div class="feeder-section-header">
+      <h2>AAMush Mesh-01 Feeder Device</h2>
+      <p>Live telemetry from the East African trade-logistics mesh. Invented by Aloyce & Mushi.</p>
+    </div>
+    <div class="feeder-wrap">
+      <div class="feeder-root">
+        <div class="feeder-chrome">
+          <div class="feeder-chrome-left">
+            <div class="feeder-dot"></div>
+            <span class="feeder-chrome-title">AAMush Mesh-01</span>
+          </div>
+          <span class="feeder-chrome-meta" id="feeder-clock">--:--:--</span>
+        </div>
+        <div class="feeder-inventors">Invented by Aloyce & Mushi</div>
+
+        <div class="feeder-body">
+          <div class="feeder-metrics">
+            <div class="feeder-metric">
+              <div class="feeder-metric-label">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                Convoys live
+              </div>
+              <div class="feeder-metric-value" id="f-convoys">7</div>
+              <div class="feeder-metric-delta feeder-positive">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+                +2 forming
+              </div>
             </div>
+            <div class="feeder-metric">
+              <div class="feeder-metric-label">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                Trucks staked
+              </div>
+              <div class="feeder-metric-value" id="f-trucks">142</div>
+              <div class="feeder-metric-delta feeder-positive">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+                +4 this hour
+              </div>
+            </div>
+            <div class="feeder-metric">
+              <div class="feeder-metric-label">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M2 12h20"/></svg>
+                Value flowing
+              </div>
+              <div class="feeder-metric-value" id="f-value">$2.41M</div>
+              <div class="feeder-metric-delta feeder-positive">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+                +$18.2K/min
+              </div>
+            </div>
+            <div class="feeder-metric">
+              <div class="feeder-metric-label">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Settlement rate
+              </div>
+              <div class="feeder-metric-value" id="f-rate">99.7%</div>
+              <div class="feeder-metric-delta feeder-positive">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+                0 fails today
+              </div>
+            </div>
+          </div>
 
+          <div class="feeder-mini-map">
+            <div class="feeder-node"><div class="feeder-node-ring live" id="node-mba">M</div><div class="feeder-node-label">MBA</div></div>
+            <div class="feeder-connector" style="--flow:100%"></div>
+            <div class="feeder-node"><div class="feeder-node-ring live" id="node-nbo">N</div><div class="feeder-node-label">NBO</div></div>
+            <div class="feeder-connector" style="--flow:85%"></div>
+            <div class="feeder-node"><div class="feeder-node-ring live" id="node-kla">K</div><div class="feeder-node-label">KLA</div></div>
+            <div class="feeder-connector" style="--flow:60%"></div>
+            <div class="feeder-node"><div class="feeder-node-ring" id="node-kig">R</div><div class="feeder-node-label">KIG</div></div>
+            <div class="feeder-connector" style="--flow:30%"></div>
+            <div class="feeder-node"><div class="feeder-node-ring" id="node-gom">G</div><div class="feeder-node-label">GOM</div></div>
+          </div>
+
+          <div class="feeder-ticker">
+            <div class="feeder-ticker-header">
+              <span class="feeder-ticker-title">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Live mesh feed
+              </span>
+              <span class="feeder-ticker-count" id="f-count">847 events/hr</span>
+            </div>
+            <div class="feeder-stream" id="feeder-stream"></div>
+          </div>
         </div>
 
-        `;
-
-    infoScreen.classList.add("active");
-
-}
-
-
-/* =========================================================
-   PUBLIC DOCUMENT CONTENT
-   ========================================================= */
-
-function openPublicDocument(title,badge,heading,text){
-
-    document.getElementById("infoTitle")
-        .textContent=title;
-
-    document.getElementById("infoText")
-        .innerHTML=`
-
-        <div class="publicDocument">
-
-            <div class="publicBadge">
-                ${badge}
-            </div>
-
-            <h3>${heading}</h3>
-
-            <p>${text}</p>
-
+        <div class="feeder-footer">
+          <div class="feeder-signal">
+            <span>Signal</span>
+            <div class="feeder-bar on" style="height:6px;"></div>
+            <div class="feeder-bar on" style="height:10px;"></div>
+            <div class="feeder-bar on" style="height:14px;"></div>
+            <div class="feeder-bar on" style="height:10px;"></div>
+          </div>
+          <span>Node uptime: 99.98% | Last sync: <span id="f-sync">0s</span> ago</span>
         </div>
-
-        `;
-
-    infoScreen.classList.add("active");
-
-}
-
-
-/* =========================================================
-   OVERRIDE DEVELOPER PROFILE BUTTON
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded",function(){
-
-    const buttons =
-        document.querySelectorAll(".briefcaseItem");
-
-    buttons.forEach(function(button){
-
-        const text =
-            button.innerText.trim();
-
-        if(text.includes("Developer Profile")){
-
-            button.onclick =
-                openDeveloperProfile;
-
-        }
-
-    });
-
-});
-
-  </script></body>
-<!-- AAMush 01 — MESH FEEDER LIVE -->
-<section id="mesh-01-live" style="
-  margin:20px 18px 30px;
-  padding:18px;
-  border-radius:18px;
-  background:linear-gradient(145deg,#071522,#102b40);
-  color:white;
-  box-shadow:0 12px 35px rgba(0,0,0,.22);
-">
-
-  <div style="
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:15px;
-  ">
-    <div>
-      <div style="
-        font-size:11px;
-        font-weight:800;
-        letter-spacing:1.2px;
-        color:#00d4ff;
-      ">
-        AAMUSH 01
       </div>
-
-      <div style="
-        font-size:20px;
-        font-weight:800;
-        margin-top:3px;
-      ">
-        MESH FEEDER
-      </div>
-    </div>
-
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:6px;
-      padding:7px 10px;
-      border-radius:20px;
-      background:rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.3);
-      font-size:11px;
-      font-weight:800;
-      color:#4ade80;
-    ">
-      <span style="
-        width:8px;
-        height:8px;
-        border-radius:50%;
-        background:#22c55e;
-        box-shadow:0 0 10px #22c55e;
-        animation:meshLivePulse 1.5s infinite;
-      "></span>
-      LIVE
     </div>
   </div>
-
-  <div style="
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  ">
-
-    <div style="
-      padding:12px;
-      border-radius:12px;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.08);
-    ">
-      <div style="font-size:10px;color:#94a3b8;">MESH STATUS</div>
-      <div style="font-size:14px;font-weight:800;color:#4ade80;margin-top:4px;">
-        ONLINE
-      </div>
-    </div>
-
-    <div style="
-      padding:12px;
-      border-radius:12px;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.08);
-    ">
-      <div style="font-size:10px;color:#94a3b8;">FEEDER</div>
-      <div style="font-size:14px;font-weight:800;color:#00d4ff;margin-top:4px;">
-        AAMush 01
-      </div>
-    </div>
-
-    <div style="
-      padding:12px;
-      border-radius:12px;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.08);
-    ">
-      <div style="font-size:10px;color:#94a3b8;">TELEMETRY</div>
-      <div style="font-size:14px;font-weight:800;margin-top:4px;">
-        ACTIVE
-      </div>
-    </div>
-
-    <div style="
-      padding:12px;
-      border-radius:12px;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.08);
-    ">
-      <div style="font-size:10px;color:#94a3b8;">NETWORK</div>
-      <div style="font-size:14px;font-weight:800;margin-top:4px;">
-        CONNECTED
-      </div>
-    </div>
-
-  </div>
-
-  <div style="
-    margin-top:14px;
-    padding:12px;
-    border-radius:12px;
-    background:rgba(0,212,255,.06);
-    border:1px solid rgba(0,212,255,.15);
-  ">
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      font-size:11px;
-      margin-bottom:7px;
-    ">
-      <span style="color:#94a3b8;">LIVE MESH SIGNAL</span>
-      <span id="meshSignalValue" style="color:#00d4ff;font-weight:800;">
-        98%
-      </span>
-    </div>
-
-    <div style="
-      height:5px;
-      border-radius:10px;
-      background:rgba(255,255,255,.1);
-      overflow:hidden;
-    ">
-      <div id="meshSignalBar" style="
-        height:100%;
-        width:98%;
-        border-radius:10px;
-        background:#00d4ff;
-        box-shadow:0 0 12px rgba(0,212,255,.7);
-        transition:width .5s ease;
-      "></div>
-    </div>
-  </div>
-
 </section>
 
-<style>
-@keyframes meshLivePulse{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:.35;transform:scale(1.35)}
-}
-</style>
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header">
+    <h2>Platform modules</h2>
+    <p>Four proprietary systems that power the AAMush mesh.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(37,99,235,0.08);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-1)" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <h3>AURA Routing</h3>
+      <p>AI-orchestrated convoy contracts that circularize multi-leg routes and guarantee backhaul for independent truck owners.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(22,163,74,0.08);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-3)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>REGEN Registry</h3>
+      <p>Three rare digital registries — dynamic warehouse receipt NFTs, zero-knowledge DIDs, and AI-predicted customs pre-clearance.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(124,58,237,0.08);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-4)" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>
+      </div>
+      <h3>SURETY Settlement</h3>
+      <p>Unified command layer with predictive commodity pricing, climate risk overlays, and omni-ledger settlement across fiat, stablecoin, and CBDC.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(37,99,235,0.06);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3>NEXUS Ghost Inventory</h3>
+      <p>Bid on future harvests 30–90 days pre-harvest, backed by satellite-verified field data and weather derivatives.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(220,38,38,0.08);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-2)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      </div>
+      <h3>Idle-Capacity Staking</h3>
+      <p>Truck owners lock telematics into the mesh and receive instant liquidity advances — 60% of predicted earnings before the engine starts.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(115,115,115,0.08);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-5)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>Cross-Border Trust</h3>
+      <p>Trustless transactions across Kenya, Uganda, Tanzania, Rwanda, Burundi, DRC, and Ethiopia — no cash-on-delivery fraud exposure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPER SIGNATURE -->
+<section class="dev-signature">
+  <div class="dev-signature-inner">
+    <div class="dev-avatar">JM</div>
+    <div class="dev-info">
+      <div class="dev-name">Dr. James K. Mushi, PhD</div>
+      <div class="dev-title">Lead Developer & Systems Architect</div>
+      <div class="dev-email"><a href="mailto:jkuriyamush@aol.com">jkuriyamush@aol.com</a></div>
+    </div>
+    <div class="dev-seal">Verified Build</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+      AAMush
+    </div>
+    <div class="footer-inventors">Invented by Aloyce & Mushi</div>
+    <div class="footer-copy">AAMush Mesh-01 Feeder Device &mdash; East African Trade-Logistics Infrastructure. All systems operational.</div>
+  </div>
+</footer>
 
 <script>
 (function(){
+  const stream = document.getElementById('feeder-stream');
+  const clock = document.getElementById('feeder-clock');
+  const sync = document.getElementById('f-sync');
+  const convoys = document.getElementById('f-convoys');
+  const trucks = document.getElementById('f-trucks');
+  const valueEl = document.getElementById('f-value');
+  let valueNum = 2410000;
+  let syncSec = 0;
+  let eventCount = 0;
 
-  function updateMeshLive(){
+  const events = [
+    {tag:'AURA', cls:'feeder-tag-aura', msg:'Convoy <strong>#C-2841</strong> sealed — NBO→KGL, 4 trucks, 120 MT'},
+    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Title <strong>#8921</strong> minted — moisture 12.3%, GPS locked'},
+    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'$28,920 USDC advanced to 4 truck owners (60% stake)'},
+    {tag:'AURA', cls:'feeder-tag-aura', msg:'Backhaul match found — KGL→NBO fertilizer, 3 trucks'},
+    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Identity <strong>DID-ug-4412</strong> verified via ZK-proof'},
+    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'New bid on ghost inventory — Soybeans 500 MT @ $410/MT'},
+    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Cross-border settlement complete — KGL→GOM, $22,100'},
+    {tag:'AURA', cls:'feeder-tag-aura', msg:'Convoy <strong>#C-2839</strong> forming — 2/5 trucks matched'},
+    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Customs pre-clearance approved — manifest SM-7721'},
+    {tag:'ALERT', cls:'feeder-tag-alert', msg:'Climate oracle: flash-flood risk 45% on NBO→KLA route'},
+    {tag:'AURA', cls:'feeder-tag-aura', msg:'IoT seal breach detected — Truck T-892, auto-escrow paused'},
+    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'M-Pesa↔USDC bridge settled — $4,200 @ 1 USD = 129.4 KES'},
+    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Warehouse receipt <strong>#8918</strong> collateral released'},
+    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'Satellite NDVI update — Iganga field index 0.82 (+0.03)'},
+    {tag:'AURA', cls:'feeder-tag-aura', msg:'Route optimization: alternate corridor saved 2h 14m'},
+    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Parametric insurance triggered — rainfall < 20mm, payout $1,200'},
+    {tag:'REGEN', cls:'feeder-tag-regen', msg:'DID cross-border attestation — Rwanda↔Uganda validated'},
+    {tag:'AURA', cls:'feeder-tag-aura', msg:'Truck T-445 joined staking pool — 72h window locked'},
+    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Smart contract repayment — $17,340 deducted, balance cleared'},
+    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'Forward contract executed — Maize 240 MT, delivery Day 45'},
+  ];
 
-    var signal = Math.floor(94 + Math.random() * 6);
-
-    var value = document.getElementById("meshSignalValue");
-    var bar = document.getElementById("meshSignalBar");
-
-    if(value) value.textContent = signal + "%";
-    if(bar) bar.style.width = signal + "%";
+  function pushEvent(evt) {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const line = document.createElement('div');
+    line.className = 'feeder-line';
+    line.innerHTML = '<span class="feeder-line-time">'+time+'</span><span class="feeder-line-tag '+evt.cls+'">'+evt.tag+'</span><span class="feeder-line-msg">'+evt.msg+'</span>';
+    stream.insertBefore(line, stream.firstChild);
+    while (stream.children.length > 14) stream.removeChild(stream.lastChild);
+    eventCount++;
+    document.getElementById('f-count').textContent = eventCount + ' events';
   }
 
-  updateMeshLive();
-  setInterval(updateMeshLive,4000);
+  function updateClock() {
+    const now = new Date();
+    clock.textContent = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    syncSec++;
+    sync.textContent = syncSec + 's';
+    if (syncSec > 3) sync.textContent = '< 1s';
+    if (syncSec > 5) { syncSec = 0; }
+  }
 
+  function tickValue() {
+    valueNum += Math.floor(Math.random() * 800) + 200;
+    valueEl.textContent = '$' + (valueNum / 1000000).toFixed(2) + 'M';
+  }
+
+  function pulseNode() {
+    const nodes = ['node-mba','node-nbo','node-kla','node-kig','node-gom'];
+    const rand = nodes[Math.floor(Math.random() * nodes.length)];
+    const el = document.getElementById(rand);
+    if (el) {
+      el.classList.add('live');
+      setTimeout(() => el.classList.remove('live'), 2000);
+    }
+  }
+
+  for (let i = 4; i >= 0; i--) {
+    pushEvent(events[i]);
+  }
+
+  setInterval(updateClock, 1000);
+  setInterval(tickValue, 3000);
+  setInterval(pulseNode, 4000);
+  setInterval(() => {
+    const evt = events[Math.floor(Math.random() * events.length)];
+    pushEvent(evt);
+    if (Math.random() > 0.7) trucks.textContent = parseInt(trucks.textContent) + 1;
+    if (Math.random() > 0.85) convoys.textContent = parseInt(convoys.textContent) + (Math.random()>0.5?1:0);
+  }, 2500);
 })();
-  </script>
-<!-- AAMUSH BRIEFCASE — TWO LEVEL PUBLIC / PRIVATE -->
-<div id="briefcaseOverlay" class="briefcase-overlay">
-  <div class="briefcase-panel">
+</script>
 
-    <button class="briefcase-close" onclick="closeBriefcase()">×</button>
-
-    <div class="briefcase-title">
-      <div class="briefcase-icon">💼</div>
-      <h2>AAMush Briefcase</h2>
-      <p>Developer & Project Archive</p>
-    </div>
-
-    <div class="briefcase-folders">
-
-      <!-- PUBLIC FOLDER -->
-      <button class="folder-card public-folder" onclick="openPublicFolder()">
-        <div class="folder-icon">🌐</div>
-        <div>
-          <strong>PUBLIC</strong>
-          <span>Public AAMush information</span>
-        </div>
-        <b>›</b>
-      </button>
-
-      <!-- PRIVATE FOLDER -->
-      <button class="folder-card private-folder" onclick="openPrivateFolder()">
-        <div class="folder-icon">🔒</div>
-        <div>
-          <strong>PRIVATE</strong>
-          <span>Protected developer archive</span>
-        </div>
-        <b>›</b>
-      </button>
-
-    </div>
-
-    <div class="briefcase-footer">
-      AAMush • Protected Development Archive
-    </div>
-
-  </div>
-</div>
+<!-- =====================================================
+     AAMUSH FLOATING DEVELOPER BRIEFCASE
+     ===================================================== -->
 
 <style>
-/* AAMUSH BRIEFCASE */
-.briefcase-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  backdrop-filter:blur(7px);
-  -webkit-backdrop-filter:blur(7px);
-  z-index:9999;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
+    .aamush-floating-briefcase {
+        position: fixed;
+        right: 16px;
+        bottom: 22px;
 
-.briefcase-overlay.active{
-  display:flex;
-}
+        width: 115px;
+        height: 115px;
 
-.briefcase-panel{
-  width:100%;
-  max-width:380px;
-  background:rgba(255,255,255,.97);
-  border-radius:24px;
-  padding:24px;
-  position:relative;
-  box-shadow:0 25px 80px rgba(0,0,0,.35);
-  animation:briefcaseOpen .3s ease;
-}
+        z-index: 999999;
 
-@keyframes briefcaseOpen{
-  from{
-    opacity:0;
-    transform:scale(.88) translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:scale(1) translateY(0);
-  }
-}
+        display: block;
 
-.briefcase-close{
-  position:absolute;
-  top:12px;
-  right:14px;
-  width:34px;
-  height:34px;
-  border:0;
-  border-radius:50%;
-  background:#f1f3f5;
-  color:#333;
-  font-size:24px;
-  line-height:30px;
-  cursor:pointer;
-}
+        border-radius: 50%;
 
-.briefcase-title{
-  text-align:center;
-  padding:8px 25px 20px;
-}
+        cursor: pointer;
 
-.briefcase-icon{
-  font-size:42px;
-  margin-bottom:5px;
-}
+        text-decoration: none;
 
-.briefcase-title h2{
-  margin:0;
-  font-size:21px;
-  font-weight:800;
-  color:#111;
-}
+        overflow: visible;
 
-.briefcase-title p{
-  margin:5px 0 0;
-  font-size:12px;
-  color:#777;
-}
+        animation: aamushBounce 3.2s ease-in-out infinite;
 
-.briefcase-folders{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
+        filter:
+            drop-shadow(0 0 8px rgba(0, 210, 255, 0.9))
+            drop-shadow(0 0 20px rgba(0, 130, 255, 0.7));
 
-.folder-card{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:15px;
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:16px;
-  background:#fff;
-  text-align:left;
-  cursor:pointer;
-  transition:.2s;
-}
+        transition:
+            transform 0.25s ease,
+            filter 0.25s ease;
+    }
 
-.folder-card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 22px rgba(0,0,0,.1);
-}
+    .aamush-floating-briefcase img {
+        width: 100%;
+        height: 100%;
 
-.folder-card:active{
-  transform:scale(.98);
-}
+        object-fit: contain;
 
-.folder-icon{
-  width:45px;
-  height:45px;
-  border-radius:13px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  flex:none;
-}
+        display: block;
 
-.public-folder .folder-icon{
-  background:#e0f2fe;
-}
+        border-radius: 50%;
+    }
 
-.private-folder .folder-icon{
-  background:#f3f4f6;
-}
+    .aamush-floating-briefcase:hover {
+        transform: scale(1.08);
 
-.folder-card div:nth-child(2){
-  flex:1;
-}
+        filter:
+            drop-shadow(0 0 12px rgba(0, 240, 255, 1))
+            drop-shadow(0 0 30px rgba(0, 130, 255, 0.95));
+    }
 
-.folder-card strong{
-  display:block;
-  font-size:14px;
-  color:#111;
-  margin-bottom:3px;
-}
+    .aamush-floating-briefcase:active {
+        transform: scale(0.90);
+    }
 
-.folder-card span{
-  display:block;
-  font-size:11px;
-  color:#777;
-}
+    /* Small glowing ring around the launcher */
+    .aamush-floating-briefcase::before {
+        content: "";
 
-.folder-card b{
-  font-size:24px;
-  color:#999;
-}
+        position: absolute;
 
-.briefcase-footer{
-  text-align:center;
-  margin-top:18px;
-  font-size:10px;
-  color:#999;
-}
+        inset: -5px;
+
+        border-radius: 50%;
+
+        border: 2px solid rgba(0, 220, 255, 0.75);
+
+        pointer-events: none;
+
+        animation: aamushRing 2.2s ease-in-out infinite;
+    }
+
+    /* "Developer Briefcase" label */
+    .aamush-briefcase-label {
+        position: absolute;
+
+        right: 0;
+
+        bottom: -32px;
+
+        white-space: nowrap;
+
+        padding: 6px 10px;
+
+        border-radius: 8px;
+
+        background: rgba(0, 10, 25, 0.94);
+
+        border: 1px solid rgba(0, 220, 255, 0.65);
+
+        color: white;
+
+        font-family: Arial, sans-serif;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.4px;
+
+        box-shadow:
+            0 0 10px rgba(0, 180, 255, 0.35);
+
+        opacity: 0;
+
+        transform: translateY(5px);
+
+        transition: all 0.25s ease;
+
+        pointer-events: none;
+    }
+
+    .aamush-floating-briefcase:hover
+    .aamush-briefcase-label {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+    @keyframes aamushBounce {
+
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        25% {
+            transform: translateY(-7px);
+        }
+
+        50% {
+            transform: translateY(-15px);
+        }
+
+        75% {
+            transform: translateY(-6px);
+        }
+    }
+
+    @keyframes aamushRing {
+
+        0%, 100% {
+            transform: scale(1);
+
+            opacity: 0.45;
+        }
+
+        50% {
+            transform: scale(1.08);
+
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .aamush-floating-briefcase {
+            width: 92px;
+            height: 92px;
+
+            right: 12px;
+            bottom: 18px;
+        }
+
+        .aamush-briefcase-label {
+            font-size: 9px;
+            bottom: -28px;
+        }
+    }
 </style>
 
-<script>
-function openBriefcase(){
-  document.getElementById("briefcaseOverlay").classList.add("active");
-}
 
-function closeBriefcase(){
-  document.getElementById("briefcaseOverlay").classList.remove("active");
-}
+<a
+    href="briefcase.html"
+    class="aamush-floating-briefcase"
+    aria-label="Open AAMush Developer Briefcase"
+    title="Open AAMush Developer Briefcase"
+>
 
-function openPublicFolder(){
-  alert("PUBLIC folder will open the public AAMush information archive.");
-}
+    <img
+        src="aamush-briefcase-logo.png"
+        alt="AAMush Developer Briefcase"
+    >
 
-function openPrivateFolder(){
-  alert("PRIVATE DEVELOPMENT ARCHIVE\n\nAccess restricted. Private source and confidential development materials are not stored in the public website.");
-}
+    <span class="aamush-briefcase-label">
+        Developer Briefcase
+    </span>
 
-document.getElementById("briefcaseOverlay").addEventListener("click",function(e){
-  if(e.target === this){
-    closeBriefcase();
-  }
-});
-   </script>
-<!-- AAMUSH PUBLIC ARCHIVE -->
-<div id="publicArchive" class="archive-overlay">
+</a>
 
-  <div class="archive-panel">
-
-    <button class="archive-close" onclick="closePublicFolder()">×</button>
-
-    <button class="back-button" onclick="closePublicFolder()">‹ Back</button>
-
-    <div class="archive-heading">
-      <div class="archive-symbol">🌐</div>
-      <h2>AAMush Public Archive</h2>
-      <p>Information approved for public viewing</p>
-    </div>
-
-    <div class="public-items">
-
-      <button class="public-item" onclick="openPublicInfo('developer')">
-        <span class="public-item-icon">👤</span>
-        <span>
-          <strong>Developer Profile</strong>
-          <small>Developer identity and public profile</small>
-        </span>
-        <b>›</b>
-      </button>
-
-      <button class="public-item" onclick="openPublicInfo('project')">
-        <span class="public-item-icon">🚚</span>
-        <span>
-          <strong>AAMush Project</strong>
-          <small>East Africa autonomous logistics mesh</small>
-        </span>
-        <b>›</b>
-      </button>
-
-      <button class="public-item" onclick="openPublicInfo('mesh')">
-        <span class="public-item-icon">📡</span>
-        <span>
-          <strong>AAMush 01 — Mesh Feeder LIVE</strong>
-          <small>Live device and mesh information</small>
-        </span>
-        <b>›</b>
-      </button>
-
-      <button class="public-item" onclick="openPublicInfo('manual')">
-        <span class="public-item-icon">📖</span>
-        <span>
-          <strong>Operating Manual</strong>
-          <small>Public operating information</small>
-        </span>
-        <b>›</b>
-      </button>
-
-      <button class="public-item" onclick="openPublicInfo('ip')">
-        <span class="public-item-icon">©</span>
-        <span>
-          <strong>Intellectual Property Notice</strong>
-          <small>Public protection and ownership notice</small>
-        </span>
-        <b>›</b>
-      </button>
-
-    </div>
-
-    <div class="archive-footer">
-      AAMush • Public Information Archive
-    </div>
-
-  </div>
-</div>
-
-<style>
-.archive-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  backdrop-filter:blur(7px);
-  -webkit-backdrop-filter:blur(7px);
-  z-index:10000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.archive-overlay.active{
-  display:flex;
-}
-
-.archive-panel{
-  width:100%;
-  max-width:390px;
-  max-height:88vh;
-  overflow-y:auto;
-  background:#fff;
-  border-radius:24px;
-  padding:22px;
-  position:relative;
-  box-shadow:0 25px 80px rgba(0,0,0,.35);
-  animation:archiveOpen .3s ease;
-}
-
-@keyframes archiveOpen{
-  from{
-    opacity:0;
-    transform:scale(.88) translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:scale(1) translateY(0);
-  }
-}
-
-.archive-close{
-  position:absolute;
-  top:12px;
-  right:14px;
-  width:34px;
-  height:34px;
-  border:0;
-  border-radius:50%;
-  background:#f1f3f5;
-  color:#333;
-  font-size:24px;
-  cursor:pointer;
-}
-
-.back-button{
-  border:0;
-  background:none;
-  color:#2563eb;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-  padding:5px 0;
-}
-
-.archive-heading{
-  text-align:center;
-  padding:8px 20px 18px;
-}
-
-.archive-symbol{
-  font-size:38px;
-  margin-bottom:5px;
-}
-
-.archive-heading h2{
-  margin:0;
-  font-size:20px;
-  font-weight:800;
-}
-
-.archive-heading p{
-  margin:5px 0 0;
-  font-size:11px;
-  color:#777;
-}
-
-.public-items{
-  display:flex;
-  flex-direction:column;
-  gap:9px;
-}
-
-.public-item{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:13px;
-  border:1px solid rgba(0,0,0,.07);
-  border-radius:14px;
-  background:#fafafa;
-  text-align:left;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.public-item:hover{
-  background:#fff;
-  transform:translateY(-1px);
-  box-shadow:0 6px 18px rgba(0,0,0,.08);
-}
-
-.public-item-icon{
-  width:40px;
-  height:40px;
-  border-radius:11px;
-  background:#eaf3ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:19px;
-  flex:none;
-}
-
-.public-item span:nth-child(2){
-  flex:1;
-}
-
-.public-item strong{
-  display:block;
-  font-size:13px;
-  color:#111;
-  margin-bottom:3px;
-}
-
-.public-item small{
-  display:block;
-  font-size:10px;
-  color:#777;
-  line-height:1.35;
-}
-
-.public-item b{
-  color:#999;
-  font-size:22px;
-}
-
-.archive-footer{
-  text-align:center;
-  margin-top:16px;
-  font-size:10px;
-  color:#999;
-}
+<!-- =====================================================
+     END AAMUSH FLOATING DEVELOPER BRIEFCASE
+     ===================================================== --></body>
 </style>
-
-<script>
-function openPublicFolder(){
-  document.getElementById("briefcaseOverlay").classList.remove("active");
-  document.getElementById("publicArchive").classList.add("active");
-}
-
-function closePublicFolder(){
-  document.getElementById("publicArchive").classList.remove("active");
-  document.getElementById("briefcaseOverlay").classList.add("active");
-}
-
-function openPublicInfo(type){
-
-  if(type === "developer"){
-    alert(
-      "AAMush DEVELOPER PROFILE\n\n" +
-      "Developer: James Mushi\n\n" +
-      "Creator and developer of the AAMush autonomous commodity-logistics mesh concept."
-    );
-  }
-
-  if(type === "project"){
-    alert(
-      "AAMUSH PROJECT\n\n" +
-      "East Africa's autonomous commodity-logistics mesh connecting supply, demand, transportation capacity and connected assets."
-    );
-  }
-
-  if(type === "mesh"){
-    alert(
-      "AAMUSH 01 — MESH FEEDER LIVE\n\n" +
-      "Live device interface and mesh-feeder demonstration.\n\n" +
-      "This public section contains information intended for visitors and authorized public viewing."
-    );
-  }
-
-  if(type === "manual"){
-    alert(
-      "AAMUSH OPERATING MANUAL\n\n" +
-      "Public operating information will be presented here."
-    );
-  }
-
-  if(type === "ip"){
-    alert(
-      "INTELLECTUAL PROPERTY NOTICE\n\n" +
-      "AAMush concepts, designs, documentation, branding and associated development materials are protected intellectual property of their respective developer/owner.\n\n" +
-      "Public viewing does not grant permission to copy, reproduce, modify or commercially exploit protected materials."
-    );
-  }
-}
-  </script>
+</body>
 </html>
-<!-- AAMUSH PRIVATE ARCHIVE — PROTECTED -->
-<div id="privateArchive" class="archive-overlay">
-
-  <div class="archive-panel private-panel">
-
-    <button class="archive-close" onclick="closePrivateFolder()">×</button>
-
-    <button class="back-button" onclick="closePrivateFolder()">‹ Back</button>
-
-    <div class="archive-heading">
-      <div class="archive-symbol">🔒</div>
-      <h2>Private Development Archive</h2>
-      <p>Restricted developer area</p>
-    </div>
-
-    <div class="private-lock">
-      <div class="lock-symbol">🔐</div>
-
-      <h3>Private Source Protected</h3>
-
-      <p>
-        This area is reserved for the authorized AAMush developer.
-        Private source code, confidential designs, unreleased development
-        material and protected intellectual property are deliberately not
-        stored in the public website.
-      </p>
-
-      <div class="private-status">
-        <span></span>
-        PRIVATE MATERIAL NOT EXPOSED
-      </div>
-    </div>
-
-    <div class="private-notice">
-      <strong>Security notice</strong>
-      <p>
-        GitHub Pages is a public website. Therefore confidential source
-        material must remain outside the public repository.
-      </p>
-    </div>
-
-    <div class="archive-footer">
-      AAMush • Restricted Developer Archive
-    </div>
-
-  </div>
-</div>
-
-<style>
-.private-panel{
-  border:1px solid rgba(0,0,0,.08);
-}
-
-.private-lock{
-  text-align:center;
-  padding:20px 10px;
-}
-
-.lock-symbol{
-  font-size:52px;
-  margin-bottom:10px;
-}
-
-.private-lock h3{
-  margin:0 0 8px;
-  font-size:17px;
-  font-weight:800;
-  color:#111;
-}
-
-.private-lock p{
-  margin:0 auto 18px;
-  max-width:310px;
-  font-size:12px;
-  line-height:1.6;
-  color:#666;
-}
-
-.private-status{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:8px 12px;
-  border-radius:20px;
-  background:#f3f4f6;
-  color:#444;
-  font-size:10px;
-  font-weight:800;
-}
-
-.private-status span{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#22c55e;
-}
-
-.private-notice{
-  margin-top:4px;
-  padding:13px;
-  border-radius:12px;
-  background:#fafafa;
-  border:1px solid rgba(0,0,0,.06);
-}
-
-.private-notice strong{
-  display:block;
-  font-size:11px;
-  margin-bottom:4px;
-}
-
-.private-notice p{
-  margin:0;
-  font-size:10px;
-  line-height:1.5;
-  color:#777;
-}
-</style>
-
-<script>
-function openPrivateFolder(){
-  document.getElementById("briefcaseOverlay").classList.remove("active");
-  document.getElementById("privateArchive").classList.add("active");
-}
-
-function closePrivateFolder(){
-  document.getElementById("privateArchive").classList.remove("active");
-  document.getElementById("briefcaseOverlay").classList.add("active");
-}
-
-document.getElementById("privateArchive").addEventListener("click",function(e){
-  if(e.target === this){
-    closePrivateFolder();
-  }
-});
-    </script></body>
