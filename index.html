@@ -2,1255 +2,1700 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AAMush — East African Trade-Logistics Mesh</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#07111d">
+<title>AAMush Mesh-01 Feeder | East African Autonomous Commodity-Logistics Mesh</title>
+
 <style>
-  :root {
-    --text-primary: #0f0f0f;
-    --text-secondary: #3f3f3f;
-    --text-tertiary: #6b6b6b;
-    --text-quaternary: #9e9e9e;
-    --surface: #ffffff;
-    --surface-muted: #f7f7f7;
-    --surface-raised: #fafafa;
-    --surface-strong: #eeeeee;
-    --border: #e5e5e5;
-    --positive: #16a34a;
-    --danger: #dc2626;
-    --warning: #ca8a04;
-    --accent: #2563eb;
-    --chart-1: #2563eb;
-    --chart-2: #dc2626;
-    --chart-3: #16a34a;
-    --chart-4: #7c3aed;
-    --chart-5: #737373;
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text-primary: #f5f5f5;
-      --text-secondary: #d4d4d4;
-      --text-tertiary: #a3a3a3;
-      --text-quaternary: #737373;
-      --surface: #0a0a0a;
-      --surface-muted: #141414;
-      --surface-raised: #1a1a1a;
-      --surface-strong: #262626;
-      --border: #2a2a2a;
-      --positive: #22c55e;
-      --danger: #ef4444;
-      --warning: #eab308;
-      --accent: #3b82f6;
-      --chart-1: #3b82f6;
-      --chart-2: #ef4444;
-      --chart-3: #22c55e;
-      --chart-4: #a78bfa;
-      --chart-5: #a3a3a3;
-    }
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: var(--font-sans);
-    color: var(--text-primary);
-    background: var(--surface);
-    line-height: 1.6;
-  }
-  a { text-decoration: none; color: inherit; }
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  padding:0;
+  background:#07111d;
+  color:#eef7ff;
+  font-family:Arial,Helvetica,sans-serif
+}
+body{
+  min-height:100vh;
+  overflow-x:hidden
+}
+button{
+  font:inherit
+}
 
-  /* NAV */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  @media (prefers-color-scheme: dark) {
-    .nav { background: rgba(10,10,10,0.85); }
-  }
-  .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-  }
-  .nav-brand svg {
-    width: 26px;
-    height: 26px;
-  }
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-tertiary);
-  }
-  .nav-links a:hover { color: var(--text-primary); }
-  .nav-cta {
-    padding: 8px 18px;
-    border-radius: 8px;
-    background: var(--text-primary);
-    color: var(--surface);
-    font-size: 13px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .nav-cta:hover { opacity: 0.85; }
+/* =========================================================
+   AAMUSH LANDING SCREEN
+   ========================================================= */
 
-  /* HERO */
-  .hero {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 24px 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: center;
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: rgba(37, 99, 235, 0.08);
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-  .hero-badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--positive);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  .hero h1 {
-    font-size: 42px;
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.8px;
-    margin-bottom: 16px;
-  }
-  .hero p {
-    font-size: 17px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-  .hero-btns {
-    display: flex;
-    gap: 12px;
-  }
-  .btn-primary {
-    padding: 12px 24px;
-    border-radius: 10px;
-    background: var(--text-primary);
-    color: var(--surface);
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-secondary {
-    padding: 12px 24px;
-    border-radius: 10px;
-    background: var(--surface-raised);
-    color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { border-color: var(--text-primary); }
+.landing{
+  position:relative;
+  width:100%;
+  max-width:1280px;
+  margin:0 auto;
+  background:#fff;
+  line-height:0
+}
 
-  /* FEEDER SECTION */
-  .feeder-section {
-    background: var(--surface-muted);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 60px 24px;
-  }
-  .feeder-section-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .feeder-section-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .feeder-section-header h2 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .feeder-section-header p {
-    font-size: 15px;
-    color: var(--text-tertiary);
-  }
-  .feeder-wrap {
-    max-width: 520px;
-    margin: 0 auto;
-  }
+.landing img.hero-art{
+  display:block;
+  width:100%;
+  height:auto
+}
 
-  /* FEEDER DEVICE STYLES (embedded) */
-  .feeder-root {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--surface-muted);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  }
-  .feeder-chrome {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: var(--surface-raised);
-    border-bottom: 1px solid var(--border);
-  }
-  .feeder-chrome-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .feeder-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--positive);
-    animation: feeder-pulse 2s ease-in-out infinite;
-  }
-  @keyframes feeder-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-  }
-  .feeder-chrome-title {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-  }
-  .feeder-chrome-meta {
-    font-size: 11px;
-    color: var(--text-quaternary);
-    font-variant-numeric: tabular-nums;
-    font-family: var(--font-mono);
-  }
-  .feeder-inventors {
-    font-size: 9px;
-    color: var(--text-quaternary);
-    text-align: center;
-    padding: 5px 14px 2px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    background: var(--surface-raised);
-    border-bottom: 1px solid var(--border);
-  }
-  .feeder-body {
-    padding: 14px;
-  }
-  .feeder-metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .feeder-metric {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    background: var(--surface);
-  }
-  .feeder-metric-label {
-    font-size: 10px;
-    color: var(--text-quaternary);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .feeder-metric-value {
-    font-size: 24px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-  }
-  .feeder-metric-delta {
-    font-size: 11px;
-    margin-top: 4px;
-    font-variant-numeric: tabular-nums;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  .feeder-positive { color: var(--positive); }
-  .feeder-mini-map {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface-raised);
-    gap: 4px;
-    margin-bottom: 14px;
-  }
-  .feeder-node {
-    text-align: center;
-    flex: 1;
-  }
-  .feeder-node-ring {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 4px;
-    font-size: 11px;
-    font-weight: 700;
-    transition: all 0.4s ease-out;
-    color: var(--text-tertiary);
-    background: var(--surface);
-  }
-  .feeder-node-ring.live {
-    border-color: var(--positive);
-    background: rgba(22, 163, 74, 0.08);
-    color: var(--positive);
-    box-shadow: 0 0 8px rgba(22, 163, 74, 0.2);
-  }
-  .feeder-node-ring.warn {
-    border-color: var(--warning);
-    background: rgba(202, 138, 4, 0.08);
-    color: var(--warning);
-    animation: feeder-blink 1s ease-in-out infinite;
-  }
-  @keyframes feeder-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-  .feeder-node-label {
-    font-size: 9px;
-    color: var(--text-quaternary);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .feeder-connector {
-    flex: 1;
-    height: 2px;
-    background: var(--border);
-    position: relative;
-    border-radius: 1px;
-    overflow: hidden;
-  }
-  .feeder-connector::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: var(--flow, 0%);
-    background: var(--positive);
-    border-radius: 1px;
-    transition: width 0.8s ease-out;
-  }
-  .feeder-ticker {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface);
-    overflow: hidden;
-  }
-  .feeder-ticker-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-raised);
-  }
-  .feeder-ticker-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-secondary);
-  }
-  .feeder-ticker-count {
-    font-size: 10px;
-    color: var(--text-quaternary);
-    font-variant-numeric: tabular-nums;
-    font-family: var(--font-mono);
-  }
-  .feeder-stream {
-    max-height: 240px;
-    overflow-y: auto;
-    padding: 0;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    line-height: 1.55;
-  }
-  .feeder-stream::-webkit-scrollbar { width: 4px; }
-  .feeder-stream::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .feeder-line {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 6px 12px;
-    border-bottom: 1px solid var(--border);
-    animation: feeder-slide 0.35s ease-out;
-  }
-  .feeder-line:last-child { border-bottom: none; }
-  @keyframes feeder-slide {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .feeder-line-time {
-    color: var(--text-quaternary);
-    font-variant-numeric: tabular-nums;
-    flex-shrink: 0;
-    min-width: 54px;
-  }
-  .feeder-line-tag {
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-  }
-  .feeder-tag-aura {
-    background: rgba(37, 99, 235, 0.1);
-    color: var(--chart-1);
-  }
-  .feeder-tag-regen {
-    background: rgba(22, 163, 74, 0.1);
-    color: var(--chart-3);
-  }
-  .feeder-tag-settle {
-    background: rgba(124, 58, 237, 0.1);
-    color: var(--chart-4);
-  }
-  .feeder-tag-alert {
-    background: rgba(202, 138, 4, 0.1);
-    color: var(--warning);
-  }
-  .feeder-tag-ghost {
-    background: rgba(37, 99, 235, 0.08);
-    color: var(--accent);
-  }
-  .feeder-line-msg {
-    color: var(--text-secondary);
-    word-break: break-word;
-  }
-  .feeder-line-msg strong {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-  .feeder-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px;
-    border-top: 1px solid var(--border);
-    background: var(--surface-raised);
-    font-size: 10px;
-    color: var(--text-quaternary);
-  }
-  .feeder-signal {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  .feeder-bar {
-    width: 3px;
-    background: var(--text-quaternary);
-    border-radius: 1px;
-    opacity: 0.4;
-  }
-  .feeder-bar.on {
-    background: var(--positive);
-    opacity: 1;
-  }
+/*
+ Invisible controls positioned over the EXACT supplied
+ AAMush landing artwork.
+*/
+.hotspot{
+  position:absolute;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  z-index:5;
+  border-radius:14px
+}
 
-  /* FEATURES */
-  .features {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 24px;
-  }
-  .features-header {
-    text-align: center;
-    margin-bottom: 48px;
-  }
-  .features-header h2 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .features-header p {
-    font-size: 15px;
-    color: var(--text-tertiary);
-  }
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .feature-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    background: var(--surface);
-    transition: border-color 0.2s;
-  }
-  .feature-card:hover {
-    border-color: var(--text-primary);
-  }
-  .feature-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 14px;
-  }
-  .feature-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-  .feature-card h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .feature-card p {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    line-height: 1.5;
+.hotspot:focus{
+  outline:3px solid rgba(0,126,255,.65);
+  outline-offset:2px
+}
+
+/* Open feeder */
+#openFeederHot{
+  left:61.3%;
+  top:1.5%;
+  width:23.5%;
+  height:4.8%
+}
+
+/* Launch feeder device */
+#launchHot{
+  left:4%;
+  top:38.3%;
+  width:26%;
+  height:5.3%
+}
+
+/* Explore platform */
+#exploreHot{
+  left:27.8%;
+  top:38.3%;
+  width:23%;
+  height:5.3%
+}
+
+/* Large developer-briefcase artwork */
+#briefcaseHot{
+  left:49%;
+  top:40.8%;
+  width:48.5%;
+  height:56%;
+  border-radius:50%
+}
+
+/* =========================================================
+   FLOATING AAMUSH BUTTON
+   ========================================================= */
+
+.float-launch{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  width:78px;
+  height:78px;
+  border-radius:50%;
+  padding:0;
+  border:2px solid #ffe100;
+  background:#08111d;
+  overflow:hidden;
+  z-index:100;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  cursor:pointer;
+  animation:aamushFloat 2.5s ease-in-out infinite
+}
+
+.float-launch img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 45%;
+  display:block
+}
+
+@keyframes aamushFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+/* =========================================================
+   GENERAL MODALS
+   ========================================================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(5px);
+  z-index:1000;
+  display:none;
+  padding:14px;
+  overflow:auto
+}
+
+.modal.open{
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
+
+.panel{
+  width:min(1100px,100%);
+  max-height:calc(100vh - 28px);
+  overflow:hidden;
+  background:#0b1521;
+  border:1px solid #29465f;
+  border-radius:22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.65)
+}
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px 16px;
+  background:linear-gradient(135deg,#0e2232,#09121d);
+  border-bottom:1px solid #244159;
+  position:sticky;
+  top:0;
+  z-index:3
+}
+
+.panel-head h2{
+  font-size:20px;
+  margin:0;
+  flex:1
+}
+
+.close{
+  border:1px solid #45637a;
+  background:#102235;
+  color:#fff;
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer
+}
+
+/* =========================================================
+   DEVELOPER BRIEFCASE
+   ========================================================= */
+
+.briefcase-grid{
+  padding:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:12px;
+  overflow:auto
+}
+
+.brief-item{
+  border:1px solid #2c4b64;
+  background:linear-gradient(145deg,#112235,#0c1825);
+  color:#fff;
+  border-radius:16px;
+  padding:17px;
+  text-align:left;
+  cursor:pointer;
+  min-height:105px;
+  transition:.2s
+}
+
+.brief-item:hover{
+  border-color:#50a8ff;
+  transform:translateY(-1px)
+}
+
+.brief-item b{
+  display:block;
+  font-size:16px;
+  margin-bottom:7px
+}
+
+.brief-item span{
+  color:#9fb5c7;
+  font-size:13px;
+  line-height:1.45
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.profile{
+  padding:22px;
+  overflow:auto;
+  max-height:calc(100vh - 120px)
+}
+
+.profile-photo{
+  display:block;
+  width:min(260px,70vw);
+  aspect-ratio:3/4;
+  object-fit:cover;
+  border-radius:22px;
+  margin:0 auto 18px;
+  border:2px solid #41627c;
+  box-shadow:0 14px 35px rgba(0,0,0,.45)
+}
+
+.profile h3{
+  text-align:center;
+  font-size:25px;
+  margin:0 0 6px
+}
+
+.profile .role{
+  text-align:center;
+  color:#a9c0d2;
+  margin:0 0 18px;
+  font-weight:700
+}
+
+.card{
+  background:#0f1e2d;
+  border:1px solid #29465f;
+  border-radius:15px;
+  padding:16px;
+  line-height:1.65;
+  color:#d9e7f0;
+  margin-bottom:12px
+}
+
+/* =========================================================
+   MANUAL VIEWER
+   ========================================================= */
+
+.viewer-body{
+  padding:16px;
+  overflow:auto;
+  max-height:calc(100vh - 78px)
+}
+
+.manual{
+  white-space:pre-wrap;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:14px;
+  line-height:1.55;
+  background:#f7f8fa;
+  color:#17212b;
+  border-radius:14px;
+  padding:22px;
+  overflow:auto
+}
+
+.info{
+  padding:22px;
+  overflow:auto;
+  max-height:calc(100vh - 80px);
+  line-height:1.7;
+  color:#d5e4ee
+}
+
+/* =========================================================
+   LIVE MESH-01 FEEDER
+   ========================================================= */
+
+.feeder{
+  padding:14px;
+  overflow:auto;
+  max-height:calc(100vh - 78px);
+  background:#07111d
+}
+
+.live-banner{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:12px
+}
+
+.pill{
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid #2d5a76;
+  background:#0d2232;
+  color:#cfeeff;
+  font-size:12px;
+  font-weight:700
+}
+
+.pill.live{
+  border-color:#20c87a;
+  color:#b8ffd9
+}
+
+.pill.demo{
+  border-color:#e8b53d;
+  color:#ffe7a4
+}
+
+.device-top{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:12px
+}
+
+.device-card,
+.telemetry-card,
+.events-card,
+.mesh-card{
+  background:linear-gradient(145deg,#0e1e2c,#091520);
+  border:1px solid #28485f;
+  border-radius:17px;
+  padding:15px
+}
+
+.device-card h3,
+.telemetry-card h3,
+.events-card h3,
+.mesh-card h3{
+  margin:0 0 12px;
+  font-size:15px;
+  color:#cde5f5
+}
+
+.device-id{
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-bottom:6px
+}
+
+.status{
+  color:#70f1ad;
+  font-weight:800
+}
+
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px
+}
+
+.metric{
+  background:#0a1825;
+  border:1px solid #203a4e;
+  border-radius:12px;
+  padding:12px
+}
+
+.metric small{
+  display:block;
+  color:#7894a9;
+  margin-bottom:5px
+}
+
+.metric strong{
+  font-size:18px
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px
+}
+
+.action{
+  border:1px solid #3b6684;
+  background:#10283a;
+  color:#fff;
+  border-radius:10px;
+  padding:10px 12px;
+  cursor:pointer
+}
+
+.action.primary{
+  background:#0f6f52;
+  border-color:#1ab77f
+}
+
+.action.warn{
+  background:#4e3d12;
+  border-color:#d9a72d
+}
+
+.mesh-card{
+  margin-top:12px
+}
+
+.mesh-chain{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+  align-items:center
+}
+
+.mesh-node{
+  min-height:76px;
+  border:1px solid #31566e;
+  border-radius:12px;
+  background:#0b1b29;
+  padding:10px 6px;
+  text-align:center;
+  font-size:11px;
+  color:#bcd5e5
+}
+
+.mesh-node.active{
+  border-color:#1fd58a;
+  box-shadow:0 0 15px rgba(31,213,138,.15)
+}
+
+.events-card{
+  margin-top:12px
+}
+
+.event-list{
+  max-height:260px;
+  overflow:auto
+}
+
+.event-row{
+  display:grid;
+  grid-template-columns:90px 1fr 90px;
+  gap:8px;
+  padding:9px 0;
+  border-bottom:1px solid #183247;
+  font-size:12px
+}
+
+.event-row:last-child{
+  border-bottom:0
+}
+
+.event-time{
+  color:#6f94ab
+}
+
+.event-name{
+  color:#d9edf9
+}
+
+.event-status{
+  color:#70f1ad;
+  text-align:right
+}
+
+.log{
+  margin-top:12px;
+  background:#050b11;
+  border:1px solid #1d3344;
+  border-radius:12px;
+  padding:12px;
+  height:150px;
+  overflow:auto;
+  font-family:monospace;
+  font-size:11px;
+  color:#9fd3ef;
+  white-space:pre-wrap
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:760px){
+  .device-top{
+    grid-template-columns:1fr
   }
 
-  /* STATS BAR */
-  .stats-bar {
-    background: var(--surface-muted);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 40px 24px;
-  }
-  .stats-bar-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    text-align: center;
-  }
-  .stat-item h3 {
-    font-size: 32px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    margin-bottom: 4px;
-  }
-  .stat-item p {
-    font-size: 13px;
-    color: var(--text-tertiary);
+  .mesh-chain{
+    grid-template-columns:repeat(2,1fr)
   }
 
-  /* DEVELOPER SIGNATURE */
-  .dev-signature {
-    background: var(--surface-muted);
-    border-top: 1px solid var(--border);
-    padding: 32px 24px;
-  }
-  .dev-signature-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .dev-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--surface-raised);
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
-    flex-shrink: 0;
-  }
-  .dev-info {
-    text-align: left;
-  }
-  .dev-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-  .dev-title {
-    font-size: 12px;
-    color: var(--text-tertiary);
-    margin-top: 2px;
-  }
-  .dev-email {
-    font-size: 12px;
-    color: var(--accent);
-    margin-top: 4px;
-    font-family: var(--font-mono);
-  }
-  .dev-email a:hover { text-decoration: underline; }
-  .dev-seal {
-    font-size: 11px;
-    color: var(--text-quaternary);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-weight: 600;
+  .event-row{
+    grid-template-columns:70px 1fr 70px
   }
 
-  /* FOOTER */
-  .footer {
-    border-top: 1px solid var(--border);
-    padding: 40px 24px;
-    text-align: center;
-  }
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .footer-brand svg {
-    width: 24px;
-    height: 24px;
-  }
-  .footer-inventors {
-    font-size: 12px;
-    color: var(--text-quaternary);
-    margin-bottom: 20px;
-  }
-  .footer-copy {
-    font-size: 12px;
-    color: var(--text-quaternary);
+  .float-launch{
+    width:68px;
+    height:68px;
+    right:12px;
+    bottom:12px
   }
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; padding: 48px 24px 40px; }
-    .hero h1 { font-size: 32px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .stats-bar-inner { grid-template-columns: 1fr 1fr; }
-    .nav-links { display: none; }
-    .dev-signature-inner { flex-direction: column; text-align: center; }
-    .dev-info { text-align: center; }
+  .panel{
+    border-radius:15px
   }
-  @media (max-width: 480px) {
-    .feeder-metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .feeder-metric-value { font-size: 20px; }
-    .feeder-body { padding: 10px; }
-    .stats-bar-inner { grid-template-columns: 1fr; }
-  }
+}
 </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-      AAMush
-    </div>
-    <div class="nav-links">
-      <a href="#mesh">Mesh</a>
-      <a href="#device">Device</a>
-      <a href="#features">Features</a>
-      <a href="#about">About</a>
-    </div>
-    <button class="nav-cta" onclick="document.getElementById('device').scrollIntoView({behavior:'smooth'})">Open feeder</button>
-  </div>
-</nav>
+<!-- =======================================================
+     AAMUSH LANDING ARTWORK
+     ======================================================= -->
 
-<!-- HERO -->
-<section class="hero">
-  <div>
-    <div class="hero-badge"><span class="dot"></span> Mesh network live</div>
-    <h1>East Africa's first autonomous commodity-logistics mesh</h1>
-    <p>AAMush connects verified supply, predictive demand, and tokenized truck capacity into a single trustless transaction layer. Built for traders, truckers, and warehouses across the Northern and Central Corridors.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('device').scrollIntoView({behavior:'smooth'})">Launch feeder device</button>
-      <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore platform</button>
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;justify-content:center;">
-    <svg width="280" height="280" viewBox="0 0 200 200" fill="none" style="opacity:0.9;">
-      <circle cx="100" cy="100" r="80" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
-      <circle cx="100" cy="100" r="55" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
-      <circle cx="100" cy="100" r="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
-      <circle cx="100" cy="20" r="8" fill="var(--chart-1)" opacity="0.9"/>
-      <circle cx="170" cy="70" r="8" fill="var(--chart-3)" opacity="0.9"/>
-      <circle cx="170" cy="140" r="8" fill="var(--chart-4)" opacity="0.9"/>
-      <circle cx="100" cy="180" r="8" fill="var(--chart-2)" opacity="0.9"/>
-      <circle cx="30" cy="140" r="8" fill="var(--chart-1)" opacity="0.9"/>
-      <circle cx="30" cy="70" r="8" fill="var(--chart-3)" opacity="0.9"/>
-      <circle cx="100" cy="100" r="12" fill="var(--text-primary)"/>
-      <line x1="100" y1="20" x2="170" y2="70" stroke="var(--border)" stroke-width="1"/>
-      <line x1="170" y1="70" x2="170" y2="140" stroke="var(--border)" stroke-width="1"/>
-      <line x1="170" y1="140" x2="100" y2="180" stroke="var(--border)" stroke-width="1"/>
-      <line x1="100" y1="180" x2="30" y2="140" stroke="var(--border)" stroke-width="1"/>
-      <line x1="30" y1="140" x2="30" y2="70" stroke="var(--border)" stroke-width="1"/>
-      <line x1="30" y1="70" x2="100" y2="20" stroke="var(--border)" stroke-width="1"/>
-      <line x1="100" y1="20" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="170" y1="70" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="170" y1="140" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="100" y1="180" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="30" y1="140" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-      <line x1="30" y1="70" x2="100" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>
-    </svg>
-  </div>
-</section>
+<div class="landing">
 
-<!-- STATS BAR -->
-<section class="stats-bar" id="mesh">
-  <div class="stats-bar-inner">
-    <div class="stat-item">
-      <h3>7</h3>
-      <p>Active convoys</p>
-    </div>
-    <div class="stat-item">
-      <h3>142</h3>
-      <p>Trucks staked</p>
-    </div>
-    <div class="stat-item">
-      <h3>$2.4M</h3>
-      <p>Value flowing today</p>
-    </div>
-    <div class="stat-item">
-      <h3>99.7%</h3>
-      <p>Settlement success</p>
-    </div>
-  </div>
-</section>
+  <!--
+    THE SUPPLIED AAMUSH LANDING ARTWORK IS INSERTED HERE.
+    The following image element is intentionally kept as the
+    single visual foundation of the landing page.
+  -->
 
-<!-- FEEDER DEVICE SECTION -->
-<section class="feeder-section" id="device">
-  <div class="feeder-section-inner">
-    <div class="feeder-section-header">
-      <h2>AAMush Mesh-01 Feeder Device</h2>
-      <p>Live telemetry from the East African trade-logistics mesh. Invented by Aloyce & Mushi.</p>
+  <img
+    id="heroArtwork"
+    class="hero-art"
+    alt="AAMush Mesh-01 East African autonomous commodity-logistics mesh"
+  >
+
+  <!-- Invisible interactive areas over the supplied artwork -->
+
+  <button
+    id="openFeederHot"
+    class="hotspot"
+    aria-label="Open feeder"
+    title="Open feeder">
+  </button>
+
+  <button
+    id="launchHot"
+    class="hotspot"
+    aria-label="Launch feeder device"
+    title="Launch feeder device">
+  </button>
+
+  <button
+    id="exploreHot"
+    class="hotspot"
+    aria-label="Explore platform"
+    title="Explore platform">
+  </button>
+
+  <button
+    id="briefcaseHot"
+    class="hotspot"
+    aria-label="Open Developer Briefcase"
+    title="Open Developer Briefcase">
+  </button>
+
+</div>
+
+
+<!-- =======================================================
+     FLOATING AAMUSH ARTWORK BUTTON
+     ======================================================= -->
+
+<button
+  id="floatingBriefcase"
+  class="float-launch"
+  aria-label="Open AAMush Developer Briefcase"
+  title="Open AAMush Developer Briefcase">
+
+  <img
+    id="floatingArtwork"
+    alt="AAMush"
+  >
+
+</button>
+
+
+<!-- =======================================================
+     DEVELOPER BRIEFCASE MODAL
+     ======================================================= -->
+
+<div
+  id="briefcaseModal"
+  class="modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="briefcaseTitle">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div style="font-size:25px">💼</div>
+
+      <h2 id="briefcaseTitle">
+        OPEN DEVELOPER BRIEFCASE
+      </h2>
+
+      <button
+        class="close"
+        data-close="briefcaseModal">
+        Close
+      </button>
+
     </div>
-    <div class="feeder-wrap">
-      <div class="feeder-root">
-        <div class="feeder-chrome">
-          <div class="feeder-chrome-left">
-            <div class="feeder-dot"></div>
-            <span class="feeder-chrome-title">AAMush Mesh-01</span>
+
+    <div class="briefcase-grid">
+
+      <button
+        class="brief-item"
+        data-open="profileModal">
+
+        <b>👤 Developer Profile</b>
+
+        <span>
+          Inventor, Lead Developer & Systems Architect
+          profile and development record.
+        </span>
+
+      </button>
+
+
+      <button
+        class="brief-item"
+        data-open="manualModal">
+
+        <b>📘 Master Operating Manual</b>
+
+        <span>
+          AAMush Mesh-01 Master Operating, Development &
+          System Functional Manual — Version 1.0.
+        </span>
+
+      </button>
+
+
+      <button
+        class="brief-item"
+        data-open="ipModal">
+
+        <b>🔐 Intellectual Property</b>
+
+        <span>
+          Invention identity, authorship, development
+          documentation and IP notice.
+        </span>
+
+      </button>
+
+
+      <button
+        class="brief-item"
+        data-open="developmentModal">
+
+        <b>🛠 Development History</b>
+
+        <span>
+          Concept → Architecture → Prototype → Engineering
+          → Field Testing → Pilot → Validation → Launch.
+        </span>
+
+      </button>
+
+
+      <button
+        class="brief-item"
+        data-open="architectureModal">
+
+        <b>🧩 System Architecture</b>
+
+        <span>
+          Mesh-01, AURA, REGEN, SURETY and NEXUS
+          relationship.
+        </span>
+
+      </button>
+
+
+      <button
+        class="brief-item"
+        data-open="investorModal">
+
+        <b>📊 Investor Reference</b>
+
+        <span>
+          One-minute explanation, system value proposition
+          and network-effect model.
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =======================================================
+     DEVELOPER PROFILE
+     ======================================================= -->
+
+<div id="profileModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>👤</div>
+
+      <h2>DEVELOPER PROFILE</h2>
+
+      <button
+        class="close"
+        data-close="profileModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="profile">
+
+      <img
+        id="developerPhoto"
+        class="profile-photo"
+        alt="AAMush developer profile">
+
+      <h3>Dr. James K. Mushi, PhD</h3>
+
+      <p class="role">
+        Lead Developer & Systems Architect
+      </p>
+
+      <div class="card">
+
+        <strong>AAMush Mesh-01</strong><br>
+
+        Invented by <strong>Aloyce & Mushi</strong>.<br><br>
+
+        AAMush identity:
+        <strong>AnnaAbigailMush Aloyce</strong><br>
+
+        Meaning:
+        <strong>“Always love you everyday.”</strong>
+
+      </div>
+
+      <div class="card">
+
+        <strong>System</strong><br>
+        AAMush Mesh-01 Feeder Device
+
+        <br><br>
+
+        <strong>Platform</strong><br>
+        AAMush East African Autonomous Commodity-
+        Logistics Mesh
+
+        <br><br>
+
+        <strong>Role</strong><br>
+        Lead Developer & Systems Architect
+
+      </div>
+
+      <div class="card">
+
+        <strong>Development principle</strong><br><br>
+
+        Concept → Architecture → Prototype →
+        Engineering → Field Testing → Pilot →
+        Validation → Investor Demonstration →
+        Commercial Launch → Continuous Development
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     MASTER MANUAL
+     ======================================================= -->
+
+<div id="manualModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>📘</div>
+
+      <h2>
+        AAMUSH MESH-01 MASTER MANUAL v1.0
+      </h2>
+
+      <button
+        class="close"
+        data-close="manualModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="viewer-body">
+
+      <div id="manualContent" class="manual">
+PASTE THE MASTER MANUAL TEXT IN SECTION 3
+OF THIS HTML.
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     IP NOTICE
+     ======================================================= -->
+
+<div id="ipModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>🔐</div>
+
+      <h2>INTELLECTUAL PROPERTY & DEVELOPMENT NOTICE</h2>
+
+      <button
+        class="close"
+        data-close="ipModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="info">
+
+      <h3>AAMush Mesh-01</h3>
+
+      <p>
+        This project documentation constitutes the
+        developer-defined technical and functional
+        description of the AAMush Mesh-01 system.
+      </p>
+
+      <p>
+        The system is identified as an East African
+        autonomous commodity-logistics mesh infrastructure
+        with Mesh-01 functioning as its physical-edge
+        feeder and trusted logistics-event gateway.
+      </p>
+
+      <p>
+        Invented by:
+        <strong>Aloyce & Mushi</strong>
+      </p>
+
+      <p>
+        Lead Developer & Systems Architect:
+        <strong>Dr. James K. Mushi, PhD</strong>
+      </p>
+
+      <p>
+        This documentation should be maintained together
+        with dated engineering files, source code, hardware
+        designs, circuit diagrams, photographs, prototypes,
+        test reports, repositories, demonstrations and
+        subsequent revisions.
+      </p>
+
+      <p>
+        This technical notice is not itself a legal opinion
+        regarding patentability, copyright registration,
+        trademark rights or any other intellectual-property
+        right.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     DEVELOPMENT HISTORY
+     ======================================================= -->
+
+<div id="developmentModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>🛠</div>
+
+      <h2>DEVELOPMENT HISTORY</h2>
+
+      <button
+        class="close"
+        data-close="developmentModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="info">
+
+      <h3>AAMush Mesh-01 Development Lifecycle</h3>
+
+      <p>
+        <strong>01 — Concept</strong><br>
+        Define invention, problem, users, use cases,
+        architecture, intellectual property and business
+        model.
+      </p>
+
+      <p>
+        <strong>02 — Architecture</strong><br>
+        Hardware, firmware, software, communications,
+        data, security and API architecture.
+      </p>
+
+      <p>
+        <strong>03 — Prototype</strong><br>
+        Physical Mesh-01 and software prototype.
+      </p>
+
+      <p>
+        <strong>04 — Engineering</strong><br>
+        Hardware, firmware, communications, event,
+        security and platform integration.
+      </p>
+
+      <p>
+        <strong>05 — Field Testing</strong><br>
+        Actual roads, network interruptions, power
+        interruption, route deviation, vibration and
+        environmental conditions.
+      </p>
+
+      <p>
+        <strong>06 — Pilot</strong><br>
+        Controlled participation by vehicle owners,
+        logistics operators, warehouses, traders and
+        technology partners.
+      </p>
+
+      <p>
+        <strong>07 — Validation</strong><br>
+        Functional, connectivity, security, scalability
+        and recovery validation.
+      </p>
+
+      <p>
+        <strong>08 — Investor Demonstration</strong><br>
+        Demonstrate the complete physical-to-digital
+        logistics chain.
+      </p>
+
+      <p>
+        <strong>09 — Commercial Launch</strong><br>
+        Production release following acceptance testing
+        and compliance review.
+      </p>
+
+      <p>
+        <strong>10 — Continuous Development</strong><br>
+        Sensor expansion, communications expansion,
+        AI and autonomous logistics capabilities.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     ARCHITECTURE
+     ======================================================= -->
+
+<div id="architectureModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>🧩</div>
+
+      <h2>AAMUSH SYSTEM ARCHITECTURE</h2>
+
+      <button
+        class="close"
+        data-close="architectureModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="info">
+
+      <h3>Physical-to-Digital Operating Chain</h3>
+
+      <p>
+        PHYSICAL WORLD
+        ↓
+        MESH-01 FEEDER
+        ↓
+        TELEMETRY & EVENT PROCESSING
+        ↓
+        SECURE COMMUNICATION
+        ↓
+        AAMUSH MESH
+        ↓
+        AURA / REGEN / SURETY / NEXUS
+        ↓
+        LOGISTICS / COMMODITY / FINANCIAL DECISION
+        ↓
+        PHYSICAL-WORLD ACTION
+      </p>
+
+      <hr>
+
+      <h3>AURA ROUTING</h3>
+      <p>
+        Logistics routing, convoy orchestration,
+        transport-capacity coordination and backhaul.
+      </p>
+
+      <h3>REGEN REGISTRY</h3>
+      <p>
+        Digital identity, logistics assets, warehouse
+        records and physical-world evidence.
+      </p>
+
+      <h3>SURETY SETTLEMENT</h3>
+      <p>
+        Commercial execution and authorized settlement
+        workflows based on verified logistics events.
+      </p>
+
+      <h3>NEXUS GHOST INVENTORY</h3>
+      <p>
+        Predictive commodity availability and future
+        logistics demand.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     INVESTOR REFERENCE
+     ======================================================= -->
+
+<div id="investorModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>📊</div>
+
+      <h2>INVESTOR REFERENCE</h2>
+
+      <button
+        class="close"
+        data-close="investorModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="info">
+
+      <h3>One-Minute Explanation</h3>
+
+      <p>
+        AAMush Mesh-01 is the physical device that
+        connects the real movement of goods and trucks
+        to the AAMush digital trade-logistics network.
+      </p>
+
+      <p>
+        It collects and authenticates telemetry, converts
+        physical activity into structured logistics events,
+        stores those events when networks are unavailable,
+        and synchronizes them with the AAMush mesh.
+      </p>
+
+      <p>
+        Those events can support AURA routing and convoy
+        management, REGEN digital registry functions,
+        SURETY commercial settlement workflows and NEXUS
+        predictive inventory.
+      </p>
+
+      <h3>Core Value</h3>
+
+      <p>
+        Mesh-01 is intended to bridge the physical economy
+        and the digital trade network.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     LIVE FEEDER MODAL
+     ======================================================= -->
+
+<div id="feederModal" class="modal">
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <div>📡</div>
+
+      <h2>AAMUSH MESH-01 FEEDER</h2>
+
+      <button
+        class="close"
+        data-close="feederModal">
+        Close
+      </button>
+
+    </div>
+
+    <div class="feeder">
+
+      <div class="live-banner">
+
+        <span class="pill live">
+          ● MESH NETWORK LIVE
+        </span>
+
+        <span class="pill demo">
+          DEMONSTRATION / SIMULATED TELEMETRY
+        </span>
+
+        <span class="pill">
+          MESH-01
+        </span>
+
+      </div>
+
+
+      <div class="device-top">
+
+        <div class="device-card">
+
+          <h3>DEVICE STATUS</h3>
+
+          <div class="device-id">
+            MESH-01-001
           </div>
-          <span class="feeder-chrome-meta" id="feeder-clock">--:--:--</span>
+
+          <div class="status">
+            ● OPERATIONAL
+          </div>
+
+          <div class="actions">
+
+            <button
+              id="startTelemetry"
+              class="action primary">
+              Start telemetry
+            </button>
+
+            <button
+              id="stopTelemetry"
+              class="action">
+              Stop telemetry
+            </button>
+
+            <button
+              id="simulateOffline"
+              class="action warn">
+              Simulate offline
+            </button>
+
+            <button
+              id="syncEvents"
+              class="action primary">
+              Synchronize
+            </button>
+
+          </div>
+
         </div>
-        <div class="feeder-inventors">Invented by Aloyce & Mushi</div>
 
-        <div class="feeder-body">
-          <div class="feeder-metrics">
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                Convoys live
-              </div>
-              <div class="feeder-metric-value" id="f-convoys">7</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                +2 forming
-              </div>
+
+        <div class="telemetry-card">
+
+          <h3>LIVE TELEMETRY</h3>
+
+          <div class="metrics">
+
+            <div class="metric">
+              <small>Latitude</small>
+              <strong id="lat">-6.7924</strong>
             </div>
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                Trucks staked
-              </div>
-              <div class="feeder-metric-value" id="f-trucks">142</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                +4 this hour
-              </div>
+
+            <div class="metric">
+              <small>Longitude</small>
+              <strong id="lng">39.2083</strong>
             </div>
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M2 12h20"/></svg>
-                Value flowing
-              </div>
-              <div class="feeder-metric-value" id="f-value">$2.41M</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                +$18.2K/min
-              </div>
+
+            <div class="metric">
+              <small>Speed</small>
+              <strong>
+                <span id="speed">42</span> km/h
+              </strong>
             </div>
-            <div class="feeder-metric">
-              <div class="feeder-metric-label">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Settlement rate
-              </div>
-              <div class="feeder-metric-value" id="f-rate">99.7%</div>
-              <div class="feeder-metric-delta feeder-positive">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-                0 fails today
-              </div>
+
+            <div class="metric">
+              <small>Heading</small>
+              <strong>
+                <span id="heading">074</span>°
+              </strong>
             </div>
+
+            <div class="metric">
+              <small>GNSS</small>
+              <strong id="gnss">LOCKED</strong>
+            </div>
+
+            <div class="metric">
+              <small>Network</small>
+              <strong id="network">ONLINE</strong>
+            </div>
+
           </div>
 
-          <div class="feeder-mini-map">
-            <div class="feeder-node"><div class="feeder-node-ring live" id="node-mba">M</div><div class="feeder-node-label">MBA</div></div>
-            <div class="feeder-connector" style="--flow:100%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring live" id="node-nbo">N</div><div class="feeder-node-label">NBO</div></div>
-            <div class="feeder-connector" style="--flow:85%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring live" id="node-kla">K</div><div class="feeder-node-label">KLA</div></div>
-            <div class="feeder-connector" style="--flow:60%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring" id="node-kig">R</div><div class="feeder-node-label">KIG</div></div>
-            <div class="feeder-connector" style="--flow:30%"></div>
-            <div class="feeder-node"><div class="feeder-node-ring" id="node-gom">G</div><div class="feeder-node-label">GOM</div></div>
-          </div>
-
-          <div class="feeder-ticker">
-            <div class="feeder-ticker-header">
-              <span class="feeder-ticker-title">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                Live mesh feed
-              </span>
-              <span class="feeder-ticker-count" id="f-count">847 events/hr</span>
-            </div>
-            <div class="feeder-stream" id="feeder-stream"></div>
-          </div>
         </div>
 
-        <div class="feeder-footer">
-          <div class="feeder-signal">
-            <span>Signal</span>
-            <div class="feeder-bar on" style="height:6px;"></div>
-            <div class="feeder-bar on" style="height:10px;"></div>
-            <div class="feeder-bar on" style="height:14px;"></div>
-            <div class="feeder-bar on" style="height:10px;"></div>
+      </div>
+
+
+      <div class="mesh-card">
+
+        <h3>
+          MESH-01 END-TO-END DATA FLOW
+        </h3>
+
+        <div class="mesh-chain">
+
+          <div class="mesh-node active">
+            VEHICLE
           </div>
-          <span>Node uptime: 99.98% | Last sync: <span id="f-sync">0s</span> ago</span>
+
+          <div class="mesh-node active">
+            MESH-01
+          </div>
+
+          <div class="mesh-node active">
+            TELEMETRY
+          </div>
+
+          <div class="mesh-node active">
+            EVENT
+          </div>
+
+          <div class="mesh-node active">
+            SECURE
+          </div>
+
+          <div class="mesh-node active">
+            AAMUSH MESH
+          </div>
+
+          <div class="mesh-node active">
+            SERVICES
+          </div>
+
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="features-header">
-    <h2>Platform modules</h2>
-    <p>Four proprietary systems that power the AAMush mesh.</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(37,99,235,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-1)" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
       </div>
-      <h3>AURA Routing</h3>
-      <p>AI-orchestrated convoy contracts that circularize multi-leg routes and guarantee backhaul for independent truck owners.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(22,163,74,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-3)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <h3>REGEN Registry</h3>
-      <p>Three rare digital registries — dynamic warehouse receipt NFTs, zero-knowledge DIDs, and AI-predicted customs pre-clearance.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(124,58,237,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-4)" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>
-      </div>
-      <h3>SURETY Settlement</h3>
-      <p>Unified command layer with predictive commodity pricing, climate risk overlays, and omni-ledger settlement across fiat, stablecoin, and CBDC.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(37,99,235,0.06);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      </div>
-      <h3>NEXUS Ghost Inventory</h3>
-      <p>Bid on future harvests 30–90 days pre-harvest, backed by satellite-verified field data and weather derivatives.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(220,38,38,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-2)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      </div>
-      <h3>Idle-Capacity Staking</h3>
-      <p>Truck owners lock telematics into the mesh and receive instant liquidity advances — 60% of predicted earnings before the engine starts.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(115,115,115,0.08);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--chart-5)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-      </div>
-      <h3>Cross-Border Trust</h3>
-      <p>Trustless transactions across Kenya, Uganda, Tanzania, Rwanda, Burundi, DRC, and Ethiopia — no cash-on-delivery fraud exposure.</p>
-    </div>
-  </div>
-</section>
 
-<!-- DEVELOPER SIGNATURE -->
-<section class="dev-signature">
-  <div class="dev-signature-inner">
-    <div class="dev-avatar">JM</div>
-    <div class="dev-info">
-      <div class="dev-name">Dr. James K. Mushi, PhD</div>
-      <div class="dev-title">Lead Developer & Systems Architect</div>
-      <div class="dev-email"><a href="mailto:jkuriyamush@aol.com">jkuriyamush@aol.com</a></div>
-    </div>
-    <div class="dev-seal">Verified Build</div>
-  </div>
-</section>
 
-<!-- FOOTER -->
-<footer class="footer" id="about">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-      AAMush
+      <div class="events-card">
+
+        <h3>
+          EVENT STREAM
+        </h3>
+
+        <div
+          id="eventList"
+          class="event-list">
+        </div>
+
+      </div>
+
+
+      <div
+        id="systemLog"
+        class="log">
+AAMush Mesh-01 initialization...
+Waiting for telemetry engine...
+      </div>
+
     </div>
-    <div class="footer-inventors">Invented by Aloyce & Mushi</div>
-    <div class="footer-copy">AAMush Mesh-01 Feeder Device &mdash; East African Trade-Logistics Infrastructure. All systems operational.</div>
+
   </div>
-</footer>
+
+</div>
+
 
 <script>
-(function(){
-  const stream = document.getElementById('feeder-stream');
-  const clock = document.getElementById('feeder-clock');
-  const sync = document.getElementById('f-sync');
-  const convoys = document.getElementById('f-convoys');
-  const trucks = document.getElementById('f-trucks');
-  const valueEl = document.getElementById('f-value');
-  let valueNum = 2410000;
-  let syncSec = 0;
-  let eventCount = 0;
+/* =========================================================
+   AAMUSH APPLICATION ENGINE
+   ========================================================= */
 
-  const events = [
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Convoy <strong>#C-2841</strong> sealed — NBO→KGL, 4 trucks, 120 MT'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Title <strong>#8921</strong> minted — moisture 12.3%, GPS locked'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'$28,920 USDC advanced to 4 truck owners (60% stake)'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Backhaul match found — KGL→NBO fertilizer, 3 trucks'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Identity <strong>DID-ug-4412</strong> verified via ZK-proof'},
-    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'New bid on ghost inventory — Soybeans 500 MT @ $410/MT'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Cross-border settlement complete — KGL→GOM, $22,100'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Convoy <strong>#C-2839</strong> forming — 2/5 trucks matched'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Customs pre-clearance approved — manifest SM-7721'},
-    {tag:'ALERT', cls:'feeder-tag-alert', msg:'Climate oracle: flash-flood risk 45% on NBO→KLA route'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'IoT seal breach detected — Truck T-892, auto-escrow paused'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'M-Pesa↔USDC bridge settled — $4,200 @ 1 USD = 129.4 KES'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'Warehouse receipt <strong>#8918</strong> collateral released'},
-    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'Satellite NDVI update — Iganga field index 0.82 (+0.03)'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Route optimization: alternate corridor saved 2h 14m'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Parametric insurance triggered — rainfall < 20mm, payout $1,200'},
-    {tag:'REGEN', cls:'feeder-tag-regen', msg:'DID cross-border attestation — Rwanda↔Uganda validated'},
-    {tag:'AURA', cls:'feeder-tag-aura', msg:'Truck T-445 joined staking pool — 72h window locked'},
-    {tag:'SETTLE', cls:'feeder-tag-settle', msg:'Smart contract repayment — $17,340 deducted, balance cleared'},
-    {tag:'GHOST', cls:'feeder-tag-ghost', msg:'Forward contract executed — Maize 240 MT, delivery Day 45'},
-  ];
+/*
+ The supplied artwork and developer photograph are inserted
+ by the next code section as embedded browser data.
 
-  function pushEvent(evt) {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const line = document.createElement('div');
-    line.className = 'feeder-line';
-    line.innerHTML = '<span class="feeder-line-time">'+time+'</span><span class="feeder-line-tag '+evt.cls+'">'+evt.tag+'</span><span class="feeder-line-msg">'+evt.msg+'</span>';
-    stream.insertBefore(line, stream.firstChild);
-    while (stream.children.length > 14) stream.removeChild(stream.lastChild);
-    eventCount++;
-    document.getElementById('f-count').textContent = eventCount + ' events';
-  }
+ DO NOT remove the variables.
+*/
 
-  function updateClock() {
-    const now = new Date();
-    clock.textContent = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    syncSec++;
-    sync.textContent = syncSec + 's';
-    if (syncSec > 3) sync.textContent = '< 1s';
-    if (syncSec > 5) { syncSec = 0; }
-  }
+let telemetryRunning = true;
+let offlineMode = false;
+let eventCounter = 1000;
+let telemetryTimer = null;
 
-  function tickValue() {
-    valueNum += Math.floor(Math.random() * 800) + 200;
-    valueEl.textContent = '$' + (valueNum / 1000000).toFixed(2) + 'M';
-  }
+const state = {
+  lat: -6.7924,
+  lng: 39.2083,
+  speed: 42,
+  heading: 74,
+  synced: 0,
+  stored: 0
+};
 
-  function pulseNode() {
-    const nodes = ['node-mba','node-nbo','node-kla','node-kig','node-gom'];
-    const rand = nodes[Math.floor(Math.random() * nodes.length)];
-    const el = document.getElementById(rand);
-    if (el) {
-      el.classList.add('live');
-      setTimeout(() => el.classList.remove('live'), 2000);
+
+/* =========================================================
+   MODAL CONTROLS
+   ========================================================= */
+
+function openModal(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.add("open");
+}
+
+function closeModal(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.remove("open");
+}
+
+document.querySelectorAll("[data-close]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    closeModal(btn.dataset.close);
+  });
+});
+
+document.querySelectorAll("[data-open]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    openModal(btn.dataset.open);
+  });
+});
+
+document.querySelectorAll(".modal").forEach(modal=>{
+  modal.addEventListener("click",e=>{
+    if(e.target===modal){
+      modal.classList.remove("open");
     }
+  });
+});
+
+
+/* =========================================================
+   LANDING BUTTONS
+   ========================================================= */
+
+document.getElementById("openFeederHot")
+  .addEventListener("click",()=>{
+    openModal("feederModal");
+  });
+
+document.getElementById("launchHot")
+  .addEventListener("click",()=>{
+    openModal("feederModal");
+  });
+
+document.getElementById("exploreHot")
+  .addEventListener("click",()=>{
+    openModal("architectureModal");
+  });
+
+document.getElementById("briefcaseHot")
+  .addEventListener("click",()=>{
+    openModal("briefcaseModal");
+  });
+
+document.getElementById("floatingBriefcase")
+  .addEventListener("click",()=>{
+    openModal("briefcaseModal");
+  });
+
+
+/* =========================================================
+   LIVE MESH-01 FUNCTIONS
+   ========================================================= */
+
+function logMessage(message){
+
+  const log=document.getElementById("systemLog");
+
+  const now=new Date().toLocaleTimeString();
+
+  log.textContent +=
+    "\n[" + now + "] " + message;
+
+  log.scrollTop=log.scrollHeight;
+}
+
+
+function addEvent(type,status="SYNCHRONIZED"){
+
+  eventCounter++;
+
+  const row=document.createElement("div");
+
+  row.className="event-row";
+
+  row.innerHTML=`
+    <div class="event-time">
+      ${new Date().toLocaleTimeString()}
+    </div>
+
+    <div class="event-name">
+      EVENT-${eventCounter} —
+      ${type}
+    </div>
+
+    <div class="event-status">
+      ${status}
+    </div>
+  `;
+
+  const list=document.getElementById("eventList");
+
+  list.prepend(row);
+
+  if(list.children.length>50){
+    list.removeChild(list.lastChild);
   }
 
-  for (let i = 4; i >= 0; i--) {
-    pushEvent(events[i]);
+  if(status==="STORED"){
+    state.stored++;
+  }else{
+    state.synced++;
+  }
+}
+
+
+function generateTelemetry(){
+
+  if(!telemetryRunning){
+    return;
   }
 
-  setInterval(updateClock, 1000);
-  setInterval(tickValue, 3000);
-  setInterval(pulseNode, 4000);
-  setInterval(() => {
-    const evt = events[Math.floor(Math.random() * events.length)];
-    pushEvent(evt);
-    if (Math.random() > 0.7) trucks.textContent = parseInt(trucks.textContent) + 1;
-    if (Math.random() > 0.85) convoys.textContent = parseInt(convoys.textContent) + (Math.random()>0.5?1:0);
-  }, 2500);
-})();
+  /*
+    Demonstration movement only.
+    Actual production telemetry will come from
+    the physical Mesh-01 hardware/backend.
+  */
+
+  state.lat += (Math.random()-.45)*0.0015;
+  state.lng += (Math.random()-.45)*0.0015;
+
+  state.speed =
+    Math.max(
+      0,
+      Math.round(
+        state.speed + (Math.random()-.5)*8
+      )
+    );
+
+  state.heading =
+    Math.round(
+      (state.heading + (Math.random()-.5)*12 + 360)%360
+    );
+
+  document.getElementById("lat").textContent=
+    state.lat.toFixed(5);
+
+  document.getElementById("lng").textContent=
+    state.lng.toFixed(5);
+
+  document.getElementById("speed").textContent=
+    state.speed;
+
+  document.getElementById("heading").textContent=
+    String(state.heading).padStart(3,"0");
+
+  if(offlineMode){
+
+    document.getElementById("network")
+      .textContent="OFFLINE";
+
+    addEvent("POSITION UPDATE","STORED");
+
+    logMessage(
+      "Network unavailable — event stored locally."
+    );
+
+  }else{
+
+    document.getElementById("network")
+      .textContent="ONLINE";
+
+    addEvent("POSITION UPDATE","SYNCHRONIZED");
+
+  }
+}
+
+
+document.getElementById("startTelemetry")
+  .addEventListener("click",()=>{
+
+    telemetryRunning=true;
+
+    logMessage(
+      "Telemetry acquisition started."
+    );
+
+    addEvent(
+      "TELEMETRY STARTED",
+      "SYNCHRONIZED"
+    );
+
+  });
+
+
+document.getElementById("stopTelemetry")
+  .addEventListener("click",()=>{
+
+    telemetryRunning=false;
+
+    logMessage(
+      "Telemetry acquisition paused."
+    );
+
+    addEvent(
+      "TELEMETRY PAUSED",
+      "SYNCHRONIZED"
+    );
+
+  });
+
+
+document.getElementById("simulateOffline")
+  .addEventListener("click",()=>{
+
+    offlineMode=!offlineMode;
+
+    if(offlineMode){
+
+      document.getElementById("network")
+        .textContent="OFFLINE";
+
+      logMessage(
+        "SIMULATION: communications unavailable."
+      );
+
+      addEvent(
+        "NETWORK OFFLINE",
+        "STORED"
+      );
+
+    }else{
+
+      document.getElementById("network")
+        .textContent="ONLINE";
+
+      logMessage(
+        "SIMULATION: communications restored."
+      );
+
+      addEvent(
+        "NETWORK RESTORED",
+        "SYNCHRONIZED"
+      );
+
+    }
+
+  });
+
+
+document.getElementById("syncEvents")
+  .addEventListener("click",()=>{
+
+    if(offlineMode){
+
+      logMessage(
+        "Cannot synchronize while network is offline."
+      );
+
+      return;
+    }
+
+    const storedEvents =
+      state.stored;
+
+    state.stored=0;
+
+    logMessage(
+      "Synchronization completed. " +
+      storedEvents +
+      " stored events processed."
+    );
+
+    addEvent(
+      "SYNCHRONIZATION COMPLETED",
+      "SYNCHRONIZED"
+    );
+
+  });
+
+
+/* Start demonstration telemetry */
+
+telemetryTimer=setInterval(
+  generateTelemetry,
+  3000
+);
+
+
+/* Initial events */
+
+addEvent(
+  "DEVICE ONLINE",
+  "SYNCHRONIZED"
+);
+
+addEvent(
+  "GNSS LOCK ACQUIRED",
+  "SYNCHRONIZED"
+);
+
+addEvent(
+  "MESH-01 REGISTERED",
+  "SYNCHRONIZED"
+);
+
+logMessage(
+  "AAMush Mesh-01 feeder ready."
+);
+
 </script>
 
-<!-- =====================================================
-     AAMUSH FLOATING DEVELOPER BRIEFCASE
-     ===================================================== -->
-
-<style>
-    .aamush-floating-briefcase {
-        position: fixed;
-        right: 16px;
-        bottom: 22px;
-
-        width: 115px;
-        height: 115px;
-
-        z-index: 999999;
-
-        display: block;
-
-        border-radius: 50%;
-
-        cursor: pointer;
-
-        text-decoration: none;
-
-        overflow: visible;
-
-        animation: aamushBounce 3.2s ease-in-out infinite;
-
-        filter:
-            drop-shadow(0 0 8px rgba(0, 210, 255, 0.9))
-            drop-shadow(0 0 20px rgba(0, 130, 255, 0.7));
-
-        transition:
-            transform 0.25s ease,
-            filter 0.25s ease;
-    }
-
-    .aamush-floating-briefcase img {
-        width: 100%;
-        height: 100%;
-
-        object-fit: contain;
-
-        display: block;
-
-        border-radius: 50%;
-    }
-
-    .aamush-floating-briefcase:hover {
-        transform: scale(1.08);
-
-        filter:
-            drop-shadow(0 0 12px rgba(0, 240, 255, 1))
-            drop-shadow(0 0 30px rgba(0, 130, 255, 0.95));
-    }
-
-    .aamush-floating-briefcase:active {
-        transform: scale(0.90);
-    }
-
-    /* Small glowing ring around the launcher */
-    .aamush-floating-briefcase::before {
-        content: "";
-
-        position: absolute;
-
-        inset: -5px;
-
-        border-radius: 50%;
-
-        border: 2px solid rgba(0, 220, 255, 0.75);
-
-        pointer-events: none;
-
-        animation: aamushRing 2.2s ease-in-out infinite;
-    }
-
-    /* "Developer Briefcase" label */
-    .aamush-briefcase-label {
-        position: absolute;
-
-        right: 0;
-
-        bottom: -32px;
-
-        white-space: nowrap;
-
-        padding: 6px 10px;
-
-        border-radius: 8px;
-
-        background: rgba(0, 10, 25, 0.94);
-
-        border: 1px solid rgba(0, 220, 255, 0.65);
-
-        color: white;
-
-        font-family: Arial, sans-serif;
-
-        font-size: 10px;
-
-        font-weight: 700;
-
-        letter-spacing: 0.4px;
-
-        box-shadow:
-            0 0 10px rgba(0, 180, 255, 0.35);
-
-        opacity: 0;
-
-        transform: translateY(5px);
-
-        transition: all 0.25s ease;
-
-        pointer-events: none;
-    }
-
-    .aamush-floating-briefcase:hover
-    .aamush-briefcase-label {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-
-    @keyframes aamushBounce {
-
-        0%, 100% {
-            transform: translateY(0);
-        }
-
-        25% {
-            transform: translateY(-7px);
-        }
-
-        50% {
-            transform: translateY(-15px);
-        }
-
-        75% {
-            transform: translateY(-6px);
-        }
-    }
-
-    @keyframes aamushRing {
-
-        0%, 100% {
-            transform: scale(1);
-
-            opacity: 0.45;
-        }
-
-        50% {
-            transform: scale(1.08);
-
-            opacity: 1;
-        }
-    }
-
-    @media (max-width: 480px) {
-
-        .aamush-floating-briefcase {
-            width: 92px;
-            height: 92px;
-
-            right: 12px;
-            bottom: 18px;
-        }
-
-        .aamush-briefcase-label {
-            font-size: 9px;
-            bottom: -28px;
-        }
-    }
-</style>
-
-
-<a
-    href="briefcase.html"
-    class="aamush-floating-briefcase"
-    aria-label="Open AAMush Developer Briefcase"
-    title="Open AAMush Developer Briefcase"
->
-
-    <img
-        src="aamush-briefcase-logo.png"
-        alt="AAMush Developer Briefcase"
-    >
-
-    <span class="aamush-briefcase-label">
-        Developer Briefcase
-    </span>
-
-</a>
-
-<!-- =====================================================
-     END AAMUSH FLOATING DEVELOPER BRIEFCASE
-     ===================================================== --></body>
-</style>
-</body>
-</html>
+<!-- =======================================================
+     END OF SECTION 1
+     ======================================================= -->
+  
