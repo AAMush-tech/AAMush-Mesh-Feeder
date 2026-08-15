@@ -2739,6 +2739,422 @@ body > *:not(#aamush-live-mesh) {
 })();
 </script>
 <!-- END AAMUSH LIVE DEVELOPER BRIEFCASE -->
+<!-- =========================================================
+     AAMUSH DIGITAL LIVE LAUNCHER
+     ========================================================= -->
+
+<style>
+#aamush-digital-launcher {
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  width: 74px;
+  height: 74px;
+  z-index: 999999;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#aamush-digital-launcher .aamush-core {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%,
+      #8cffb0 0%,
+      #19d85c 18%,
+      #08752f 45%,
+      #031c10 72%,
+      #010806 100%);
+  border: 2px solid rgba(0,255,180,.85);
+  box-shadow:
+    0 0 12px rgba(0,255,180,.9),
+    0 0 28px rgba(0,180,255,.7),
+    inset 0 0 20px rgba(0,255,150,.45);
+  animation: aamushLivePulse 2.2s ease-in-out infinite;
+}
+
+#aamush-digital-launcher .aamush-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0,220,255,.65);
+  box-shadow:
+    0 0 18px rgba(0,220,255,.35),
+    inset 0 0 12px rgba(0,220,255,.25);
+  animation: aamushRing 3s linear infinite;
+}
+
+#aamush-digital-launcher .aamush-ring.two {
+  inset: -7px;
+  border-color: rgba(0,255,160,.28);
+  animation-duration: 4.5s;
+}
+
+#aamush-digital-launcher .aamush-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  right: 5px;
+  top: 7px;
+  border-radius: 50%;
+  background: #00ff72;
+  box-shadow: 0 0 10px #00ff72;
+}
+
+#aamush-digital-launcher .aamush-mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px #00eaff;
+}
+
+#aamush-live-panel {
+  position: fixed;
+  right: 18px;
+  bottom: 108px;
+  width: min(330px, calc(100vw - 36px));
+  z-index: 999998;
+  display: none;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(4,18,30,.98),
+      rgba(2,7,14,.98)
+    );
+  border: 1px solid rgba(0,220,255,.55);
+  box-shadow:
+    0 0 25px rgba(0,180,255,.28),
+    0 20px 60px rgba(0,0,0,.7);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+#aamush-live-panel.open {
+  display: block;
+  animation: aamushPanelIn .25s ease-out;
+}
+
+#aamush-live-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(0,220,255,.18);
+  background: linear-gradient(
+    90deg,
+    rgba(0,180,255,.12),
+    rgba(0,255,150,.08)
+  );
+}
+
+#aamush-live-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+#aamush-live-status {
+  font-size: 11px;
+  color: #00ff88;
+  margin-top: 5px;
+  letter-spacing: 1.5px;
+}
+
+#aamush-live-status::before {
+  content: "●";
+  margin-right: 6px;
+  text-shadow: 0 0 8px #00ff88;
+}
+
+#aamush-live-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.06);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#aamush-live-body {
+  padding: 14px;
+}
+
+.aamush-live-card {
+  padding: 13px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.aamush-live-card small {
+  display: block;
+  color: #8fa9b8;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  margin-bottom: 5px;
+}
+
+.aamush-live-card strong {
+  font-size: 20px;
+}
+
+.aamush-live-green {
+  color: #00ff88;
+}
+
+.aamush-live-blue {
+  color: #00d9ff;
+}
+
+#aamush-live-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.aamush-live-action {
+  padding: 12px 8px;
+  border-radius: 11px;
+  border: 1px solid rgba(0,220,255,.25);
+  background: rgba(0,150,255,.08);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .6px;
+}
+
+.aamush-live-action:hover {
+  background: rgba(0,220,255,.16);
+  border-color: rgba(0,220,255,.6);
+}
+
+@keyframes aamushLivePulse {
+  0%,100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes aamushRing {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.05);
+  }
+}
+
+@keyframes aamushPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+</style>
+
+<div id="aamush-digital-launcher"
+     role="button"
+     aria-label="Open AAMush Live Digital Interface"
+     tabindex="0">
+
+  <div class="aamush-ring two"></div>
+  <div class="aamush-ring"></div>
+  <div class="aamush-core"></div>
+  <div class="aamush-mark">AAM</div>
+  <div class="aamush-dot"></div>
+
+</div>
+
+<div id="aamush-live-panel">
+
+  <div id="aamush-live-header">
+
+    <div id="aamush-live-title">
+      <span>AAMush LIVE</span>
+
+      <button id="aamush-live-close"
+              aria-label="Close">
+        ×
+      </button>
+    </div>
+
+    <div id="aamush-live-status">
+      MESH • SATELLITE LINK ACTIVE
+    </div>
+
+  </div>
+
+  <div id="aamush-live-body">
+
+    <div class="aamush-live-card">
+      <small>MESH STATUS</small>
+      <strong class="aamush-live-green">ONLINE</strong>
+    </div>
+
+    <div class="aamush-live-card">
+      <small>ACTIVE CONVOYS</small>
+      <strong id="aamush-launcher-convoys">09</strong>
+    </div>
+
+    <div class="aamush-live-card">
+      <small>TRUCKS STAKED</small>
+      <strong id="aamush-launcher-trucks">152</strong>
+    </div>
+
+    <div class="aamush-live-card">
+      <small>VALUE FLOWING</small>
+      <strong class="aamush-live-blue"
+              id="aamush-launcher-value">
+        $2.43M
+      </strong>
+    </div>
+
+    <div id="aamush-live-actions">
+
+      <a href="#feeder-stream"
+         class="aamush-live-action">
+        LIVE FEED
+      </a>
+
+      <a href="#about"
+         class="aamush-live-action">
+        DEVELOPER
+      </a>
+
+      <a href="briefcase.html"
+         class="aamush-live-action">
+        BRIEFCASE
+      </a>
+
+      <a href="#feeder-stream"
+         class="aamush-live-action">
+        TELEMETRY
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  const launcher =
+    document.getElementById('aamush-digital-launcher');
+
+  const panel =
+    document.getElementById('aamush-live-panel');
+
+  const close =
+    document.getElementById('aamush-live-close');
+
+  if (!launcher || !panel) return;
+
+  function toggleAAMushLive(){
+    panel.classList.toggle('open');
+  }
+
+  launcher.addEventListener('click', toggleAAMushLive);
+
+  launcher.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      toggleAAMushLive();
+    }
+  });
+
+  if(close){
+    close.addEventListener('click', function(e){
+      e.stopPropagation();
+      panel.classList.remove('open');
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    if(
+      panel.classList.contains('open') &&
+      !panel.contains(e.target) &&
+      !launcher.contains(e.target)
+    ){
+      panel.classList.remove('open');
+    }
+  });
+
+  /*
+   * LIVE-STYLE TELEMETRY DISPLAY
+   * This does not replace the existing AAMush telemetry system.
+   */
+
+  const convoys =
+    document.getElementById('aamush-launcher-convoys');
+
+  const trucks =
+    document.getElementById('aamush-launcher-trucks');
+
+  const value =
+    document.getElementById('aamush-launcher-value');
+
+  let convoyNumber = 9;
+  let truckNumber = 152;
+  let valueNumber = 2.43;
+
+  setInterval(function(){
+
+    if(!panel.classList.contains('open')) return;
+
+    if(Math.random() > .65){
+      convoyNumber = 8 + Math.floor(Math.random() * 3);
+    }
+
+    truckNumber += Math.random() > .55 ? 1 : 0;
+
+    valueNumber += Math.random() * .006;
+
+    if(convoys){
+      convoys.textContent =
+        String(convoyNumber).padStart(2,'0');
+    }
+
+    if(trucks){
+      trucks.textContent =
+        String(truckNumber);
+    }
+
+    if(value){
+      value.textContent =
+        '$' + valueNumber.toFixed(2) + 'M';
+    }
+
+  }, 2500);
+
+})();
+</script>
+
+<!-- END AAMUSH DIGITAL LIVE LAUNCHER -->
 </body>
 </html>
 
