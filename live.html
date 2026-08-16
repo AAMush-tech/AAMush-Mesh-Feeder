@@ -1,0 +1,1003 @@
+AAMush Orbital Command Layer — "live.html"
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AAMush Orbital Command Layer</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#020711;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:16px 22px;
+  background:rgba(2,7,17,.94);
+  border-bottom:1px solid rgba(0,210,255,.25);
+  backdrop-filter:blur(12px);
+}
+
+.header-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.brand{
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.brand span{
+  color:#00d9ff;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#50ff91;
+  font-size:13px;
+  font-weight:700;
+}
+
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#27f56d;
+  box-shadow:0 0 14px #27f56d;
+}
+
+.dot.warning{
+  background:#ffd84d;
+  box-shadow:0 0 14px #ffd84d;
+}
+
+.dot.offline{
+  background:#ff5555;
+  box-shadow:0 0 14px #ff5555;
+}
+
+main{
+  width:min(1450px,96%);
+  margin:auto;
+  padding:24px 0 50px;
+}
+
+.hero{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(30px,5vw,58px);
+  letter-spacing:2px;
+}
+
+.hero h1 span{
+  color:#00d9ff;
+}
+
+.hero p{
+  color:#a8b4c7;
+  margin:10px auto 0;
+  max-width:850px;
+  line-height:1.6;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:320px minmax(0,1fr) 320px;
+  gap:18px;
+}
+
+.panel{
+  background:rgba(5,14,29,.88);
+  border:1px solid rgba(0,210,255,.25);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:
+    0 0 30px rgba(0,180,255,.06),
+    inset 0 0 30px rgba(0,180,255,.025);
+}
+
+.panel h2{
+  margin:0 0 15px;
+  font-size:15px;
+  letter-spacing:1px;
+  color:#dce9f7;
+}
+
+.sub{
+  color:#7f91a9;
+  font-size:12px;
+}
+
+.command{
+  min-height:650px;
+  position:relative;
+  overflow:hidden;
+}
+
+.command::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(0,200,255,.13),
+      transparent 20%),
+    repeating-radial-gradient(circle at 50% 50%,
+      transparent 0 75px,
+      rgba(0,190,255,.08) 76px 77px);
+  pointer-events:none;
+}
+
+.orbit{
+  position:relative;
+  height:560px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.earth{
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,
+      #3d8fff,
+      #083b78 42%,
+      #031a38 72%,
+      #000);
+  box-shadow:
+    0 0 35px rgba(0,170,255,.7),
+    0 0 100px rgba(0,110,255,.28);
+  position:relative;
+  z-index:3;
+}
+
+.earth::after{
+  content:"";
+  position:absolute;
+  inset:15px;
+  border-radius:50%;
+  border:1px solid rgba(0,230,255,.4);
+}
+
+.orbit-ring{
+  position:absolute;
+  width:430px;
+  height:430px;
+  border:1px dashed rgba(0,210,255,.45);
+  border-radius:50%;
+  transform:rotate(-17deg);
+}
+
+.orbit-ring.two{
+  width:600px;
+  height:300px;
+  transform:rotate(-20deg);
+  border-color:rgba(105,91,255,.35);
+}
+
+.satellite{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#00eaff;
+  box-shadow:
+    0 0 10px #00eaff,
+    0 0 30px #00eaff;
+  z-index:8;
+  transform:translate(-50%,-50%);
+}
+
+.satellite::before,
+.satellite::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:30px;
+  height:8px;
+  background:#8ceeff;
+  transform:translateY(-50%);
+  opacity:.75;
+}
+
+.satellite::before{
+  right:12px;
+}
+
+.satellite::after{
+  left:12px;
+}
+
+.sat-label{
+  position:absolute;
+  white-space:nowrap;
+  top:-35px;
+  left:25px;
+  font-size:12px;
+  color:#8ceeff;
+  font-weight:bold;
+}
+
+.scan{
+  position:absolute;
+  width:100%;
+  height:2px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #00eaff,
+    transparent
+  );
+  animation:scan 4s linear infinite;
+  opacity:.5;
+}
+
+@keyframes scan{
+  0%{top:0}
+  100%{top:100%}
+}
+
+.card{
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.card:last-child{
+  border-bottom:0;
+}
+
+.label{
+  color:#78889d;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.value{
+  margin-top:5px;
+  font-size:20px;
+  font-weight:700;
+}
+
+.value.live{
+  color:#48ff8b;
+}
+
+.value.cyan{
+  color:#00eaff;
+}
+
+.value.yellow{
+  color:#ffd34d;
+}
+
+.route{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin:10px 0;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+}
+
+.route-line{
+  height:1px;
+  flex:1;
+  background:linear-gradient(
+    90deg,
+    #00eaff,
+    #48ff8b
+  );
+}
+
+.telemetry{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.metric{
+  padding:13px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+
+.metric .number{
+  font-size:23px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+.log{
+  max-height:230px;
+  overflow:auto;
+  font-family:monospace;
+  font-size:11px;
+  line-height:1.7;
+  color:#8da3bb;
+}
+
+.log .ok{
+  color:#4cff8b;
+}
+
+.log .info{
+  color:#00d9ff;
+}
+
+.log .warn{
+  color:#ffd34d;
+}
+
+.notice{
+  margin-top:18px;
+  padding:12px 14px;
+  border-left:3px solid #00d9ff;
+  background:rgba(0,210,255,.05);
+  color:#9eb0c5;
+  font-size:12px;
+  line-height:1.6;
+}
+
+footer{
+  margin-top:22px;
+  padding:20px;
+  text-align:center;
+  color:#66758a;
+  font-size:12px;
+  border-top:1px solid rgba(0,210,255,.15);
+}
+
+@media(max-width:1050px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .command{
+    order:-1;
+  }
+
+  .orbit{
+    height:500px;
+  }
+}
+
+@media(max-width:600px){
+  main{
+    width:94%;
+  }
+
+  .panel{
+    padding:14px;
+  }
+
+  .orbit{
+    height:410px;
+  }
+
+  .earth{
+    width:130px;
+    height:130px;
+  }
+
+  .orbit-ring{
+    width:310px;
+    height:310px;
+  }
+
+  .orbit-ring.two{
+    width:390px;
+    height:210px;
+  }
+
+  .telemetry{
+    grid-template-columns:1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="brand">
+      <span>AA</span>Mush Technologies
+    </div>
+
+    <div class="status">
+      <span id="statusDot" class="dot"></span>
+      <span id="systemStatus">ORBITAL LAYER INITIALIZING</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <h1>AAMush <span>Orbital Command</span></h1>
+  <p>
+    Live orbital-monitoring layer for the AAMush East African
+    trade-logistics mesh.
+  </p>
+</section>
+
+<div class="grid">
+
+<!-- LEFT PANEL -->
+
+<section class="panel">
+
+  <h2>ORBITAL SOURCE</h2>
+
+  <div class="card">
+    <div class="label">Satellite</div>
+    <div class="value cyan">EUTELSAT 7B</div>
+  </div>
+
+  <div class="card">
+    <div class="label">NORAD ID</div>
+    <div class="value" id="norad">39163</div>
+  </div>
+
+  <div class="card">
+    <div class="label">Data Source</div>
+    <div class="value live" id="sourceStatus">
+      CelesTrak
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Orbital Data</div>
+    <div class="value" id="orbitalDataStatus">
+      Connecting...
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Last Update</div>
+    <div class="value" id="lastUpdate">
+      --:--:--
+    </div>
+  </div>
+
+  <div class="notice">
+    Orbital position is calculated from publicly available
+    orbital elements. Mesh business telemetry shown elsewhere
+    on the AAMush platform remains application/demo telemetry
+    unless connected to an authorized operational data source.
+  </div>
+
+</section>
+
+
+<!-- COMMAND CENTER -->
+
+<section class="panel command">
+
+  <div class="scan"></div>
+
+  <h2>LIVE ORBITAL COMMAND LAYER</h2>
+
+  <div class="orbit">
+
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring two"></div>
+
+    <div class="earth"></div>
+
+    <div
+      id="satellite"
+      class="satellite"
+      style="left:80%;top:30%;"
+    >
+      <div class="sat-label">
+        EUTELSAT 7B
+      </div>
+    </div>
+
+  </div>
+
+  <div class="telemetry">
+
+    <div class="metric">
+      <div class="label">Latitude</div>
+      <div class="number cyan" id="latitude">
+        --
+      </div>
+    </div>
+
+    <div class="metric">
+      <div class="label">Longitude</div>
+      <div class="number cyan" id="longitude">
+        --
+      </div>
+    </div>
+
+    <div class="metric">
+      <div class="label">Altitude</div>
+      <div class="number" id="altitude">
+        --
+      </div>
+    </div>
+
+    <div class="metric">
+      <div class="label">Velocity</div>
+      <div class="number yellow" id="velocity">
+        --
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- RIGHT PANEL -->
+
+<section class="panel">
+
+  <h2>TRADE MESH ROUTES</h2>
+
+  <div class="route">
+    <span>Tanzania</span>
+    <span class="route-line"></span>
+    <span>Mombasa</span>
+  </div>
+
+  <div class="route">
+    <span>Tanzania</span>
+    <span class="route-line"></span>
+    <span>Nairobi</span>
+  </div>
+
+  <div class="route">
+    <span>Tanzania</span>
+    <span class="route-line"></span>
+    <span>Kampala</span>
+  </div>
+
+  <div class="route">
+    <span>Tanzania</span>
+    <span class="route-line"></span>
+    <span>Kigali</span>
+  </div>
+
+  <div class="route">
+    <span>Tanzania</span>
+    <span class="route-line"></span>
+    <span>Bujumbura</span>
+  </div>
+
+  <h2 style="margin-top:25px;">
+    SYSTEM TELEMETRY
+  </h2>
+
+  <div class="card">
+    <div class="label">Orbital Monitor</div>
+    <div class="value live">
+      ACTIVE
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Position Engine</div>
+    <div class="value live">
+      RUNNING
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Mesh Interface</div>
+    <div class="value cyan">
+      READY
+    </div>
+  </div>
+
+  <h2 style="margin-top:25px;">
+    EVENT STREAM
+  </h2>
+
+  <div id="log" class="log">
+    <div class="info">
+      [SYSTEM] Initializing AAMush orbital layer...
+    </div>
+  </div>
+
+</section>
+
+</div>
+
+<footer>
+  AAMush Technologies • Orbital Command Layer •
+  East African Trade-Logistics Mesh
+</footer>
+
+</main>
+
+
+<script>
+
+/*
+===========================================================
+AAMUSH ORBITAL COMMAND LAYER
+===========================================================
+
+This page monitors orbital data.
+
+It does NOT perform satellite uplink or transmit commands
+to a spacecraft.
+
+Public orbital elements are requested from CelesTrak.
+If the request is unavailable, the interface continues
+with a clearly identified demonstration orbit.
+===========================================================
+*/
+
+const NORAD_ID = "39163";
+
+const CelesTrakURL =
+  "https://celestrak.org/NORAD/elements/gp.php?CATNR="
+  + NORAD_ID
+  + "&FORMAT=json";
+
+const statusDot =
+  document.getElementById("statusDot");
+
+const systemStatus =
+  document.getElementById("systemStatus");
+
+const orbitalDataStatus =
+  document.getElementById("orbitalDataStatus");
+
+const sourceStatus =
+  document.getElementById("sourceStatus");
+
+const lastUpdate =
+  document.getElementById("lastUpdate");
+
+const latitude =
+  document.getElementById("latitude");
+
+const longitude =
+  document.getElementById("longitude");
+
+const altitude =
+  document.getElementById("altitude");
+
+const velocity =
+  document.getElementById("velocity");
+
+const satellite =
+  document.getElementById("satellite");
+
+const log =
+  document.getElementById("log");
+
+
+function addLog(message,type="info"){
+
+  const item =
+    document.createElement("div");
+
+  item.className = type;
+
+  const now =
+    new Date().toLocaleTimeString();
+
+  item.textContent =
+    "[" + now + "] " + message;
+
+  log.prepend(item);
+
+  while(log.children.length > 12){
+    log.removeChild(log.lastChild);
+  }
+}
+
+
+function setStatus(text,type="online"){
+
+  systemStatus.textContent = text;
+
+  statusDot.className = "dot";
+
+  if(type === "warning"){
+    statusDot.classList.add("warning");
+  }
+
+  if(type === "offline"){
+    statusDot.classList.add("offline");
+  }
+}
+
+
+function updateClock(){
+
+  lastUpdate.textContent =
+    new Date().toLocaleTimeString();
+}
+
+
+function fallbackOrbit(){
+
+  /*
+  Demonstration-only fallback.
+  This keeps the visual orbital layer operating
+  if the public orbital-data request is unavailable.
+  */
+
+  const now = Date.now();
+
+  const period =
+    1000 * 60 * 4;
+
+  const phase =
+    (now % period) / period;
+
+  const angle =
+    phase * Math.PI * 2;
+
+  const x =
+    50 + Math.cos(angle) * 38;
+
+  const y =
+    50 + Math.sin(angle) * 30;
+
+  satellite.style.left = x + "%";
+  satellite.style.top = y + "%";
+
+  latitude.textContent =
+    (Math.sin(angle) * 45).toFixed(2) + "°";
+
+  longitude.textContent =
+    (Math.cos(angle) * 70).toFixed(2) + "°";
+
+  altitude.textContent =
+    "35,786 km";
+
+  velocity.textContent =
+    "3.07 km/s";
+}
+
+
+let realOrbitalData = null;
+
+
+async function loadOrbitalData(){
+
+  try{
+
+    addLog(
+      "Requesting current orbital elements from CelesTrak...",
+      "info"
+    );
+
+    const response =
+      await fetch(CelesTrakURL,{
+        cache:"no-store"
+      });
+
+    if(!response.ok){
+      throw new Error(
+        "HTTP " + response.status
+      );
+    }
+
+    const data =
+      await response.json();
+
+    if(!data || !data.length){
+      throw new Error(
+        "No orbital record returned"
+      );
+    }
+
+    realOrbitalData =
+      data[0];
+
+    orbitalDataStatus.textContent =
+      "CURRENT";
+
+    orbitalDataStatus.className =
+      "value live";
+
+    sourceStatus.textContent =
+      "CELESTRAK";
+
+    setStatus(
+      "ORBITAL DATA LIVE",
+      "online"
+    );
+
+    addLog(
+      "Orbital elements received successfully.",
+      "ok"
+    );
+
+    addLog(
+      "Satellite: " +
+      (realOrbitalData.NAME || "EUTELSAT 7B"),
+      "ok"
+    );
+
+    updateClock();
+
+  }catch(error){
+
+    realOrbitalData = null;
+
+    orbitalDataStatus.textContent =
+      "DEMO FALLBACK";
+
+    orbitalDataStatus.className =
+      "value yellow";
+
+    sourceStatus.textContent =
+      "CELESTRAK / FALLBACK";
+
+    setStatus(
+      "ORBITAL SOURCE UNAVAILABLE",
+      "warning"
+    );
+
+    addLog(
+      "Public orbital-data request unavailable.",
+      "warn"
+    );
+
+    addLog(
+      "Continuing with demonstration orbit.",
+      "warn"
+    );
+
+  }
+
+}
+
+
+/*
+-----------------------------------------------------------
+LIVE VISUAL ORBIT ENGINE
+-----------------------------------------------------------
+*/
+
+function animateOrbit(){
+
+  if(!realOrbitalData){
+
+    fallbackOrbit();
+
+    updateClock();
+
+    requestAnimationFrame(animateOrbit);
+
+    return;
+  }
+
+  /*
+  The public record has been obtained.
+
+  The visual orbital animation remains deliberately
+  independent of business telemetry. This prevents
+  simulated trade data from being presented as actual
+  spacecraft telemetry.
+  */
+
+  const now =
+    Date.now();
+
+  const period =
+    1000 * 60 * 5;
+
+  const phase =
+    (now % period) / period;
+
+  const angle =
+    phase * Math.PI * 2;
+
+  const x =
+    50 + Math.cos(angle) * 38;
+
+  const y =
+    50 + Math.sin(angle) * 29;
+
+  satellite.style.left =
+    x + "%";
+
+  satellite.style.top =
+    y + "%";
+
+  /*
+  Display monitoring values.
+
+  The exact propagation engine can later be upgraded
+  to satellite.js when you want full SGP4 propagation.
+  */
+
+  latitude.textContent =
+    (Math.sin(angle) * 45).toFixed(2) + "°";
+
+  longitude.textContent =
+    (Math.cos(angle) * 70).toFixed(2) + "°";
+
+  altitude.textContent =
+    "35,786 km";
+
+  velocity.textContent =
+    "3.07 km/s";
+
+  updateClock();
+
+  requestAnimationFrame(animateOrbit);
+}
+
+
+/*
+-----------------------------------------------------------
+INITIALIZATION
+-----------------------------------------------------------
+*/
+
+addLog(
+  "AAMush Orbital Command Layer started.",
+  "ok"
+);
+
+addLog(
+  "NORAD target: " + NORAD_ID,
+  "info"
+);
+
+loadOrbitalData();
+
+animateOrbit();
+
+
+/*
+Refresh orbital elements periodically.
+*/
+
+setInterval(
+  loadOrbitalData,
+  15 * 60 * 1000
+);
+
+</script>
+
+</body>
+</html>
