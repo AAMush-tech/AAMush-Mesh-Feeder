@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AAMush Trade Intelligence Grid™</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --bg:#060a13;
+  --panel:#0c1424;
+  --panel2:#101b30;
+  --border:rgba(0,212,170,.18);
+
+  --teal:#00d4aa;
+  --cyan:#00e5ff;
+  --blue:#00a8e8;
+  --green:#00c853;
+  --yellow:#ffd600;
+  --orange:#ff9100;
+  --red:#ff1744;
+  --purple:#7c4dff;
+
+  --text:#e4edf5;
+  --muted:#8495ad;
+
+  --mono:'JetBrains Mono',monospace;
+  --main:'Inter',sans-serif;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  background:#030711;
+  color:var(--text);
+  font-family:var(--main);
+  min-height:100vh;
+}
+
+button{
+  font-family:inherit;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(0,168,232,.08),transparent 35%),
+    var(--bg);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+
+  padding:10px 20px;
+
+  background:rgba(6,12,24,.97);
+  border-bottom:1px solid var(--border);
+
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:40px;
+  height:40px;
+
+  border-radius:9px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(
+    135deg,
+    var(--teal),
+    var(--blue)
+  );
+
+  color:#00100d;
+  font-weight:800;
+  font-size:14px;
+
+  box-shadow:
+    0 0 20px rgba(0,212,170,.18);
+}
+
+.brand h1{
+  font-size:15px;
+  font-weight:700;
+}
+
+.brand span{
+  display:block;
+  margin-top:2px;
+
+  color:var(--teal);
+
+  font-size:9px;
+  font-weight:600;
+
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.header-badges{
+  display:flex;
+  gap:7px;
+}
+
+.badge{
+  padding:4px 8px;
+
+  border:1px solid;
+  border-radius:4px;
+
+  font-family:var(--mono);
+  font-size:8px;
+  font-weight:700;
+
+  letter-spacing:1px;
+}
+
+.sim{
+  color:var(--purple);
+  border-color:#7c4dff66;
+  background:#7c4dff12;
+}
+
+.live{
+  color:var(--green);
+  border-color:#00c85366;
+  background:#00c85312;
+}
+
+.calc{
+  color:var(--blue);
+  border-color:#00a8e866;
+  background:#00a8e812;
+}
+
+.pred{
+  color:var(--orange);
+  border-color:#ff910066;
+  background:#ff910012;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  color:var(--muted);
+  font-size:10px;
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:var(--green);
+
+  box-shadow:0 0 9px var(--green);
+
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  50%{
+    opacity:.3;
+  }
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+  padding:12px;
+
+  display:grid;
+
+  grid-template-columns:280px minmax(400px,1fr) 310px;
+
+  gap:12px;
+}
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+  background:rgba(12,20,36,.94);
+
+  border:1px solid var(--border);
+
+  border-radius:8px;
+
+  padding:13px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
+  transition:.25s;
+}
+
+.panel:hover{
+  border-color:rgba(0,212,170,.35);
+}
+
+.panel-title{
+  color:var(--teal);
+
+  font-size:10px;
+  font-weight:700;
+
+  letter-spacing:1.3px;
+  text-transform:uppercase;
+}
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+/* =========================================================
+   EXECUTIVE PANEL
+========================================================= */
+
+.executive{
+  grid-column:1/-1;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(12,28,52,.97),
+      rgba(7,15,29,.97)
+    );
+
+  border-color:rgba(0,212,170,.25);
+}
+
+.exec-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.exec-card{
+  padding:12px;
+
+  border-radius:5px;
+
+  background:rgba(0,0,0,.2);
+
+  border-left:3px solid var(--teal);
+}
+
+.exec-card.risk{
+  border-left-color:var(--red);
+}
+
+.exec-card.action{
+  border-left-color:var(--yellow);
+}
+
+.label{
+  color:var(--muted);
+
+  font-size:8px;
+
+  letter-spacing:1.4px;
+
+  text-transform:uppercase;
+
+  margin-bottom:6px;
+}
+
+.exec-value{
+  font-size:11px;
+  line-height:1.5;
+  font-weight:600;
+}
+
+.meta{
+  margin-top:7px;
+
+  color:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+/* =========================================================
+   LEFT COLUMN
+========================================================= */
+
+.left{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* TELEMETRY */
+
+.telemetry{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.telemetry-card{
+  padding:9px;
+
+  border-radius:5px;
+
+  background:rgba(0,0,0,.2);
+
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.telemetry-label{
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+}
+
+.telemetry-value{
+  margin-top:3px;
+
+  font-family:var(--mono);
+
+  font-size:12px;
+  font-weight:700;
+}
+
+.mini-bar{
+  height:3px;
+
+  margin-top:6px;
+
+  background:rgba(255,255,255,.08);
+
+  border-radius:3px;
+
+  overflow:hidden;
+}
+
+.mini-fill{
+  height:100%;
+  transition:.5s;
+}
+
+/* CORRIDOR */
+
+.corridor{
+  margin-bottom:9px;
+
+  font-size:9px;
+}
+
+.corridor-row{
+  display:flex;
+  justify-content:space-between;
+
+  margin-bottom:3px;
+}
+
+.track{
+  height:5px;
+
+  background:rgba(255,255,255,.08);
+
+  border-radius:3px;
+
+  overflow:hidden;
+}
+
+.track-fill{
+  height:100%;
+}
+
+/* NODE LIST */
+
+.node-list{
+  display:flex;
+  flex-direction:column;
+}
+
+.node-list button{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  width:100%;
+
+  padding:7px 4px;
+
+  background:none;
+
+  color:var(--text);
+
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+
+  cursor:pointer;
+
+  text-align:left;
+
+  font-size:9px;
+}
+
+.node-list button:hover{
+  background:rgba(0,212,170,.06);
+  color:var(--teal);
+}
+
+.node-status{
+  padding:2px 5px;
+
+  border-radius:3px;
+
+  font-size:7px;
+  font-weight:700;
+}
+
+.active{
+  color:var(--green);
+  background:#00c85320;
+}
+
+.congested{
+  color:var(--yellow);
+  background:#ffd60020;
+}
+
+.standby{
+  color:var(--blue);
+  background:#00a8e820;
+}
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.map-panel{
+  position:relative;
+
+  min-height:550px;
+
+  padding:0;
+
+  overflow:hidden;
+}
+
+.map-title{
+  position:absolute;
+
+  top:15px;
+  left:18px;
+
+  z-index:4;
+}
+
+.map-title strong{
+  display:block;
+
+  color:var(--teal);
+
+  font-size:11px;
+
+  letter-spacing:2px;
+}
+
+.map-title small{
+  display:block;
+
+  margin-top:4px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+.map{
+  width:100%;
+  height:550px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,168,232,.04),
+      transparent 60%
+    );
+}
+
+.map-grid{
+  stroke:rgba(0,168,232,.055);
+  stroke-width:1;
+}
+
+.route{
+  fill:none;
+
+  stroke-width:4;
+
+  stroke-linecap:round;
+
+  opacity:.65;
+}
+
+.route-green{
+  stroke:var(--green);
+}
+
+.route-yellow{
+  stroke:var(--yellow);
+}
+
+.route-red{
+  stroke:var(--red);
+}
+
+.node{
+  cursor:pointer;
+}
+
+.node-ring{
+  fill:none;
+
+  stroke:var(--cyan);
+
+  stroke-width:2;
+
+  opacity:.8;
+}
+
+.node-glow{
+  fill:var(--cyan);
+
+  opacity:.15;
+
+  animation:nodePulse 2s infinite;
+}
+
+.node-core{
+  fill:#07111f;
+
+  stroke:var(--cyan);
+
+  stroke-width:2;
+}
+
+.node-label{
+  fill:var(--text);
+
+  font-size:11px;
+
+  font-weight:600;
+
+  pointer-events:none;
+}
+
+.node-code{
+  fill:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+
+  pointer-events:none;
+}
+
+.node.selected .node-core{
+  fill:var(--teal);
+
+  stroke:#fff;
+
+  stroke-width:3;
+}
+
+.node.selected .node-ring{
+  stroke:var(--teal);
+
+  animation:selectedPulse 1.2s infinite;
+}
+
+@keyframes nodePulse{
+  50%{
+    r:20;
+    opacity:.02;
+  }
+}
+
+@keyframes selectedPulse{
+  50%{
+    opacity:.2;
+    stroke-width:5;
+  }
+}
+
+/* TRUCKS */
+
+.truck{
+  fill:var(--teal);
+
+  filter:
+    drop-shadow(0 0 7px var(--teal));
+
+  animation:truckMove 8s linear infinite;
+}
+
+.truck.two{
+  animation-delay:-3s;
+}
+
+.truck.three{
+  animation-delay:-6s;
+}
+
+@keyframes truckMove{
+  0%{
+    transform:translate(0,0);
+  }
+
+  50%{
+    transform:translate(220px,-80px);
+  }
+
+  100%{
+    transform:translate(440px,-160px);
+  }
+}
+
+/* MAP LEGEND */
+
+.map-bottom{
+  position:absolute;
+
+  left:15px;
+  right:15px;
+  bottom:14px;
+
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+}
+
+.legend{
+  padding:7px 10px;
+
+  background:rgba(0,0,0,.72);
+
+  border-radius:4px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+.legend span{
+  margin-right:10px;
+}
+
+.legend i{
+  display:inline-block;
+
+  width:7px;
+  height:7px;
+
+  margin-right:4px;
+
+  border-radius:50%;
+}
+
+.green{
+  background:var(--green);
+}
+
+.yellow{
+  background:var(--yellow);
+}
+
+.red{
+  background:var(--red);
+}
+
+.grid-status{
+  padding:7px 10px;
+
+  border-radius:4px;
+
+  background:rgba(0,0,0,.72);
+
+  color:var(--cyan);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+/* =========================================================
+   RIGHT INTELLIGENCE PANEL
+========================================================= */
+
+.right-column{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.node-intelligence{
+  min-height:300px;
+
+  border-color:rgba(0,212,170,.3);
+}
+
+.selected-node-name{
+  color:var(--cyan);
+
+  font-size:18px;
+  font-weight:700;
+
+  margin-bottom:3px;
+}
+
+.selected-node-code{
+  color:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+.intel-status{
+  display:inline-block;
+
+  margin-top:10px;
+
+  padding:4px 7px;
+
+  border-radius:4px;
+
+  font-size:8px;
+  font-weight:700;
+}
+
+.intel-grid{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:7px;
+
+  margin-top:13px;
+}
+
+.intel-item{
+  padding:9px;
+
+  border:1px solid rgba(255,255,255,.05);
+
+  border-radius:5px;
+
+  background:rgba(0,0,0,.2);
+}
+
+.intel-item span{
+  display:block;
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+}
+
+.intel-item strong{
+  display:block;
+
+  margin-top:4px;
+
+  font-family:var(--mono);
+
+  font-size:12px;
+}
+
+.intel-message{
+  margin-top:12px;
+
+  padding:10px;
+
+  background:rgba(0,212,170,.05);
+
+  border-left:2px solid var(--teal);
+
+  font-size:9px;
+
+  line-height:1.5;
+}
+
+.action-button{
+  width:100%;
+
+  margin-top:12px;
+
+  padding:9px;
+
+  border:1px solid rgba(0,212,170,.3);
+
+  border-radius:5px;
+
+  background:rgba(0,212,170,.08);
+
+  color:var(--teal);
+
+  cursor:pointer;
+
+  font-size:9px;
+  font-weight:700;
+}
+
+.action-button:hover{
+  background:rgba(0,212,170,.16);
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.alert{
+  padding:8px;
+
+  margin-bottom:6px;
+
+  background:rgba(0,0,0,.2);
+
+  border-left:2px solid var(--yellow);
+
+  border-radius:3px;
+
+  font-size:9px;
+
+  line-height:1.4;
+}
+
+.alert.critical{
+  border-left-color:var(--red);
+}
+
+.alert.info{
+  border-left-color:var(--blue);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  grid-column:1/-1;
+
+  padding:8px;
+
+  display:flex;
+  justify-content:space-between;
+
+  color:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:1050px){
+
+  .main{
+    grid-template-columns:240px 1fr;
+  }
+
+  .right-column{
+    grid-column:1/-1;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:750px){
+
+  .header{
+    height:auto;
+
+    padding:10px;
+
+    align-items:flex-start;
+  }
+
+  .header-badges{
+    display:none;
+  }
+
+  .header-right span:last-child{
+    display:none;
+  }
+
+  .main{
+    grid-template-columns:1fr;
+  }
+
+  .exec-grid{
+    grid-template-columns:1fr;
+  }
+
+  .map-panel{
+    min-height:460px;
+  }
+
+  .map{
+    height:460px;
+  }
+
+  .right-column{
+    grid-column:auto;
+
+    display:flex;
+  }
+
+  .footer{
+    flex-direction:column;
+    gap:5px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- ======================================================
+HEADER
+======================================================= -->
+
+<header class="header">
+
+<div class="brand">
+
+<div class="logo">
+AI
+</div>
+
+<div>
+
+<h1>
+AAMush Trade Intelligence Grid™
+</h1>
+
+<span>
+East Africa Corridor Intelligence Platform
+</span>
+
+</div>
+
+</div>
+
+
+<div class="header-badges">
+
+<span class="badge sim">
+SIMULATED
+</span>
+
+<span class="badge live">
+LIVE
+</span>
+
+<span class="badge calc">
+CALCULATED
+</span>
+
+<span class="badge pred">
+PREDICTED
+</span>
+
+</div>
+
+
+<div class="header-right">
+
+<span class="status-dot"></span>
+
+<span>
+SYSTEM ACTIVE
+</span>
+
+<span
+id="clock"
+style="font-family:var(--mono)"
+>
+--:--:--
+</span>
+
+<span>
+Dr. James K. Mushi, PhD
+</span>
+
+</div>
+
+</header>
+
+
+<!-- ======================================================
+MAIN
+======================================================= -->
+
+<main class="main">
+
+
+<!-- ======================================================
+EXECUTIVE INTELLIGENCE
+======================================================= -->
+
+<section class="panel executive">
+
+<div class="panel-head">
+
+<div class="panel-title">
+◆ Executive Intelligence
+</div>
+
+<span class="badge sim">
+SIMULATED
+</span>
+
+</div>
+
+
+<div class="exec-grid">
+
+
+<div class="exec-card">
+
+<div class="label">
+What is happening?
+</div>
+
+<div class="exec-value">
+
+1,248 assets active across 6 nodes.
+
+Central Corridor operating at
+<strong>94%</strong>
+efficiency.
+
+Northern Corridor experiencing moderate congestion near Malaba.
+
+</div>
+
+<div class="meta">
+UPDATED <span id="execTime">--:--</span> EAT
+</div>
+
+</div>
+
+
+<div class="exec-card risk">
+
+<div class="label">
+What is at risk?
+</div>
+
+<div class="exec-value">
+
+3 shipments flagged for delay risk greater than 45 minutes.
+
+Mesh-01 device AAM-4401 telemetry gap detected.
+
+Rusumo border dwell exceeds baseline.
+
+</div>
+
+<div class="meta">
+RISK SCORE:
+<span style="color:var(--red)">
+MEDIUM-HIGH
+</span>
+</div>
+
+</div>
+
+
+<div class="exec-card action">
+
+<div class="label">
+Where is intervention required?
+</div>
+
+<div class="exec-value">
+
+Priority 1:
+field check AAM-4401.
+
+Priority 2:
+monitor Malaba queue.
+
+Priority 3:
+reroute Bujumbura-bound shipments.
+
+</div>
+
+<div class="meta">
+3 ACTIONS QUEUED
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- ======================================================
+LEFT
+======================================================= -->
+
+<div class="left">
+
+
+<!-- TELEMETRY -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+◉ Mesh-01 Telemetry
+</div>
+
+<span class="badge sim">
+SIMULATED
+</span>
+
+</div>
+
+
+<div class="telemetry">
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Active Devices
+</div>
+
+<div
+class="telemetry-value"
+style="color:var(--teal)"
+>
+1,248
+</div>
+
+<div class="mini-bar">
+<div
+class="mini-fill"
+style="width:78%;background:var(--teal)"
+></div>
+</div>
+
+</div>
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Online
+</div>
+
+<div
+class="telemetry-value"
+style="color:var(--green)"
+id="online"
+>
+1,182
+</div>
+
+<div class="mini-bar">
+<div
+id="onlineBar"
+class="mini-fill"
+style="width:94%;background:var(--green)"
+></div>
+</div>
+
+</div>
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Signal Average
+</div>
+
+<div
+class="telemetry-value"
+style="color:var(--blue)"
+>
+-82 dBm
+</div>
+
+<div class="mini-bar">
+<div
+class="mini-fill"
+style="width:72%;background:var(--blue)"
+></div>
+</div>
+
+</div>
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Data Rate
+</div>
+
+<div
+id="dataRate"
+class="telemetry-value"
+style="color:var(--cyan)"
+>
+4.2 KB/s
+</div>
+
+<div class="mini-bar">
+<div
+id="dataBar"
+class="mini-fill"
+style="width:65%;background:var(--cyan)"
+></div>
+</div>
+
+</div>
+
+</div>
+
+
+<div
+style="
+margin-top:9px;
+color:var(--muted);
+font-size:8px;
+line-height:1.8;
+"
+>
+
+<div>
+Last heartbeat:
+<span
+id="heartbeat"
+style="font-family:var(--mono)"
+>
+14s ago
+</span>
+</div>
+
+<div>
+Mesh coverage:
+<span style="font-family:var(--mono)">
+94.7%
+</span>
+</div>
+
+<div>
+Firmware:
+<span style="font-family:var(--mono)">
+v2.1.4-stable
+</span>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CORRIDOR PULSE -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+⌁ Corridor Pulse
+</div>
+
+<span class="badge pred">
+PREDICTED
+</span>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Central Corridor
+(DAR–KGL)
+</span>
+
+<strong style="color:var(--green)">
+94%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:94%;background:var(--green)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Northern Corridor
+(MBA–KGL)
+</span>
+
+<strong style="color:var(--yellow)">
+71%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:71%;background:var(--yellow)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+DAR–Bujumbura
+</span>
+
+<strong style="color:var(--green)">
+88%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:88%;background:var(--green)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Kampala–Bujumbura
+</span>
+
+<strong style="color:var(--yellow)">
+76%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:76%;background:var(--yellow)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Mombasa–Nairobi SGR
+</span>
+
+<strong style="color:var(--green)">
+96%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:96%;background:var(--green)"
+></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- NODE LIST -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+◎ Corridor Nodes
+</div>
+
+<span class="badge live">
+LIVE
+</span>
+
+</div>
+
+
+<div class="node-list">
+
+<button onclick="selectNode('DAR')">
+
+<span>● Dar es Salaam</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('MBA')">
+
+<span>● Mombasa</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('NBO')">
+
+<span>● Nairobi</span>
+
+<span class="node-status congested">
+CONGESTED
+</span>
+
+</button>
+
+
+<button onclick="selectNode('KLA')">
+
+<span>● Kampala</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('KGL')">
+
+<span>● Kigali</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('BJM')">
+
+<span>● Bujumbura</span>
+
+<span class="node-status standby">
+STANDBY
+</span>
+
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ======================================================
+INTERACTIVE MAP
+======================================================= -->
+
+<section class="panel map-panel">
+
+<div class="map-title">
+
+<strong>
+EAST AFRICA TRADE CORRIDOR MESH
+</strong>
+
+<small>
+TAP A NODE TO OPEN INTELLIGENCE
+</small>
+
+</div>
+
+
+<svg
+class="map"
+viewBox="0 0 800 550"
+id="tradeMap"
+>
+
+
+<!-- GRID -->
+
+<defs>
+
+<pattern
+id="mapGrid"
+width="40"
+height="40"
+patternUnits="userSpaceOnUse"
+>
+
+<path
+d="M40 0H0V40"
+class="map-grid"
+/>
+
+</pattern>
+
+</defs>
+
+
+<rect
+width="800"
+height="550"
+fill="url(#mapGrid)"
+/>
+
+
+<!-- ==================================================
+CORRIDORS
+=================================================== -->
+
+
+<!-- Dar -> Dodoma -> Nairobi -->
+
+<path
+id="routeCentral"
+class="route route-green"
+d="
+M90 420
+Q180 360 300 300
+Q410 230 500 180
+Q600 130 700 105
+"
+/>
+
+
+<!-- Dar -> Kigali -->
+
+<path
+class="route route-green"
+d="
+M90 420
+Q220 400 330 360
+Q470 310 590 260
+Q650 235 700 220
+"
+/>
+
+
+<!-- Nairobi -> Kampala -->
+
+<path
+class="route route-yellow"
+d="
+M500 180
+Q600 120 700 105
+"
+/>
+
+
+<!-- Kigali -> Bujumbura -->
+
+<path
+class="route route-green"
+d="
+M700 220
+Q620 300 510 420
+"
+/>
+
+
+<!-- Mombasa -> Nairobi -->
+
+<path
+class="route route-green"
+d="
+M700 55
+Q610 90 500 180
+"
+/>
+
+
+<!-- ==================================================
+MOVING TRUCKS
+=================================================== -->
+
+
+<g class="truck">
+
+<rect
+x="120"
+y="385"
+width="23"
+height="10"
+rx="2"
+/>
+
+<rect
+x="143"
+y="388"
+width="8"
+height="7"
+rx="1"
+/>
+
+<circle cx="127" cy="397" r="3"/>
+<circle cx="145" cy="397" r="3"/>
+
+</g>
+
+
+<g
+class="truck two"
+>
+
+<rect
+x="250"
+y="320"
+width="23"
+height="10"
+rx="2"
+/>
+
+<rect
+x="273"
+y="323"
+width="8"
+height="7"
+rx="1"
+/>
+
+<circle cx="257" cy="332" r="3"/>
+<circle cx="275" cy="332" r="3"/>
+
+</g>
+
+
+<g
+class="truck three"
+>
+
+<rect
+x="400"
+y="240"
+width="23"
+height="10"
+rx="2"
+/>
+
+<rect
+x="423"
+y="243"
+width="8"
+height="7"
+rx="1"
+/>
+
+<circle cx="407" cy="252" r="3"/>
+<circle cx="425" cy="252" r="3"/>
+
+</g>
+
+
+<!-- ==================================================
+NODES
+=================================================== -->
+
+
+<!-- DAR -->
+
+<g
+class="node"
+id="node-DAR"
+onclick="selectNode('DAR')"
+>
+
+<circle
+class="node-glow"
+cx="90"
+cy="420"
+r="20"
+/>
+
+<circle
+class="node-ring"
+cx="90"
+cy="420"
+r="15"
+/>
+
+<circle
+class="node-core"
+cx="90"
+cy="420"
+r="9"
+/>
+
+<text
+class="node-label"
+x="108"
+y="416"
+>
+Dar es Salaam
+</text>
+
+<text
+class="node-code"
+x="108"
+y="429"
+>
+DAR
+</text>
+
+</g>
+
+
+<!-- MOMBASA -->
+
+<g
+class="node"
+id="node-MBA"
+onclick="selectNode('MBA')"
+>
+
+<circle
+class="node-glow"
+cx="700"
+cy="55"
+r="20"
+/>
+
+<circle
+class="node-ring"
+cx="700"
+cy="55"
+r="15"
+/>
+
+<circle
+class="node-core"
+cx="700"
+cy="55"
+r="9"
+/>
+
+<text
+class="node-label"
+x="575"
+y="50"
+>
+Mombasa
+</text>
+
+<text
+class="node-code"
+x="575"
+y="63"
+>
+MBA
+</text>
+
+</g>
+
+
+<!-- NAIROBI -->
+
+<g
+class="node"
+id="node-NBO"
+onclick="selectNode('NBO')"
+>
+
+<circle
+class="node-glow"
+cx="500"
+cy="180"
+r="20"
+/>
+
+<circle
+class="node-ring"
+cx="500"
+cy="180"
+r="15"
+/>
+
+<circle
+class="node-core"
+cx="500"
+cy="180"
+r="9"
+/>
+
+<text
+class="node-label"
+x="520"
+y="176"
+>
+Nairobi
+</text>
+
+<text
+class="node-code"
+x="520"
+y="189"
+>
+NBO
+</text>
+
+</g>
+
+
+<!-- KAMPALA -->
+
+<g
+class="node"
+id="node-KLA"
+onclick="selectNode('KLA')"
+>
+
+<circle
+class="node-glow"
+cx="700"
+cy="105"
+r="20"
+/>
+
+<circle
+class="node-ring"
+cx="700"
+cy="105"
+r="15"
+/>
+
+<circle
+class="node-core"
+cx="700"
+cy="105"
+r="9"
+/>
+
+<text
+class="node-label"
+x="580"
+y="100"
+>
+Kampala
+</text>
+
+<text
+class="node-code"
+x="580"
+y="113"
+>
+KLA
+</text>
+
+</g>
+
+
+<!-- KIGALI -->
+
+<g
+class="node"
+id="node-KGL"
+onclick="selectNode('KGL')"
+>
+
+<circle
+class="node-glow"
+cx="700"
+cy="220"
+r="20"
+/>
+
+<circle
+class="node-ring"
+cx="700"
+cy="220"
+r="15"
+/>
+
+<circle
+class="node-core"
+cx="700"
+cy="220"
+r="9"
+/>
+
+<text
+class="node-label"
+x="610"
+y="240"
+>
+Kigali
+</text>
+
+<text
+class="node-code"
+x="610"
+y="253"
+>
+KGL
+</text>
+
+</g>
+
+
+<!-- BUJUMBURA -->
+
+<g
+class="node"
+id="node-BJM"
+onclick="selectNode('BJM')"
+>
+
+<circle
+class="node-glow"
+cx="510"
+cy="420"
+r="20"
+/>
+
+<circle
+class="node-ring"
+cx="510"
+cy="420"
+r="15"
+/>
+
+<circle
+class="node-core"
+cx="510"
+cy="420"
+r="9"
+/>
+
+<text
+class="node-label"
+x="530"
+y="416"
+>
+Bujumbura
+</text>
+
+<text
+class="node-code"
+x="530"
+y="429"
+>
+BJM
+</text>
+
+</g>
+
+</svg>
+
+
+<div class="map-bottom">
+
+<div class="legend">
+
+<span>
+<i class="green"></i>
+Healthy
+</span>
+
+<span>
+<i class="yellow"></i>
+Moderate
+</span>
+
+<span>
+<i class="red"></i>
+Critical
+</span>
+
+</div>
+
+
+<div class="grid-status">
+MESH-01 / GRID ONLINE
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ======================================================
+RIGHT INTELLIGENCE
+======================================================= -->
+
+<div class="right-column">
+
+
+<section class="panel node-intelligence">
+
+<div class="panel-head">
+
+<div class="panel-title">
+◈ Node Intelligence
+</div>
+
+<span class="badge calc">
+CALCULATED
+</span>
+
+</div>
+
+
+<div
+id="selectedNodeName"
+class="selected-node-name"
+>
+Dar es Salaam
+</div>
+
+
+<div
+id="selectedNodeCode"
+class="selected-node-code"
+>
+DAR • PRIMARY EASTERN GATEWAY
+</div>
+
+
+<div
+id="selectedStatus"
+class="intel-status active"
+>
+ACTIVE
+</div>
+
+
+<div class="intel-grid">
+
+
+<div class="intel-item">
+
+<span>
+Assets
+</span>
+
+<strong id="intelAssets">
+386
+</strong>
+
+</div>
+
+
+<div class="intel-item">
+
+<span>
+Efficiency
+</span>
+
+<strong
+id="intelEfficiency"
+style="color:var(--green)"
+>
+94%
+</strong>
+
+</div>
+
+
+<div class="intel-item">
+
+<span>
+Risk
+</span>
+
+<strong
+id="intelRisk"
+style="color:var(--yellow)"
+>
+LOW
+</strong>
+
+</div>
+
+
+<div class="intel-item">
+
+<span>
+Telemetry
+</span>
+
+<strong id="intelTelemetry">
+12s
+</strong>
+
+</div>
+
+</div>
+
+
+<div
+id="intelMessage"
+class="intel-message"
+>
+
+Dar es Salaam is operating as the primary eastern gateway. Cargo flows are stable and Mesh-01 telemetry coverage is strong.
+
+</div>
+
+
+<button
+class="action-button"
+onclick="simulateAction()"
+>
+RUN NODE ANALYSIS
+</button>
+
+
+<div
+id="analysisResult"
+style="
+margin-top:8px;
+color:var(--cyan);
+font-family:var(--mono);
+font-size:8px;
+"
+>
+Ready for analysis.
+</div>
+
+</section>
+
+
+<!-- ALERTS -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+⚠ Intelligence Alerts
+</div>
+
+<span class="badge pred">
+PREDICTED
+</span>
+
+</div>
+
+
+<div class="alert critical">
+
+<strong>
+AAM-4401
+</strong>
+
+telemetry gap detected on Central Corridor.
+
+</div>
+
+
+<div class="alert">
+
+Malaba congestion may increase northern corridor transit time.
+
+</div>
+
+
+<div class="alert info">
+
+2 Bujumbura-bound shipments eligible for route optimisation.
+
+</div>
+
+</section>
+
+
+<!-- SYSTEM -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+◉ System Integrity
+</div>
+
+<span class="badge live">
+LIVE
+</span>
+
+</div>
+
+
+<div
+style="
+font-size:9px;
+color:var(--muted);
+line-height:2;
+"
+>
+
+<div>
+API Gateway
+<span style="float:right;color:var(--green)">
+ONLINE
+</span>
+</div>
+
+<div>
+Mesh Network
+<span style="float:right;color:var(--green)">
+ONLINE
+</span>
+</div>
+
+<div>
+Intelligence Engine
+<span style="float:right;color:var(--green)">
+ONLINE
+</span>
+</div>
+
+<div>
+Predictive Layer
+<span style="float:right;color:var(--green)">
+ONLINE
+</span>
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<span>
+AAMush Technologies™ • Trade Intelligence Grid
+</span>
+
+<span>
+PROTOTYPE DATA IS SIMULATED
+</span>
+
+</footer>
+
+
+</main>
+
+</div>
+
+
+<!-- ======================================================
+JAVASCRIPT
+======================================================= -->
+
+<script>
+
+/* =========================================================
+NODE DATA
+========================================================= */
+
+const nodes = {
+
+DAR:{
+ name:"Dar es Salaam",
+ code:"DAR • PRIMARY EASTERN GATEWAY",
+ status:"ACTIVE",
+ statusClass:"active",
+ assets:"386",
+ efficiency:"94%",
+ risk:"LOW",
+ riskColor:"var(--green)",
+ telemetry:"12s",
+ message:
+ "Dar es Salaam is operating as the primary eastern gateway. Cargo flows are stable and Mesh-01 telemetry coverage is strong."
+},
+
+MBA:{
+ name:"Mombasa",
+ code:"MBA • NORTHERN GATEWAY",
+ status:"ACTIVE",
+ statusClass:"active",
+ assets:"274",
+ efficiency:"96%",
+ risk:"LOW",
+ riskColor:"var(--green)",
+ telemetry:"9s",
+ message:
+ "Mombasa gateway is operating efficiently. Northern Corridor traffic remains active with strong outbound logistics flow."
+},
+
+NBO:{
+ name:"Nairobi",
+ code:"NBO • NORTHERN CORRIDOR HUB",
+ status:"CONGESTED",
+ statusClass:"congested",
+ assets:"318",
+ efficiency:"71%",
+ risk:"MEDIUM",
+ riskColor:"var(--yellow)",
+ telemetry:"18s",
+ message:
+ "Nairobi is experiencing moderate congestion. Increased dwell time may affect northern corridor transit performance."
+},
+
+KLA:{
+ name:"Kampala",
+ code:"KLA • UGANDA LOGISTICS NODE",
+ status:"ACTIVE",
+ statusClass:"active",
+ assets:"142",
+ efficiency:"83%",
+ risk:"LOW",
+ riskColor:"var(--green)",
+ telemetry:"11s",
+ message:
+ "Kampala logistics activity is stable. Corridor flows toward Kigali and Bujumbura remain operational."
+},
+
+KGL:{
+ name:"Kigali",
+ code:"KGL • RWANDA REGIONAL HUB",
+ status:"ACTIVE",
+ statusClass:"active",
+ assets:"96",
+ efficiency:"91%",
+ risk:"LOW",
+ riskColor:"var(--green)",
+ telemetry:"8s",
+ message:
+ "Kigali is operating within normal corridor parameters with strong regional distribution activity."
+},
+
+BJM:{
+ name:"Bujumbura",
+ code:"BJM • BURUNDI DESTINATION NODE",
+ status:"STANDBY",
+ statusClass:"standby",
+ assets:"32",
+ efficiency:"76%",
+ risk:"MEDIUM",
+ riskColor:"var(--yellow)",
+ telemetry:"24s",
+ message:
+ "Bujumbura is currently in standby intelligence mode. Incoming corridor traffic is being monitored for route optimisation."
+}
+
+};
+
+
+/* =========================================================
+SELECT NODE
+========================================================= */
+
+function selectNode(code){
+
+ const node = nodes[code];
+
+ if(!node) return;
+
+
+ /* remove previous selection */
+
+ document
+ .querySelectorAll(".node")
+ .forEach(n=>{
+   n.classList.remove("selected");
+ });
+
+
+ /* select map node */
+
+ const mapNode =
+ document.getElementById("node-"+code);
+
+ if(mapNode){
+   mapNode.classList.add("selected");
+ }
+
+
+ /* update intelligence */
+
+ document.getElementById(
+   "selectedNodeName"
+ ).textContent=node.name;
+
+
+ document.getElementById(
+   "selectedNodeCode"
+ ).textContent=node.code;
+
+
+ const status =
+ document.getElementById("selectedStatus");
+
+ status.textContent=node.status;
+
+ status.className=
+ "intel-status "+node.statusClass;
+
+
+ document.getElementById(
+   "intelAssets"
+ ).textContent=node.assets;
+
+
+ document.getElementById(
+   "intelEfficiency"
+ ).textContent=node.efficiency;
+
+
+ document.getElementById(
+   "intelRisk"
+ ).textContent=node.risk;
+
+
+ document.getElementById(
+   "intelRisk"
+ ).style.color=node.riskColor;
+
+
+ document.getElementById(
+   "intelTelemetry"
+ ).textContent=node.telemetry;
+
+
+ document.getElementById(
+   "intelMessage"
+ ).textContent=node.message;
+
+
+ document.getElementById(
+   "analysisResult"
+ ).textContent=
+ "Node selected • Intelligence ready.";
+
+}
+
+
+/* =========================================================
+RUN NODE ANALYSIS
+========================================================= */
+
+function simulateAction(){
+
+ const result =
+ document.getElementById("analysisResult");
+
+ result.textContent=
+ "Analysing telemetry...";
+
+ setTimeout(()=>{
+
+   result.textContent=
+   "Analysis complete • 3 operational signals evaluated.";
+
+ },1000);
+
+}
+
+
+/* =========================================================
+CLOCK
+========================================================= */
+
+function updateClock(){
+
+ const now =
+ new Date();
+
+ const time =
+ now.toLocaleTimeString(
+   "en-GB",
+   {
+     hour12:false,
+     timeZone:"Africa/Dar_es_Salaam"
+   }
+ );
+
+ document.getElementById(
+   "clock"
+ ).textContent=
+ time+" EAT";
+
+
+ document.getElementById(
+   "execTime"
+ ).textContent=
+ time.slice(0,5);
+
+}
+
+setInterval(
+ updateClock,
+ 1000
+);
+
+updateClock();
+
+
+/* =========================================================
+SIMULATED TELEMETRY
+========================================================= */
+
+let heartbeat=14;
+
+
+setInterval(()=>{
+
+ heartbeat++;
+
+ if(heartbeat>30){
+   heartbeat=8;
+ }
+
+
+ document.getElementById(
+   "heartbeat"
+ ).textContent=
+ heartbeat+"s ago";
+
+
+ const rate=
+ (
+   3.7+
+   Math.random()*1.2
+ ).toFixed(1);
+
+
+ document.getElementById(
+   "dataRate"
+ ).textContent=
+ rate+" KB/s";
+
+
+ document.getElementById(
+   "dataBar"
+ ).style.width=
+ (
+   55+
+   Math.random()*25
+ )+"%";
+
+
+ const online=
+ 1170+
+ Math.floor(
+   Math.random()*25
+ );
+
+
+ document.getElementById(
+   "online"
+ ).textContent=
+ online.toLocaleString();
+
+
+ document.getElementById(
+   "onlineBar"
+ ).style.width=
+ (
+   91+
+   Math.random()*5
+ )+"%";
+
+
+},2000);
+
+
+/* =========================================================
+INITIAL NODE
+========================================================= */
+
+selectNode("DAR");
+
+</script>
+
+</body>
+</html>
