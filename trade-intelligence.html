@@ -2,504 +2,973 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AAMush Trade Intelligence Grid™ — Active Intelligence Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AAMush Trade Intelligence Grid™</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root{
---bg:#050912;
---panel:#0b1424;
---panel2:#0e1a2c;
---line:rgba(0,212,170,.18);
---teal:#00d4aa;
---cyan:#00e5ff;
---blue:#00a8e8;
---green:#00c853;
---amber:#ffd600;
---red:#ff1744;
---text:#e5edf5;
---muted:#8192aa;
---mono:"Courier New",monospace;
+  --bg:#060a13;
+  --panel:#0c1424;
+  --panel2:#101b30;
+  --border:rgba(0,212,170,.18);
+
+  --teal:#00d4aa;
+  --cyan:#00e5ff;
+  --blue:#00a8e8;
+  --green:#00c853;
+  --yellow:#ffd600;
+  --orange:#ff9100;
+  --red:#ff1744;
+  --purple:#7c4dff;
+
+  --text:#e4edf5;
+  --muted:#8495ad;
+
+  --mono:'JetBrains Mono',monospace;
+  --main:'Inter',sans-serif;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-background:var(--bg);
-color:var(--text);
-font-family:Arial,Helvetica,sans-serif;
+  background:#030711;
+  color:var(--text);
+  font-family:var(--main);
+  min-height:100vh;
 }
+
+button{
+  font-family:inherit;
+}
+
+/* =========================================================
+   APP
+========================================================= */
 
 .app{
-min-height:100vh;
-background:
-radial-gradient(circle at 50% 35%,rgba(0,168,232,.08),transparent 45%),
-var(--bg);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(0,168,232,.08),transparent 35%),
+    var(--bg);
 }
 
-/* HEADER */
+/* =========================================================
+   HEADER
+========================================================= */
 
-header{
-height:64px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:10px 18px;
-background:#050b15;
-border-bottom:1px solid var(--line);
-position:sticky;
-top:0;
-z-index:20;
+.header{
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+
+  padding:10px 20px;
+
+  background:rgba(6,12,24,.97);
+  border-bottom:1px solid var(--border);
+
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
 .brand{
-display:flex;
-align-items:center;
-gap:10px;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .logo{
-width:38px;
-height:38px;
-border-radius:9px;
-display:grid;
-place-items:center;
-background:linear-gradient(135deg,var(--teal),var(--blue));
-color:#001014;
-font-weight:bold;
+  width:40px;
+  height:40px;
+
+  border-radius:9px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(
+    135deg,
+    var(--teal),
+    var(--blue)
+  );
+
+  color:#00100d;
+  font-weight:800;
+  font-size:14px;
+
+  box-shadow:
+    0 0 20px rgba(0,212,170,.18);
 }
 
 .brand h1{
-font-size:14px;
+  font-size:15px;
+  font-weight:700;
 }
 
-.brand small{
-display:block;
-color:var(--teal);
-font-size:9px;
-letter-spacing:1.4px;
-text-transform:uppercase;
-margin-top:3px;
+.brand span{
+  display:block;
+  margin-top:2px;
+
+  color:var(--teal);
+
+  font-size:9px;
+  font-weight:600;
+
+  letter-spacing:1.6px;
+  text-transform:uppercase;
 }
 
-.system{
-display:flex;
-align-items:center;
-gap:7px;
-font-size:9px;
+.header-badges{
+  display:flex;
+  gap:7px;
+}
+
+.badge{
+  padding:4px 8px;
+
+  border:1px solid;
+  border-radius:4px;
+
+  font-family:var(--mono);
+  font-size:8px;
+  font-weight:700;
+
+  letter-spacing:1px;
+}
+
+.sim{
+  color:var(--purple);
+  border-color:#7c4dff66;
+  background:#7c4dff12;
+}
+
+.live{
+  color:var(--green);
+  border-color:#00c85366;
+  background:#00c85312;
+}
+
+.calc{
+  color:var(--blue);
+  border-color:#00a8e866;
+  background:#00a8e812;
+}
+
+.pred{
+  color:var(--orange);
+  border-color:#ff910066;
+  background:#ff910012;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  color:var(--muted);
+  font-size:10px;
 }
 
 .status-dot{
-width:7px;
-height:7px;
-border-radius:50%;
-background:var(--green);
-box-shadow:0 0 8px var(--green);
-animation:pulse 1.8s infinite;
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:var(--green);
+
+  box-shadow:0 0 9px var(--green);
+
+  animation:pulse 2s infinite;
 }
 
 @keyframes pulse{
-0%,100%{opacity:1}
-50%{opacity:.35}
+  50%{
+    opacity:.3;
+  }
 }
 
-.clock{
-font-family:var(--mono);
-color:var(--muted);
-margin-left:8px;
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+  padding:12px;
+
+  display:grid;
+
+  grid-template-columns:280px minmax(400px,1fr) 310px;
+
+  gap:12px;
 }
 
-/* DASHBOARD */
-
-.dashboard{
-display:grid;
-grid-template-columns:270px 1fr 290px;
-gap:10px;
-padding:10px;
-}
+/* =========================================================
+   PANELS
+========================================================= */
 
 .panel{
-background:rgba(10,19,34,.96);
-border:1px solid var(--line);
-border-radius:8px;
-padding:12px;
+  background:rgba(12,20,36,.94);
+
+  border:1px solid var(--border);
+
+  border-radius:8px;
+
+  padding:13px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
+  transition:.25s;
+}
+
+.panel:hover{
+  border-color:rgba(0,212,170,.35);
 }
 
 .panel-title{
-color:var(--teal);
-font-size:10px;
-font-weight:bold;
-letter-spacing:1.2px;
-text-transform:uppercase;
-margin-bottom:10px;
+  color:var(--teal);
+
+  font-size:10px;
+  font-weight:700;
+
+  letter-spacing:1.3px;
+  text-transform:uppercase;
 }
 
-/* EXECUTIVE */
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+/* =========================================================
+   EXECUTIVE PANEL
+========================================================= */
 
 .executive{
-grid-column:1/-1;
+  grid-column:1/-1;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(12,28,52,.97),
+      rgba(7,15,29,.97)
+    );
+
+  border-color:rgba(0,212,170,.25);
 }
 
-.executive-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:9px;
+.exec-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 
 .exec-card{
-background:rgba(0,0,0,.25);
-padding:11px;
-border-left:3px solid var(--teal);
-border-radius:5px;
+  padding:12px;
+
+  border-radius:5px;
+
+  background:rgba(0,0,0,.2);
+
+  border-left:3px solid var(--teal);
 }
 
 .exec-card.risk{
-border-left-color:var(--red);
+  border-left-color:var(--red);
 }
 
 .exec-card.action{
-border-left-color:var(--amber);
+  border-left-color:var(--yellow);
 }
 
 .label{
-color:var(--muted);
-font-size:8px;
-text-transform:uppercase;
-letter-spacing:1.2px;
+  color:var(--muted);
+
+  font-size:8px;
+
+  letter-spacing:1.4px;
+
+  text-transform:uppercase;
+
+  margin-bottom:6px;
 }
 
 .exec-value{
-margin-top:6px;
-font-size:11px;
-line-height:1.5;
+  font-size:11px;
+  line-height:1.5;
+  font-weight:600;
 }
 
-/* MAP */
+.meta{
+  margin-top:7px;
+
+  color:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+/* =========================================================
+   LEFT COLUMN
+========================================================= */
+
+.left{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* TELEMETRY */
+
+.telemetry{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.telemetry-card{
+  padding:9px;
+
+  border-radius:5px;
+
+  background:rgba(0,0,0,.2);
+
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.telemetry-label{
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+}
+
+.telemetry-value{
+  margin-top:3px;
+
+  font-family:var(--mono);
+
+  font-size:12px;
+  font-weight:700;
+}
+
+.mini-bar{
+  height:3px;
+
+  margin-top:6px;
+
+  background:rgba(255,255,255,.08);
+
+  border-radius:3px;
+
+  overflow:hidden;
+}
+
+.mini-fill{
+  height:100%;
+  transition:.5s;
+}
+
+/* CORRIDOR */
+
+.corridor{
+  margin-bottom:9px;
+
+  font-size:9px;
+}
+
+.corridor-row{
+  display:flex;
+  justify-content:space-between;
+
+  margin-bottom:3px;
+}
+
+.track{
+  height:5px;
+
+  background:rgba(255,255,255,.08);
+
+  border-radius:3px;
+
+  overflow:hidden;
+}
+
+.track-fill{
+  height:100%;
+}
+
+/* NODE LIST */
+
+.node-list{
+  display:flex;
+  flex-direction:column;
+}
+
+.node-list button{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  width:100%;
+
+  padding:7px 4px;
+
+  background:none;
+
+  color:var(--text);
+
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+
+  cursor:pointer;
+
+  text-align:left;
+
+  font-size:9px;
+}
+
+.node-list button:hover{
+  background:rgba(0,212,170,.06);
+  color:var(--teal);
+}
+
+.node-status{
+  padding:2px 5px;
+
+  border-radius:3px;
+
+  font-size:7px;
+  font-weight:700;
+}
+
+.active{
+  color:var(--green);
+  background:#00c85320;
+}
+
+.congested{
+  color:var(--yellow);
+  background:#ffd60020;
+}
+
+.standby{
+  color:var(--blue);
+  background:#00a8e820;
+}
+
+/* =========================================================
+   MAP
+========================================================= */
 
 .map-panel{
-min-height:600px;
-padding:0;
-position:relative;
-overflow:hidden;
-background:
-radial-gradient(circle at 50% 50%,#092238,#050b13 70%);
+  position:relative;
+
+  min-height:550px;
+
+  padding:0;
+
+  overflow:hidden;
 }
 
-.map-panel svg{
-width:100%;
-height:100%;
-min-height:600px;
-touch-action:none;
+.map-title{
+  position:absolute;
+
+  top:15px;
+  left:18px;
+
+  z-index:4;
 }
 
-.land{
-fill:#0a1722;
-stroke:#183140;
-stroke-width:1;
+.map-title strong{
+  display:block;
+
+  color:var(--teal);
+
+  font-size:11px;
+
+  letter-spacing:2px;
 }
 
-.grid-line{
-stroke:#00a8e8;
-stroke-opacity:.055;
+.map-title small{
+  display:block;
+
+  margin-top:4px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+.map{
+  width:100%;
+  height:550px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,168,232,.04),
+      transparent 60%
+    );
+}
+
+.map-grid{
+  stroke:rgba(0,168,232,.055);
+  stroke-width:1;
 }
 
 .route{
-fill:none;
-stroke:#314557;
-stroke-width:7;
-stroke-linecap:round;
-transition:.4s;
+  fill:none;
+
+  stroke-width:4;
+
+  stroke-linecap:round;
+
+  opacity:.65;
 }
 
-.route.active{
-stroke:var(--teal);
-stroke-width:5;
-filter:url(#glow);
+.route-green{
+  stroke:var(--green);
+}
+
+.route-yellow{
+  stroke:var(--yellow);
+}
+
+.route-red{
+  stroke:var(--red);
 }
 
 .node{
-cursor:pointer;
+  cursor:pointer;
 }
 
-.node circle.main{
-fill:#07131e;
-stroke:var(--cyan);
-stroke-width:2;
-transition:.25s;
+.node-ring{
+  fill:none;
+
+  stroke:var(--cyan);
+
+  stroke-width:2;
+
+  opacity:.8;
 }
 
-.node:hover circle.main{
-fill:#063238;
-stroke:var(--teal);
-stroke-width:3;
+.node-glow{
+  fill:var(--cyan);
+
+  opacity:.15;
+
+  animation:nodePulse 2s infinite;
 }
 
-.node.selected circle.main{
-fill:#063d3d;
-stroke:var(--teal);
-stroke-width:3;
-filter:url(#glow);
+.node-core{
+  fill:#07111f;
+
+  stroke:var(--cyan);
+
+  stroke-width:2;
 }
 
-.node text{
-fill:#d4e2ed;
-font-size:11px;
-font-weight:bold;
-paint-order:stroke;
-stroke:#050912;
-stroke-width:3px;
-}
+.node-label{
+  fill:var(--text);
 
-.node .ring{
-fill:none;
-stroke:var(--teal);
-opacity:0;
-}
+  font-size:11px;
 
-.node.selected .ring{
-opacity:.8;
-animation:ring 1.5s infinite;
-}
+  font-weight:600;
 
-@keyframes ring{
-from{r:12;opacity:.8}
-to{r:27;opacity:0}
-}
-
-.truck{
-fill:var(--cyan);
-filter:url(#glow);
-}
-
-.map-top{
-position:absolute;
-top:10px;
-left:10px;
-right:10px;
-display:flex;
-justify-content:space-between;
-pointer-events:none;
-}
-
-.map-info{
-background:#020812dd;
-border:1px solid var(--line);
-border-radius:5px;
-padding:7px 9px;
-font-size:9px;
-}
-
-.map-controls{
-display:flex;
-gap:5px;
-pointer-events:auto;
-}
-
-.map-controls button{
-width:30px;
-height:27px;
-border:1px solid #234052;
-background:#0b1b2b;
-color:white;
-border-radius:4px;
-cursor:pointer;
-font-size:16px;
-}
-
-.map-controls button:hover{
-color:var(--teal);
-border-color:var(--teal);
-}
-
-.map-help{
-position:absolute;
-bottom:10px;
-left:10px;
-background:#020812dd;
-border:1px solid var(--line);
-border-radius:5px;
-padding:7px 9px;
-color:var(--muted);
-font-size:9px;
-}
-
-/* SIDES */
-
-.left,.right{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-/* NODE */
-
-.node-name{
-font-size:18px;
-font-weight:bold;
+  pointer-events:none;
 }
 
 .node-code{
-margin-top:3px;
-color:var(--teal);
-font-size:9px;
+  fill:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+
+  pointer-events:none;
 }
 
-.metrics{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:7px;
-margin-top:12px;
+.node.selected .node-core{
+  fill:var(--teal);
+
+  stroke:#fff;
+
+  stroke-width:3;
 }
 
-.metric{
-padding:8px;
-background:rgba(0,0,0,.3);
-border:1px solid rgba(255,255,255,.05);
-border-radius:5px;
+.node.selected .node-ring{
+  stroke:var(--teal);
+
+  animation:selectedPulse 1.2s infinite;
 }
 
-.metric span{
-display:block;
-color:var(--muted);
-font-size:8px;
-text-transform:uppercase;
+@keyframes nodePulse{
+  50%{
+    r:20;
+    opacity:.02;
+  }
 }
 
-.metric strong{
-display:block;
-margin-top:4px;
-font-family:var(--mono);
-font-size:13px;
+@keyframes selectedPulse{
+  50%{
+    opacity:.2;
+    stroke-width:5;
+  }
 }
 
-/* ROWS */
+/* TRUCKS */
 
-.row{
-display:flex;
-justify-content:space-between;
-gap:8px;
-margin:7px 0;
-font-size:9px;
+.truck{
+  fill:var(--teal);
+
+  filter:
+    drop-shadow(0 0 7px var(--teal));
+
+  animation:truckMove 8s linear infinite;
 }
 
-.mono{
-font-family:var(--mono);
+.truck.two{
+  animation-delay:-3s;
 }
 
-.pill{
-padding:2px 6px;
-border-radius:3px;
-font-size:8px;
-font-weight:bold;
+.truck.three{
+  animation-delay:-6s;
+}
+
+@keyframes truckMove{
+  0%{
+    transform:translate(0,0);
+  }
+
+  50%{
+    transform:translate(220px,-80px);
+  }
+
+  100%{
+    transform:translate(440px,-160px);
+  }
+}
+
+/* MAP LEGEND */
+
+.map-bottom{
+  position:absolute;
+
+  left:15px;
+  right:15px;
+  bottom:14px;
+
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+}
+
+.legend{
+  padding:7px 10px;
+
+  background:rgba(0,0,0,.72);
+
+  border-radius:4px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+.legend span{
+  margin-right:10px;
+}
+
+.legend i{
+  display:inline-block;
+
+  width:7px;
+  height:7px;
+
+  margin-right:4px;
+
+  border-radius:50%;
 }
 
 .green{
-color:var(--green);
-background:#00c85318;
+  background:var(--green);
 }
 
-.amber{
-color:var(--amber);
-background:#ffd60018;
+.yellow{
+  background:var(--yellow);
 }
 
 .red{
-color:var(--red);
-background:#ff174418;
+  background:var(--red);
 }
 
-.blue{
-color:var(--blue);
-background:#00a8e818;
+.grid-status{
+  padding:7px 10px;
+
+  border-radius:4px;
+
+  background:rgba(0,0,0,.72);
+
+  color:var(--cyan);
+
+  font-family:var(--mono);
+
+  font-size:8px;
 }
 
-.bar{
-height:4px;
-background:rgba(255,255,255,.08);
-border-radius:3px;
-overflow:hidden;
-margin-top:4px;
+/* =========================================================
+   RIGHT INTELLIGENCE PANEL
+========================================================= */
+
+.right-column{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-.bar i{
-display:block;
-height:100%;
-background:var(--teal);
-transition:width .6s ease;
+.node-intelligence{
+  min-height:300px;
+
+  border-color:rgba(0,212,170,.3);
 }
 
-/* ALERTS */
+.selected-node-name{
+  color:var(--cyan);
+
+  font-size:18px;
+  font-weight:700;
+
+  margin-bottom:3px;
+}
+
+.selected-node-code{
+  color:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+.intel-status{
+  display:inline-block;
+
+  margin-top:10px;
+
+  padding:4px 7px;
+
+  border-radius:4px;
+
+  font-size:8px;
+  font-weight:700;
+}
+
+.intel-grid{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:7px;
+
+  margin-top:13px;
+}
+
+.intel-item{
+  padding:9px;
+
+  border:1px solid rgba(255,255,255,.05);
+
+  border-radius:5px;
+
+  background:rgba(0,0,0,.2);
+}
+
+.intel-item span{
+  display:block;
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+}
+
+.intel-item strong{
+  display:block;
+
+  margin-top:4px;
+
+  font-family:var(--mono);
+
+  font-size:12px;
+}
+
+.intel-message{
+  margin-top:12px;
+
+  padding:10px;
+
+  background:rgba(0,212,170,.05);
+
+  border-left:2px solid var(--teal);
+
+  font-size:9px;
+
+  line-height:1.5;
+}
+
+.action-button{
+  width:100%;
+
+  margin-top:12px;
+
+  padding:9px;
+
+  border:1px solid rgba(0,212,170,.3);
+
+  border-radius:5px;
+
+  background:rgba(0,212,170,.08);
+
+  color:var(--teal);
+
+  cursor:pointer;
+
+  font-size:9px;
+  font-weight:700;
+}
+
+.action-button:hover{
+  background:rgba(0,212,170,.16);
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
 
 .alert{
-background:rgba(0,0,0,.3);
-border-left:2px solid var(--amber);
-padding:7px;
-margin-bottom:6px;
-font-size:9px;
-line-height:1.4;
+  padding:8px;
+
+  margin-bottom:6px;
+
+  background:rgba(0,0,0,.2);
+
+  border-left:2px solid var(--yellow);
+
+  border-radius:3px;
+
+  font-size:9px;
+
+  line-height:1.4;
 }
 
 .alert.critical{
-border-left-color:var(--red);
+  border-left-color:var(--red);
 }
 
 .alert.info{
-border-left-color:var(--blue);
+  border-left-color:var(--blue);
 }
 
-/* MOBILE */
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  grid-column:1/-1;
+
+  padding:8px;
+
+  display:flex;
+  justify-content:space-between;
+
+  color:var(--muted);
+
+  font-family:var(--mono);
+
+  font-size:8px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:1050px){
 
-.dashboard{
-grid-template-columns:240px 1fr;
+  .main{
+    grid-template-columns:240px 1fr;
+  }
+
+  .right-column{
+    grid-column:1/-1;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+  }
+
 }
 
-.right{
-grid-column:1/-1;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-}
+@media(max-width:750px){
 
-}
+  .header{
+    height:auto;
 
-@media(max-width:760px){
+    padding:10px;
 
-header{
-height:auto;
-min-height:60px;
-}
+    align-items:flex-start;
+  }
 
-.dashboard{
-display:flex;
-flex-direction:column;
-}
+  .header-badges{
+    display:none;
+  }
 
-.map-panel{
-order:-1;
-min-height:500px;
-}
+  .header-right span:last-child{
+    display:none;
+  }
 
-.map-panel svg{
-min-height:500px;
-}
+  .main{
+    grid-template-columns:1fr;
+  }
 
-.executive-grid{
-grid-template-columns:1fr;
-}
+  .exec-grid{
+    grid-template-columns:1fr;
+  }
 
-.right{
-display:flex;
-}
+  .map-panel{
+    min-height:460px;
+  }
 
-.brand h1{
-font-size:12px;
-}
+  .map{
+    height:460px;
+  }
 
-.system{
-font-size:8px;
-}
+  .right-column{
+    grid-column:auto;
 
+    display:flex;
+  }
+
+  .footer{
+    flex-direction:column;
+    gap:5px;
+  }
 }
 </style>
 </head>
@@ -508,50 +977,106 @@ font-size:8px;
 
 <div class="app">
 
-<header>
+<!-- ======================================================
+HEADER
+======================================================= -->
+
+<header class="header">
 
 <div class="brand">
 
-<div class="logo">AI</div>
+<div class="logo">
+AI
+</div>
 
 <div>
-<h1>AAMush Trade Intelligence Grid™</h1>
-<small>Active Intelligence Map • Executive Prototype</small>
-</div>
+
+<h1>
+AAMush Trade Intelligence Grid™
+</h1>
+
+<span>
+East Africa Corridor Intelligence Platform
+</span>
 
 </div>
 
-<div class="system">
+</div>
+
+
+<div class="header-badges">
+
+<span class="badge sim">
+SIMULATED
+</span>
+
+<span class="badge live">
+LIVE
+</span>
+
+<span class="badge calc">
+CALCULATED
+</span>
+
+<span class="badge pred">
+PREDICTED
+</span>
+
+</div>
+
+
+<div class="header-right">
 
 <span class="status-dot"></span>
 
-<span>SYSTEM ACTIVE</span>
+<span>
+SYSTEM ACTIVE
+</span>
 
-<span class="clock" id="clock"></span>
+<span
+id="clock"
+style="font-family:var(--mono)"
+>
+--:--:--
+</span>
+
+<span>
+Dr. James K. Mushi, PhD
+</span>
 
 </div>
 
 </header>
 
 
-<div class="dashboard">
+<!-- ======================================================
+MAIN
+======================================================= -->
+
+<main class="main">
 
 
-<!-- EXECUTIVE INTELLIGENCE -->
+<!-- ======================================================
+EXECUTIVE INTELLIGENCE
+======================================================= -->
 
 <section class="panel executive">
 
+<div class="panel-head">
+
 <div class="panel-title">
+◆ Executive Intelligence
+</div>
 
-◆ EXECUTIVE INTELLIGENCE —
-
-<span id="selectedExecutive">
-Dar es Salaam
+<span class="badge sim">
+SIMULATED
 </span>
 
 </div>
 
-<div class="executive-grid">
+
+<div class="exec-grid">
+
 
 <div class="exec-card">
 
@@ -559,8 +1084,20 @@ Dar es Salaam
 What is happening?
 </div>
 
-<div class="exec-value" id="happening">
-Dar es Salaam gateway is operating normally.
+<div class="exec-value">
+
+1,248 assets active across 6 nodes.
+
+Central Corridor operating at
+<strong>94%</strong>
+efficiency.
+
+Northern Corridor experiencing moderate congestion near Malaba.
+
+</div>
+
+<div class="meta">
+UPDATED <span id="execTime">--:--</span> EAT
 </div>
 
 </div>
@@ -572,8 +1109,21 @@ Dar es Salaam gateway is operating normally.
 What is at risk?
 </div>
 
-<div class="exec-value" id="risk">
-Current operational risk is low.
+<div class="exec-value">
+
+3 shipments flagged for delay risk greater than 45 minutes.
+
+Mesh-01 device AAM-4401 telemetry gap detected.
+
+Rusumo border dwell exceeds baseline.
+
+</div>
+
+<div class="meta">
+RISK SCORE:
+<span style="color:var(--red)">
+MEDIUM-HIGH
+</span>
 </div>
 
 </div>
@@ -585,9 +1135,337 @@ Current operational risk is low.
 Where is intervention required?
 </div>
 
-<div class="exec-value" id="action">
-Continue monitoring corridor activity.
+<div class="exec-value">
+
+Priority 1:
+field check AAM-4401.
+
+Priority 2:
+monitor Malaba queue.
+
+Priority 3:
+reroute Bujumbura-bound shipments.
+
 </div>
+
+<div class="meta">
+3 ACTIONS QUEUED
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- ======================================================
+LEFT
+======================================================= -->
+
+<div class="left">
+
+
+<!-- TELEMETRY -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+◉ Mesh-01 Telemetry
+</div>
+
+<span class="badge sim">
+SIMULATED
+</span>
+
+</div>
+
+
+<div class="telemetry">
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Active Devices
+</div>
+
+<div
+class="telemetry-value"
+style="color:var(--teal)"
+>
+1,248
+</div>
+
+<div class="mini-bar">
+<div
+class="mini-fill"
+style="width:78%;background:var(--teal)"
+></div>
+</div>
+
+</div>
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Online
+</div>
+
+<div
+class="telemetry-value"
+style="color:var(--green)"
+id="online"
+>
+1,182
+</div>
+
+<div class="mini-bar">
+<div
+id="onlineBar"
+class="mini-fill"
+style="width:94%;background:var(--green)"
+></div>
+</div>
+
+</div>
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Signal Average
+</div>
+
+<div
+class="telemetry-value"
+style="color:var(--blue)"
+>
+-82 dBm
+</div>
+
+<div class="mini-bar">
+<div
+class="mini-fill"
+style="width:72%;background:var(--blue)"
+></div>
+</div>
+
+</div>
+
+
+<div class="telemetry-card">
+
+<div class="telemetry-label">
+Data Rate
+</div>
+
+<div
+id="dataRate"
+class="telemetry-value"
+style="color:var(--cyan)"
+>
+4.2 KB/s
+</div>
+
+<div class="mini-bar">
+<div
+id="dataBar"
+class="mini-fill"
+style="width:65%;background:var(--cyan)"
+></div>
+</div>
+
+</div>
+
+</div>
+
+
+<div
+style="
+margin-top:9px;
+color:var(--muted);
+font-size:8px;
+line-height:1.8;
+"
+>
+
+<div>
+Last heartbeat:
+<span
+id="heartbeat"
+style="font-family:var(--mono)"
+>
+14s ago
+</span>
+</div>
+
+<div>
+Mesh coverage:
+<span style="font-family:var(--mono)">
+94.7%
+</span>
+</div>
+
+<div>
+Firmware:
+<span style="font-family:var(--mono)">
+v2.1.4-stable
+</span>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CORRIDOR PULSE -->
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">
+⌁ Corridor Pulse
+</div>
+
+<span class="badge pred">
+PREDICTED
+</span>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Central Corridor
+(DAR–KGL)
+</span>
+
+<strong style="color:var(--green)">
+94%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:94%;background:var(--green)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Northern Corridor
+(MBA–KGL)
+</span>
+
+<strong style="color:var(--yellow)">
+71%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:71%;background:var(--yellow)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+DAR–Bujumbura
+</span>
+
+<strong style="color:var(--green)">
+88%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:88%;background:var(--green)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Kampala–Bujumbura
+</span>
+
+<strong style="color:var(--yellow)">
+76%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:76%;background:var(--yellow)"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="corridor">
+
+<div class="corridor-row">
+
+<span>
+Mombasa–Nairobi SGR
+</span>
+
+<strong style="color:var(--green)">
+96%
+</strong>
+
+</div>
+
+<div class="track">
+
+<div
+class="track-fill"
+style="width:96%;background:var(--green)"
+></div>
 
 </div>
 
@@ -596,1342 +1474,173 @@ Continue monitoring corridor activity.
 </section>
 
 
-<!-- LEFT -->
+<!-- NODE LIST -->
 
-<aside class="left">
+<section class="panel">
 
-
-<div class="panel">
-
-<div class="panel-title">
-◆ ACTIVE NODE
-</div>
-
-<div class="node-name" id="nodeName">
-Dar es Salaam
-</div>
-
-<div class="node-code" id="nodeCode">
-DAR • TANZANIA
-</div>
-
-<div class="metrics">
-
-<div class="metric">
-<span>Assets</span>
-<strong id="assets">342</strong>
-</div>
-
-<div class="metric">
-<span>Online</span>
-<strong id="online">326</strong>
-</div>
-
-<div class="metric">
-<span>Signal</span>
-<strong id="signal">-78 dBm</strong>
-</div>
-
-<div class="metric">
-<span>Flow</span>
-<strong id="flow">94%</strong>
-</div>
-
-</div>
-
-</div>
-
-
-<div class="panel">
+<div class="panel-head">
 
 <div class="panel-title">
-◆ MESH-01 TELEMETRY
+◎ Corridor Nodes
 </div>
 
-<div class="row">
-<span>Heartbeat</span>
-<strong class="mono" id="heartbeat">6s ago</strong>
-</div>
-
-<div class="row">
-<span>Coverage</span>
-<strong class="mono" id="coverage">97.2%</strong>
-</div>
-
-<div class="row">
-<span>Data rate</span>
-<strong class="mono" id="rate">5.1 KB/s</strong>
-</div>
-
-<div class="row">
-<span>Firmware</span>
-<strong class="mono">v2.1.4</strong>
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-title">
-◆ CORRIDOR PULSE
-</div>
-
-<div id="corridors"></div>
-
-</div>
-
-</aside>
-
-
-<!-- ACTIVE MAP -->
-
-<main class="panel map-panel">
-
-<div class="map-top">
-
-<div class="map-info">
-
-ACTIVE INTELLIGENCE MAP •
-
-<strong id="mapSelection">DAR</strong>
-
-•
-
-<span style="color:var(--green)">
-● SYNCHRONIZED
+<span class="badge live">
+LIVE
 </span>
 
 </div>
 
 
-<div class="map-controls">
+<div class="node-list">
 
-<button id="zoomIn">+</button>
+<button onclick="selectNode('DAR')">
 
-<button id="zoomOut">−</button>
+<span>● Dar es Salaam</span>
 
-<button id="resetMap">⌂</button>
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('MBA')">
+
+<span>● Mombasa</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('NBO')">
+
+<span>● Nairobi</span>
+
+<span class="node-status congested">
+CONGESTED
+</span>
+
+</button>
+
+
+<button onclick="selectNode('KLA')">
+
+<span>● Kampala</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('KGL')">
+
+<span>● Kigali</span>
+
+<span class="node-status active">
+ACTIVE
+</span>
+
+</button>
+
+
+<button onclick="selectNode('BJM')">
+
+<span>● Bujumbura</span>
+
+<span class="node-status standby">
+STANDBY
+</span>
+
+</button>
 
 </div>
 
+</section>
+
 </div>
 
 
-<svg id="map" viewBox="0 0 900 560">
+<!-- ======================================================
+INTERACTIVE MAP
+======================================================= -->
 
-<defs>
+<section class="panel map-panel">
 
-<filter id="glow">
+<div class="map-title">
 
-<feGaussianBlur
-stdDeviation="3"
-result="blur"/>
+<strong>
+EAST AFRICA TRADE CORRIDOR MESH
+</strong>
 
-<feMerge>
+<small>
+TAP A NODE TO OPEN INTELLIGENCE
+</small>
 
-<feMergeNode in="blur"/>
-<feMergeNode in="SourceGraphic"/>
-
-</feMerge>
-
-</filter>
-
-</defs>
+</div>
 
 
-<!-- LAND -->
-
-<path
-class="land"
-d="
-M80 70
-L180 40
-L300 70
-L390 40
-L520 75
-L680 55
-L820 120
-L850 260
-L790 350
-L810 470
-L700 530
-L570 500
-L470 540
-L360 480
-L250 500
-L150 430
-L70 300
-Z"
-/>
+<svg
+class="map"
+viewBox="0 0 800 550"
+id="tradeMap"
+>
 
 
 <!-- GRID -->
 
-<g>
+<defs>
 
-<path class="grid-line" d="M0 100H900"/>
-<path class="grid-line" d="M0 180H900"/>
-<path class="grid-line" d="M0 260H900"/>
-<path class="grid-line" d="M0 340H900"/>
-<path class="grid-line" d="M0 420H900"/>
-<path class="grid-line" d="M0 500H900"/>
-
-<path class="grid-line" d="M100 0V560"/>
-<path class="grid-line" d="M200 0V560"/>
-<path class="grid-line" d="M300 0V560"/>
-<path class="grid-line" d="M400 0V560"/>
-<path class="grid-line" d="M500 0V560"/>
-<path class="grid-line" d="M600 0V560"/>
-<path class="grid-line" d="M700 0V560"/>
-<path class="grid-line" d="M800 0V560"/>
-
-</g>
-
-
-<!-- CORRIDORS -->
-
-<g>
+<pattern
+id="mapGrid"
+width="40"
+height="40"
+patternUnits="userSpaceOnUse"
+>
 
 <path
-id="DAR-KGL"
-class="route"
-d="M230 390 Q310 330 385 300 Q465 270 540 205"/>
+d="M40 0H0V40"
+class="map-grid"
+/>
+
+</pattern>
+
+</defs>
+
+
+<rect
+width="800"
+height="550"
+fill="url(#mapGrid)"
+/>
+
+
+<!-- ==================================================
+CORRIDORS
+=================================================== -->
+
+
+<!-- Dar -> Dodoma -> Nairobi -->
 
 <path
-id="DAR-BJM"
-class="route"
-d="M230 390 Q350 420 470 405 Q560 390 615 345"/>
+id="routeCentral"
+class="route route-green"
+d="
+M90 420
+Q180 360 300 300
+Q410 230 500 180
+Q600 130 700 105
+"
+/>
+
+
+<!-- Dar -> Kigali -->
 
 <path
-id="MBA-NRB"
-class="route"
-d="M665 150 Q590 175 520 190 Q465 205 420 235"/>
-
-<path
-id="NRB-KGL"
-class="route"
-d="M420 235 Q470 225 540 205"/>
-
-<path
-id="KGL-KLA"
-class="route"
-d="M540 205 Q620 210 705 235"/>
-
-<path
-id="KLA-BJM"
-class="route"
-d="M705 235 Q670 290 615 345"/>
-
-</g>
-
-
-<!-- SIMULATED MOVING ASSETS -->
-
-<g id="trucks"></g>
-
-
-<!-- DAR ES SALAAM -->
-
-<g
-class="node"
-data-node="DAR"
-transform="translate(230 390)">
-
-<circle class="ring" r="12"/>
-<circle class="main" r="8"/>
-
-<text x="13" y="-12">
-DAR ES SALAAM
-</text>
-
-</g>
-
-
-<!-- MOMBASA -->
-
-<g
-class="node"
-data-node="MBA"
-transform="translate(665 150)">
-
-<circle class="ring" r="12"/>
-<circle class="main" r="8"/>
-
-<text x="13" y="-12">
-MOMBASA
-</text>
-
-</g>
-
-
-<!-- NAIROBI -->
-
-<g
-class="node"
-data-node="NRB"
-transform="translate(420 235)">
-
-<circle class="ring" r="12"/>
-<circle class="main" r="8"/>
-
-<text x="13" y="-12">
-NAIROBI
-</text>
-
-</g>
-
-
-<!-- KAMPALA -->
-
-<g
-class="node"
-data-node="KLA"
-transform="translate(705 235)">
-
-<circle class="ring" r="12"/>
-<circle class="main" r="8"/>
-
-<text x="13" y="-12">
-KAMPALA
-</text>
-
-</g>
-
-
-<!-- KIGALI -->
-
-<g
-class="node"
-data-node="KGL"
-transform="translate(540 205)">
-
-<circle class="ring" r="12"/>
-<circle class="main" r="8"/>
-
-<text x="13" y="-12">
-KIGALI
-</text>
-
-</g>
-
-
-<!-- BUJUMBURA -->
-
-<g
-class="node"
-data-node="BJM"
-transform="translate(615 345)">
-
-<circle class="ring" r="12"/>
-<circle class="main" r="8"/>
-
-<text x="13" y="-12">
-BUJUMBURA
-</text>
-
-</g>
-
-</svg>
-
-
-<div class="map-help">
-
-👆 TAP A NODE TO ACTIVATE ITS INTELLIGENCE
-
-</div>
-
-</main>
-
-
-<!-- RIGHT -->
-
-<aside class="right">
-
-
-<div class="panel">
-
-<div class="panel-title">
-◆ NODE INTELLIGENCE
-</div>
-
-<div class="row">
-<span>Operational state</span>
-
-<span class="pill green" id="state">
-ACTIVE
-</span>
-
-</div>
-
-<div class="row">
-<span>Congestion</span>
-
-<strong id="congestion">
-Low
-</strong>
-
-</div>
-
-<div class="row">
-<span>Risk score</span>
-
-<strong id="score">
-28 / 100
-</strong>
-
-</div>
-
-<div class="row">
-<span>Predicted delay</span>
-
-<strong id="delay">
-12 min
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-title">
-◆ ACTIVE ALERTS
-</div>
-
-<div id="alerts"></div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-title">
-◆ INTERVENTION QUEUE
-</div>
-
-<div id="queue"></div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-title">
-◆ DATA MODE
-</div>
-
-<div class="row">
-
-<span>Source</span>
-
-<span class="pill blue">
-SIMULATED
-</span>
-
-</div>
-
-<div class="row">
-
-<span>Engine</span>
-
-<span class="pill green">
-ACTIVE
-</span>
-
-</div>
-
-<div class="row">
-
-<span>Refresh</span>
-
-<strong class="mono">
-5 SEC
-</strong>
-
-</div>
-
-</div>
-
-
-</aside>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   AAMUSH TRADE INTELLIGENCE GRID™
-   ACTIVE INTELLIGENCE MAP
-   SIMULATED DEMONSTRATION ENGINE
-===================================================== */
-
-const nodes={
-
-DAR:{
-name:"Dar es Salaam",
-code:"DAR • TANZANIA",
-assets:342,
-online:326,
-signal:"-78 dBm",
-flow:94,
-coverage:"97.2%",
-rate:"5.1 KB/s",
-heartbeat:"6s ago",
-state:"ACTIVE",
-congestion:"Low",
-score:28,
-delay:12,
-alerts:[
-["info","Gateway throughput remains above baseline."],
-["warn","Two devices reporting weak signal."],
-["info","Central Corridor demand rising."]
-],
-queue:[
-"Monitor gateway throughput",
-"Verify low-signal assets"
-]
-},
-
-MBA:{
-name:"Mombasa",
-code:"MBA • KENYA",
-assets:288,
-online:267,
-signal:"-84 dBm",
-flow:82,
-coverage:"92.8%",
-rate:"4.4 KB/s",
-heartbeat:"8s ago",
-state:"ACTIVE",
-congestion:"Moderate",
-score:46,
-delay:31,
-alerts:[
-["warn","Mombasa–Nairobi flow below baseline."],
-["warn","Predicted dwell time increasing."],
-["info","Nairobi queue increasing."]
-],
-queue:[
-"Monitor Northern Corridor",
-"Prepare diversion scenario"
-]
-},
-
-NRB:{
-name:"Nairobi",
-code:"NRB • KENYA",
-assets:311,
-online:291,
-signal:"-86 dBm",
-flow:71,
-coverage:"89.4%",
-rate:"3.8 KB/s",
-heartbeat:"11s ago",
-state:"CONGESTED",
-congestion:"High",
-score:67,
-delay:45,
-alerts:[
-["critical","Three shipments exceed 45 min delay risk."],
-["warn","Mesh coverage below 90%."],
-["info","Kampala-bound flow accumulating."]
-],
-queue:[
-"Escalate Nairobi queue",
-"Prioritize time-sensitive cargo",
-"Run reroute simulation"
-]
-},
-
-KLA:{
-name:"Kampala",
-code:"KLA • UGANDA",
-assets:205,
-online:198,
-signal:"-80 dBm",
-flow:76,
-coverage:"95.1%",
-rate:"4.0 KB/s",
-heartbeat:"7s ago",
-state:"ACTIVE",
-congestion:"Moderate",
-score:39,
-delay:24,
-alerts:[
-["warn","Interchange queue trending upward."],
-["info","Kigali-bound flow stable."],
-["info","Bujumbura route available."]
-],
-queue:[
-"Balance onward loads",
-"Monitor interchange"
-]
-},
-
-KGL:{
-name:"Kigali",
-code:"KGL • RWANDA",
-assets:176,
-online:171,
-signal:"-76 dBm",
-flow:91,
-coverage:"98.0%",
-rate:"4.7 KB/s",
-heartbeat:"5s ago",
-state:"ACTIVE",
-congestion:"Low",
-score:21,
-delay:9,
-alerts:[
-["info","Central Corridor operating above 90%."],
-["info","Telemetry coverage 98%."],
-["warn","Inbound demand trending upward."]
-],
-queue:[
-"Monitor inbound demand",
-"Maintain current routing"
-]
-},
-
-BJM:{
-name:"Bujumbura",
-code:"BJM • BURUNDI",
-assets:126,
-online:113,
-signal:"-91 dBm",
-flow:68,
-coverage:"86.7%",
-rate:"2.9 KB/s",
-heartbeat:"15s ago",
-state:"STANDBY",
-congestion:"Moderate",
-score:61,
-delay:38,
-alerts:[
-["critical","Telemetry coverage below 90%."],
-["warn","Three devices approaching timeout."],
-["info","Dar–Bujumbura route remains available."]
-],
-queue:[
-"Verify Mesh-01 coverage",
-"Check timeout devices"
-]
-}
-
-};
-
-
-/* ROUTE ASSOCIATIONS */
-
-const nodeRoutes={
-
-DAR:["DAR-KGL","DAR-BJM"],
-
-MBA:["MBA-NRB"],
-
-NRB:["MBA-NRB","NRB-KGL"],
-
-KLA:["KGL-KLA","KLA-BJM"],
-
-KGL:["DAR-KGL","NRB-KGL","KGL-KLA"],
-
-BJM:["DAR-BJM","KLA-BJM"]
-
-};
-
-
-let selected="DAR";
-
-
-function $(id){
-
-return document.getElementById(id);
-
-}
-
-
-/* =====================================================
-   INTELLIGENCE TEXT GENERATOR
-===================================================== */
-
-function intelligenceText(n){
-
-let happening;
-let risk;
-let action;
-
-if(n.score>=65){
-
-happening=
-n.name+
-" is experiencing elevated operational pressure. "+
-n.assets+
-" assets are currently being tracked across the node.";
-
-risk=
-"Risk score has increased to "+
-n.score+
-"/100. Predicted delay is approximately "+
-n.delay+
-" minutes.";
-
-action=
-"Priority intervention: monitor congestion, protect time-sensitive cargo and evaluate alternative routing.";
-
-}
-
-else if(n.score>=40){
-
-happening=
-n.name+
-" is operating with moderate traffic pressure. "+
-n.assets+
-" assets are currently visible to the intelligence grid.";
-
-risk=
-"Moderate operational risk detected. Predicted delay is approximately "+
-n.delay+
-" minutes.";
-
-action=
-"Continue monitoring the corridor and prepare contingency routing if congestion increases.";
-
-}
-
-else{
-
-happening=
-n.name+
-" is operating efficiently. "+
-n.assets+
-" tracked assets are currently moving through the node.";
-
-risk=
-"Current operational risk remains low at "+
-n.score+
-"/100.";
-
-action=
-"Maintain normal monitoring and continue observing corridor demand.";
-
-}
-
-return{
-happening,
-risk,
-action
-};
-
-}
-
-
-/* =====================================================
-   RENDER NODE
-===================================================== */
-
-function render(){
-
-const n=nodes[selected];
-
-const intel=intelligenceText(n);
-
-
-/* Executive */
-
-$("selectedExecutive").textContent=n.name;
-
-$("happening").textContent=intel.happening;
-
-$("risk").textContent=intel.risk;
-
-$("action").textContent=intel.action;
-
-
-/* Node */
-
-$("nodeName").textContent=n.name;
-
-$("nodeCode").textContent=n.code;
-
-$("assets").textContent=n.assets;
-
-$("online").textContent=n.online;
-
-$("signal").textContent=n.signal;
-
-$("flow").textContent=n.flow+"%";
-
-$("coverage").textContent=n.coverage;
-
-$("rate").textContent=n.rate;
-
-$("heartbeat").textContent=n.heartbeat;
-
-
-/* Right */
-
-$("state").textContent=n.state;
-
-$("congestion").textContent=n.congestion;
-
-$("score").textContent=n.score+" / 100";
-
-$("delay").textContent=n.delay+" min";
-
-
-/* State colour */
-
-$("state").className=
-"pill "+
-(
-n.state==="CONGESTED"
-?"red"
-:
-n.state==="STANDBY"
-?"blue"
-:
-"green"
-);
-
-
-/* Map */
-
-$("mapSelection").textContent=selected;
-
-
-/* Corridor */
-
-$("corridors").innerHTML=
-
-nodeRoutes[selected].map(
-
-(route,index)=>{
-
-let name="Central Corridor";
-
-if(route.includes("MBA"))
-name="Northern Corridor";
-
-if(route.includes("BJM"))
-name="Bujumbura Route";
-
-let value=
-Math.max(
-45,
-n.flow-index*5
-);
-
-return`
-
-<div class="row">
-
-<span>${name}</span>
-
-<strong class="mono">
-${value}%
-</strong>
-
-</div>
-
-<div class="bar">
-
-<i style="width:${value}%"></i>
-
-</div>
-
-`;
-
-}).join("");
-
-
-/* Alerts */
-
-$("alerts").innerHTML=
-
-n.alerts.map(
-
-a=>`
-
-<div class="alert ${
-a[0]==="critical"
-?"critical"
-:
-a[0]==="info"
-?"info"
-:""
-}">
-
-${a[1]}
-
-</div>
-
-`).join("");
-
-
-/* Intervention */
-
-$("queue").innerHTML=
-
-n.queue.map(
-
-(q,i)=>`
-
-<div class="row">
-
-<span>
-${i+1}. ${q}
-</span>
-
-<span class="pill ${
-i===0
-?"amber"
-:"blue"
-}">
-
-${i===0
-?"PRIORITY"
-:"QUEUED"}
-
-</span>
-
-</div>
-
-`).join("");
-
-
-/* Node highlight */
-
-document
-.querySelectorAll(".node")
-.forEach(node=>{
-
-node.classList.toggle(
-"selected",
-node.dataset.node===selected
-);
-
-});
-
-
-/* Route highlight */
-
-document
-.querySelectorAll(".route")
-.forEach(route=>{
-
-route.classList.toggle(
-"active",
-nodeRoutes[selected].includes(route.id)
-);
-
-});
-
-
-createMovingAssets();
-
-}
-
-
-/* =====================================================
-   SIMULATED MOVING TRUCKS
-===================================================== */
-
-function createMovingAssets(){
-
-const group=$("trucks");
-
-group.innerHTML="";
-
-nodeRoutes[selected].forEach(
-
-(routeId,index)=>{
-
-const truck=
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"circle"
-);
-
-truck.setAttribute("r","5");
-
-truck.classList.add("truck");
-
-
-const motion=
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"animateMotion"
-);
-
-motion.setAttribute(
-"dur",
-(5+index)+"s"
-);
-
-motion.setAttribute(
-"repeatCount",
-"indefinite"
-);
-
-
-const path=
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"mpath"
-);
-
-path.setAttribute(
-"href",
-"#"+routeId
-);
-
-
-motion.appendChild(path);
-
-truck.appendChild(motion);
-
-group.appendChild(truck);
-
-});
-
-}
-
-
-/* =====================================================
-   NODE CLICK
-===================================================== */
-
-document
-.querySelectorAll(".node")
-.forEach(node=>{
-
-node.addEventListener(
-"click",
-function(){
-
-selected=this.dataset.node;
-
-render();
-
-}
-);
-
-});
-
-
-/* =====================================================
-   MAP ZOOM
-===================================================== */
-
-let zoom=1;
-
-function applyZoom(){
-
-$("map").style.transform=
-"scale("+zoom+")";
-
-$("map").style.transformOrigin=
-"50% 50%";
-
-}
-
-$("zoomIn").onclick=function(){
-
-zoom=Math.min(
-2,
-zoom+.15
-);
-
-applyZoom();
-
-};
-
-$("zoomOut").onclick=function(){
-
-zoom=Math.max(
-.75,
-zoom-.15
-);
-
-applyZoom();
-
-};
-
-$("resetMap").onclick=function(){
-
-zoom=1;
-
-applyZoom();
-
-};
-
-
-/* =====================================================
-   CLOCK
-===================================================== */
-
-function updateClock(){
-
-const now=new Date();
-
-$("clock").textContent=
-
-now.toLocaleTimeString(
-"en-GB",
-{hour12:false}
-)+" EAT";
-
-}
-
-setInterval(
-updateClock,
-1000
-);
-
-updateClock();
-
-
-/* =====================================================
-   DYNAMIC OPERATIONAL SIMULATION
-===================================================== */
-
-function updateOperationalData(){
-
-Object.keys(nodes).forEach(
-
-code=>{
-
-const n=nodes[code];
-
-
-/* Assets */
-
-n.assets=
-Math.max(
-50,
-n.assets+
-Math.floor(
-Math.random()*9
-)-4
-);
-
-
-/* Online */
-
-n.online=
-Math.min(
-n.assets,
-Math.max(
-40,
-n.online+
-Math.floor(
-Math.random()*7
-)-3
-)
-);
-
-
-/* Flow */
-
-n.flow=
-Math.max(
-45,
-Math.min(
-99,
-n.flow+
-Math.floor(
-Math.random()*7
-)-3
-)
-);
-
-
-/* Coverage */
-
-let c=
-parseFloat(
-n.coverage
-);
-
-c+=
-(Math.random()-.5)*1.2;
-
-c=
-Math.max(
-82,
-Math.min(
-99,
-c
-);
-
-n.coverage=
-c.toFixed(1)+"%";
-
-
-/* Risk */
-
-n.score=
-Math.max(
-10,
-Math.min(
-90,
-n.score+
-Math.floor(
-Math.random()*7
-)-3
-)
-);
-
-
-/* Delay */
-
-n.delay=
-Math.max(
-5,
-Math.min(
-90,
-n.delay+
-Math.floor(
-Math.random()*9
-)-4
-)
-);
-
-
-/* Signal */
-
-let s=
-parseInt(
-String(n.signal)
-.replace(" dBm","")
-);
-
-s+=
-Math.floor(
-Math.random()*5
-)-2;
-
-n.signal=
-s+" dBm";
-
-
-/* Rate */
-
-n.rate=
-(
-2.5+
-Math.random()*3.5
-).toFixed(1)+" KB/s";
-
-
-/* Heartbeat */
-
-n.heartbeat=
-Math.floor(
-Math.random()*16
-)+
-"s ago";
-
-
-/* Operational state */
-
-if(n.score>=65){
-
-n.state="CONGESTED";
-
-n.congestion="High";
-
-}
-
-else if(n.score>=40){
-
-n.state="ACTIVE";
-
-n.congestion="Moderate";
-
-}
-
-else{
-
-n.state="ACTIVE";
-
-n.congestion="Low";
-
-}
-
-}
-
-);
-
-
-/* Update selected node */
-
-render();
-
-
-/* Add timestamp */
-
-const alerts=
-$("alerts");
-
-const liveAlert=
-document.createElement("div");
-
-liveAlert.className=
-"alert info";
-
-liveAlert.textContent=
-"Intelligence refresh • "+
-new Date().toLocaleTimeString(
-"en-GB",
-{hour12:false}
-)+
-" EAT";
-
-alerts.prepend(
-liveAlert
-);
-
-
-/* Keep only recent alerts */
-
-while(
-alerts.children.length>4
-){
-
-alerts.removeChild(
-alerts.lastChild
-);
-
-}
-
-}
-
-
-/* Refresh every 5 seconds */
-
-setInterval(
-updateOperationalData,
-5000
-);
-
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
-render();
-
-console.log(
-"AAMush Trade Intelligence Grid™ Active Intelligence Map initialized."
-);
-
-</script>
-
-</body>
-</html>
+class="route route-green"
+d="
+M90
