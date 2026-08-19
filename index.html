@@ -2,449 +2,930 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AAMush Technologies — Intelligence & Continuity Command</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+
+<title>AAMush Mesh Feeder — Live Corridor Intelligence</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-:root{--bg:#05080f;--panel:rgba(10,16,32,0.95);--border:rgba(0,168,232,0.12);--border-bright:rgba(0,212,170,0.35);--text:#dce4f0;--text2:#6b7a99;--teal:#00d4aa;--blue:#00a8e8;--cyan:#00e5ff;--gold:#ffd600;--live:#00c853;--warn:#ff9100;--danger:#ff1744;--font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden;}
-.top-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:linear-gradient(180deg,rgba(6,12,24,0.98),rgba(6,12,24,0.9));border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
-.brand-group{display:flex;flex-direction:column;gap:2px;}
-.brand-main{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--text);text-transform:uppercase;}
-.brand-sub{font-size:10px;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
-.system-status{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);}
-.status-pulse{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 10px var(--live);animation:pulse-dot 2s infinite;}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
-.sub-header{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;background:rgba(8,14,28,0.6);border-bottom:1px solid var(--border);}
-.sub-left{display:flex;flex-direction:column;gap:2px;}
-.sub-title{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--blue);text-transform:uppercase;}
-.sub-desc{font-size:10px;color:var(--text2);letter-spacing:0.5px;}
-.clock{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--cyan);letter-spacing:1px;}
-.metrics-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
-.metric-cell{background:rgba(8,14,28,0.85);padding:10px 8px;text-align:center;transition:background 0.3s;}
-.metric-cell:hover{background:rgba(0,168,232,0.06);}
-.metric-label{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:4px;}
-.metric-value{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--teal);}
-.metric-value.gold{color:var(--gold);}.metric-value.blue{color:var(--blue);}.metric-value.white{color:var(--text);}
-.main-layout{display:grid;grid-template-columns:1fr 340px;gap:1px;background:var(--border);min-height:calc(100vh - 180px);}
-.map-section{background:var(--panel);position:relative;display:flex;flex-direction:column;min-height:420px;}
-.map-title{position:absolute;top:16px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);z-index:10;background:rgba(5,8,15,0.7);padding:4px 12px;border-radius:4px;border:1px solid var(--border);}
-.map-svg{width:100%;flex:1;min-height:380px;}
-.corridor-line{fill:none;stroke-width:2;stroke-linecap:round;opacity:0.5;}
-.corridor-active{fill:none;stroke-width:2;stroke-linecap:round;opacity:0.8;stroke-dasharray:6 4;}
-.node-group{cursor:pointer;transition:transform 0.2s;}
-.node-group:hover{transform:scale(1.15);}
-.node-outer{fill:rgba(0,212,170,0.08);stroke:var(--teal);stroke-width:1.5;}
-.node-inner{fill:var(--teal);}
-.node-label{font-family:var(--font);font-size:9px;font-weight:700;fill:var(--text);text-anchor:middle;}
-.node-sublabel{font-family:var(--font);font-size:7px;fill:var(--text2);text-anchor:middle;}
-.moving-dot{fill:var(--gold);filter:drop-shadow(0 0 4px var(--gold));}
-.map-legend{position:absolute;bottom:12px;left:12px;display:flex;gap:12px;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:4px;font-size:9px;color:var(--text2);}
-.legend-item{display:flex;align-items:center;gap:4px;}
-.legend-dot{width:6px;height:6px;border-radius:50%;}
-.right-panel{display:flex;flex-direction:column;gap:1px;background:var(--border);}
-.panel-box{background:var(--panel);padding:14px;flex:1;overflow:hidden;}
-.panel-title{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.panel-title svg{width:12px;height:12px;}
-.event-list{display:flex;flex-direction:column;gap:6px;}
-.event-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:rgba(0,0,0,0.2);border-radius:4px;border-left:2px solid var(--warn);font-size:10px;line-height:1.4;}
-.event-item.alert{border-left-color:var(--danger);}.event-item.info{border-left-color:var(--blue);}
-.event-dot{width:5px;height:5px;border-radius:50%;margin-top:4px;flex-shrink:0;}
-.arch-diagram{display:flex;flex-direction:column;gap:6px;font-size:10px;}
-.arch-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:rgba(0,0,0,0.15);border-radius:4px;border-left:2px solid var(--teal);}
-.arch-arrow{text-align:center;color:var(--text2);font-size:10px;padding:2px 0;}
-.performance-bar{grid-column:1/-1;background:linear-gradient(90deg,rgba(8,14,28,0.95),rgba(10,20,40,0.95));padding:10px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
-.perf-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-right:20px;}
-.perf-metrics{display:flex;gap:32px;flex:1;justify-content:center;}
-.perf-item{text-align:center;}
-.perf-label{font-size:8px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
-.perf-value{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--teal);}
-.bottom-section{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-top:1px solid var(--border);}
-.net-panel,.console-panel{background:var(--panel);padding:14px;min-height:140px;}
-.net-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:10px;}
-.net-label{color:var(--text2);}
-.net-status{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1px;}
-.net-status.ok{color:var(--live);}.net-status.sync{color:var(--blue);}.net-status.proc{color:var(--gold);}.net-status.on{color:var(--teal);}
-.console-output{font-family:var(--mono);font-size:9px;line-height:1.8;color:var(--text2);}
-.console-line{opacity:0;animation:fadeIn 0.3s forwards;}
-@keyframes fadeIn{to{opacity:1;}}
-.console-line .ts{color:var(--blue);margin-right:6px;}
-.console-line .tag{color:var(--teal);margin-right:6px;}
-.footer-bar{display:flex;align-items:center;justify-content:center;padding:10px;background:rgba(5,8,15,0.9);border-top:1px solid var(--border);font-size:9px;color:var(--text2);letter-spacing:1px;}
-.dev-briefcase-btn{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:300;box-shadow:0 4px 20px rgba(0,212,170,0.3);transition:transform 0.2s,box-shadow 0.2s;}
-.dev-briefcase-btn:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(0,212,170,0.5);}
-.dev-briefcase-btn svg{width:22px;height:22px;fill:#000;}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:400;display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.active{display:flex;}
-.modal-box{background:var(--panel);border:1px solid var(--border-bright);border-radius:10px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.6);animation:modalIn 0.3s ease;}
-@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(0.96);}to{opacity:1;transform:translateY(0) scale(1);}}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
-.modal-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);}
-.modal-close{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all 0.2s;}
-.modal-close:hover{background:rgba(255,23,68,0.15);color:var(--danger);border-color:var(--danger);}
-.modal-body{padding:18px;}
-.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
-.intel-cell{background:rgba(0,0,0,0.2);padding:10px;border-radius:6px;border:1px solid var(--border);}
-.intel-label{font-size:8px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.intel-value{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text);}
-.intel-value.ok{color:var(--live);}.intel-value.warn{color:var(--warn);}
-.briefcase-tabs{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap;}
-.briefcase-tab{padding:5px 10px;border-radius:4px;background:rgba(0,0,0,0.2);border:1px solid var(--border);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);cursor:pointer;transition:all 0.2s;}
-.briefcase-tab:hover,.briefcase-tab.active{background:rgba(0,212,170,0.1);border-color:var(--teal);color:var(--teal);}
-.briefcase-content{font-size:10px;line-height:1.6;color:var(--text2);}
-.briefcase-content h4{color:var(--teal);font-size:11px;margin:10px 0 6px;letter-spacing:0.5px;}
-.briefcase-content p{margin-bottom:8px;}
-.briefcase-content .attribution{margin-top:14px;padding-top:10px;border-top:1px solid var(--border);font-size:9px;color:var(--text2);}
-.briefcase-content .attribution strong{color:var(--text);}
-.tab-pane{display:none;}.tab-pane.active{display:block;}
-::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:rgba(0,212,170,0.2);border-radius:2px;}
-@media(max-width:900px){.main-layout{grid-template-columns:1fr;}.metrics-bar{grid-template-columns:repeat(3,1fr);}.bottom-section{grid-template-columns:1fr;}.perf-metrics{gap:16px;flex-wrap:wrap;}}
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0
+}
+
+body{
+ font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+ background:#050b14;
+ color:#e8f1ff;
+ min-height:100vh;
+}
+
+.app{
+ max-width:1180px;
+ margin:auto;
+ min-height:100vh;
+ background:
+ linear-gradient(145deg,#07111f,#0b1727 55%,#07101c);
+ overflow:hidden;
+}
+
+header{
+ height:66px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 20px;
+ background:rgba(5,12,23,.92);
+ border-bottom:1px solid #1c3149;
+ position:sticky;
+ top:0;
+ z-index:1000;
+ backdrop-filter:blur(14px);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
+.brandmark{
+ width:36px;
+ height:36px;
+ border:1px solid #20cfff;
+ border-radius:10px;
+ display:grid;
+ place-items:center;
+ background:#071b2d;
+ box-shadow:0 0 18px #00bfff33;
+}
+
+.brandmark:after{
+ content:"";
+ width:14px;
+ height:14px;
+ border:2px solid #20cfff;
+ border-radius:50%;
+ box-shadow:0 0 10px #20cfff;
+}
+
+.brand b{
+ font-size:20px;
+}
+
+.brand small{
+ display:block;
+ color:#7e9ab8;
+ font-size:9px;
+ letter-spacing:1.3px;
+ margin-top:2px;
+}
+
+.live{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ background:#09251d;
+ border:1px solid #14553f;
+ color:#55f2b0;
+ padding:7px 10px;
+ border-radius:20px;
+ font-size:11px;
+ font-weight:800;
+}
+
+.dot{
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:#35e69b;
+ box-shadow:0 0 10px #35e69b;
+ animation:pulse 1.4s infinite;
+}
+
+@keyframes pulse{
+ 50%{
+  transform:scale(1.55);
+  opacity:.45
+ }
+}
+
+main{
+ padding:18px;
+}
+
+.hero{
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ margin-bottom:15px;
+}
+
+.hero h1{
+ font-size:27px;
+ line-height:1.1;
+}
+
+.hero p{
+ color:#89a2bd;
+ font-size:12px;
+ margin-top:7px;
+ max-width:680px;
+ line-height:1.5;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ margin-bottom:12px;
+}
+
+.stat{
+ background:#0b1929;
+ border:1px solid #1a3048;
+ border-radius:12px;
+ padding:11px;
+}
+
+.stat small{
+ color:#7190ae;
+ font-size:9px;
+ text-transform:uppercase;
+ letter-spacing:.8px;
+}
+
+.stat strong{
+ display:block;
+ font-size:18px;
+ margin-top:3px;
+}
+
+.up{
+ color:#43e6a3;
+ font-size:9px;
+}
+
+.mapbox{
+ height:560px;
+ border:1px solid #203852;
+ border-radius:17px;
+ overflow:hidden;
+ position:relative;
+ box-shadow:0 18px 50px #0008;
+ background:#091421;
+}
+
+#map{
+ width:100%;
+ height:100%;
+}
+
+.map-overlay{
+ position:absolute;
+ top:12px;
+ left:12px;
+ z-index:500;
+ background:rgba(5,14,25,.88);
+ border:1px solid #29445e;
+ border-radius:11px;
+ padding:10px 12px;
+ backdrop-filter:blur(8px);
+ pointer-events:none;
+}
+
+.map-overlay b{
+ font-size:11px;
+}
+
+.legend{
+ margin-top:7px;
+ display:flex;
+ gap:12px;
+ color:#8fa8c1;
+ font-size:9px;
+}
+
+.lg i{
+ display:inline-block;
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ margin-right:4px;
+}
+
+.panel{
+ position:absolute;
+ right:12px;
+ top:12px;
+ width:245px;
+ z-index:600;
+ background:rgba(5,14,25,.94);
+ border:1px solid #2b4864;
+ border-radius:14px;
+ padding:14px;
+ box-shadow:0 15px 35px #0009;
+ backdrop-filter:blur(12px);
+}
+
+.panel.hidden{
+ display:none;
+}
+
+.panel h2{
+ font-size:17px;
+}
+
+.panel .sub{
+ color:#6f91b0;
+ font-size:10px;
+ margin:3px 0 12px;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:7px;
+}
+
+.metric{
+ background:#0c1c2d;
+ border:1px solid #1d344c;
+ border-radius:8px;
+ padding:8px;
+}
+
+.metric small{
+ color:#6f8ba6;
+ font-size:8px;
+}
+
+.metric b{
+ display:block;
+ font-size:14px;
+ margin-top:2px;
+}
+
+.close{
+ position:absolute;
+ right:10px;
+ top:9px;
+ background:none;
+ border:0;
+ color:#829ab3;
+ font-size:18px;
+ cursor:pointer;
+}
+
+.footer{
+ padding:12px 2px;
+ color:#607b97;
+ font-size:9px;
+ text-align:center;
+}
+
+.leaflet-container{
+ background:#091421;
+ font:inherit;
+}
+
+.leaflet-control-zoom a{
+ background:#0b1929!important;
+ color:#d9ecff!important;
+ border-color:#29445e!important;
+}
+
+.leaflet-control-attribution{
+ background:#07111fcc!important;
+ color:#6d87a0!important;
+ font-size:8px;
+}
+
+.leaflet-control-attribution a{
+ color:#8fb4d8!important;
+}
+
+.node-icon{
+ width:18px;
+ height:18px;
+ border-radius:50%;
+ background:#19e69a;
+ border:2px solid #fff;
+ box-shadow:
+ 0 0 0 5px #19e69a33,
+ 0 0 20px #19e69a;
+ animation:nodepulse 1.8s infinite;
+}
+
+.node-icon.port{
+ background:#18bfff;
+ box-shadow:
+ 0 0 0 5px #18bfff33,
+ 0 0 20px #18bfff;
+}
+
+@keyframes nodepulse{
+ 50%{
+  box-shadow:
+   0 0 0 12px #19e69a00,
+   0 0 24px #19e69a;
+ }
+}
+
+.truck-icon{
+ font-size:17px;
+ filter:drop-shadow(0 0 5px #ffd24a);
+ transition:transform .2s;
+}
+
+.route-label{
+ color:#b8d3ee;
+ font-size:9px;
+ font-weight:800;
+ text-shadow:0 1px 4px #000;
+}
+
+@media(max-width:700px){
+
+ header{
+  height:58px;
+  padding:0 13px;
+ }
+
+ .brand b{
+  font-size:17px;
+ }
+
+ .brand small{
+  font-size:7px;
+ }
+
+ .live{
+  font-size:9px;
+  padding:6px 8px;
+ }
+
+ .hero{
+  display:block;
+ }
+
+ .hero h1{
+  font-size:22px;
+ }
+
+ .stats{
+  grid-template-columns:repeat(2,1fr);
+ }
+
+ main{
+  padding:12px;
+ }
+
+ .mapbox{
+  height:470px;
+ }
+
+ .panel{
+  left:12px;
+  right:12px;
+  top:auto;
+  bottom:12px;
+  width:auto;
+ }
+
+ .map-overlay{
+  top:10px;
+  left:10px;
+ }
+}
 </style>
 </head>
+
 <body>
 
-<header class="top-bar">
-<div class="brand-group">
-<div class="brand-main">AAMush Technologies™</div>
-<div class="brand-sub">Intelligence & Continuity Command</div>
+<div class="app">
+
+<header>
+
+<div class="brand">
+
+<div class="brandmark"></div>
+
+<div>
+<b>AAMush</b>
+<small>EAST AFRICA INTELLIGENCE MESH</small>
 </div>
-<div class="system-status"><span class="status-pulse"></span><span>System Operational</span></div>
+
+</div>
+
+<div class="live">
+<span class="dot"></span>
+LIVE MESH
+</div>
+
 </header>
 
-<div class="sub-header">
-<div class="sub-left">
-<div class="sub-title">AAMush Intelligence Command</div>
-<div class="sub-desc">East African Trade Corridor Intelligence</div>
-</div>
-<div class="clock" id="clk">13:00:00 EAT</div>
-</div>
 
-<div class="metrics-bar">
-<div class="metric-cell"><div class="metric-label">Nodes</div><div class="metric-value">06</div></div>
-<div class="metric-cell"><div class="metric-label">Assets</div><div class="metric-value">1,284</div></div>
-<div class="metric-cell"><div class="metric-label">Events</div><div class="metric-value gold">37</div></div>
-<div class="metric-cell"><div class="metric-label">Latency</div><div class="metric-value blue">842ms</div></div>
-<div class="metric-cell"><div class="metric-label">Health</div><div class="metric-value">99.8%</div></div>
-<div class="metric-cell"><div class="metric-label">Confidence</div><div class="metric-value white">HIGH</div></div>
-</div>
+<main>
 
-<div class="main-layout">
+<div class="hero">
 
-<div class="map-section">
-<div class="map-title">Regional Operational Map</div>
-<svg class="map-svg" viewBox="0 0 700 420" preserveAspectRatio="xMidYMid meet">
-<defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<pattern id="gr" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="rgba(0,168,232,0.04)" stroke-width="1"/></pattern>
-<rect width="700" height="420" fill="url(#gr)"/>
-<path d="M600 40 Q640 80 620 140" fill="none" stroke="rgba(0,168,232,0.06)" stroke-width="2"/>
-<text x="620" y="60" fill="rgba(0,168,232,0.12)" font-size="9" font-family="Inter">Indian Ocean</text>
-<ellipse cx="360" cy="150" rx="45" ry="28" fill="rgba(0,168,232,0.03)" stroke="rgba(0,168,232,0.06)" stroke-width="1"/>
-<text x="345" y="154" fill="rgba(0,168,232,0.1)" font-size="7" font-family="Inter">Lake Victoria</text>
-
-<!-- Background corridors -->
-<path class="corridor-line" d="M520 360 L520 100" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M520 100 L420 150" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M420 150 L320 200" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M320 200 L220 260" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M220 260 L140 340" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M520 360 L400 280" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M400 280 L220 260" stroke="rgba(255,255,255,0.04)"/>
-<path class="corridor-line" d="M400 280 L140 340" stroke="rgba(255,255,255,0.04)"/>
-
-<!-- Active corridors -->
-<path class="corridor-active" d="M520 100 L420 150" stroke="var(--teal)" id="c1"/>
-<path class="corridor-active" d="M420 150 L320 200" stroke="var(--teal)" id="c2"/>
-<path class="corridor-active" d="M320 200 L220 260" stroke="var(--warn)" id="c3"/>
-<path class="corridor-active" d="M220 260 L140 340" stroke="var(--teal)" id="c4"/>
-<path class="corridor-active" d="M520 360 L520 100" stroke="var(--teal)" id="c5"/>
-<path class="corridor-active" d="M520 360 L400 280" stroke="var(--blue)" id="c6"/>
-<path class="corridor-active" d="M400 280 L220 260" stroke="var(--blue)" id="c7"/>
-<path class="corridor-active" d="M400 280 L140 340" stroke="var(--blue)" id="c8"/>
-
-<g id="tl"></g>
-
-<g class="node-group" data-city="mombasa" onclick="openCityModal('mombasa')">
-<circle cx="520" cy="100" r="16" class="node-outer" filter="url(#glow)"/>
-<circle cx="520" cy="100" r="5" class="node-inner"/>
-<text x="520" y="78" class="node-label">Mombasa</text>
-<text x="520" y="68" class="node-sublabel">KE • Port</text>
-</g>
-
-<g class="node-group" data-city="nairobi" onclick="openCityModal('nairobi')">
-<circle cx="420" cy="150" r="16" class="node-outer" filter="url(#glow)"/>
-<circle cx="420" cy="150" r="5" class="node-inner" style="fill:var(--warn)"/>
-<text x="420" y="128" class="node-label">Nairobi</text>
-<text x="420" y="118" class="node-sublabel">KE • Hub</text>
-</g>
-
-<g class="node-group" data-city="kampala" onclick="openCityModal('kampala')">
-<circle cx="320" cy="200" r="16" class="node-outer" filter="url(#glow)"/>
-<circle cx="320" cy="200" r="5" class="node-inner"/>
-<text x="320" y="235" class="node-label">Kampala</text>
-<text x="320" y="245" class="node-sublabel">UG • Hub</text>
-</g>
-
-<g class="node-group" data-city="kigali" onclick="openCityModal('kigali')">
-<circle cx="220" cy="260" r="16" class="node-outer" filter="url(#glow)"/>
-<circle cx="220" cy="260" r="5" class="node-inner"/>
-<text x="220" y="295" class="node-label">Kigali</text>
-<text x="220" y="305" class="node-sublabel">RW • Hub</text>
-</g>
-
-<g class="node-group" data-city="bujumbura" onclick="openCityModal('bujumbura')">
-<circle cx="140" cy="340" r="16" class="node-outer" filter="url(#glow)"/>
-<circle cx="140" cy="340" r="5" class="node-inner" style="fill:var(--blue)"/>
-<text x="140" y="375" class="node-label">Bujumbura</text>
-<text x="140" y="385" class="node-sublabel">BI • Terminal</text>
-</g>
-
-<g class="node-group" data-city="dodoma" onclick="openCityModal('dodoma')">
-<circle cx="400" cy="280" r="14" class="node-outer" filter="url(#glow)" style="stroke:var(--blue)"/>
-<circle cx="400" cy="280" r="4" class="node-inner" style="fill:var(--blue)"/>
-<text x="400" y="310" class="node-label">Dodoma</text>
-<text x="400" y="320" class="node-sublabel">TZ • Central</text>
-</g>
-
-<g class="node-group" data-city="dar" onclick="openCityModal('dar')">
-<circle cx="520" cy="360" r="16" class="node-outer" filter="url(#glow)"/>
-<circle cx="520" cy="360" r="5" class="node-inner"/>
-<text x="520" y="395" class="node-label">Dar es Salaam</text>
-<text x="520" y="405" class="node-sublabel">TZ • Port</text>
-</g>
-
-<text x="545" y="230" fill="rgba(0,212,170,0.3)" font-size="8" font-family="Inter" transform="rotate(90,545,230)">Northern Corridor</text>
-<text x="470" y="330" fill="rgba(0,168,232,0.3)" font-size="8" font-family="Inter" transform="rotate(-35,470,330)">Central Corridor</text>
-<text x="280" y="340" fill="var(--gold)" font-size="9" font-family="Inter" opacity="0.7">moving logistics ● →</text>
-</svg>
-
-<div class="map-legend">
-<div class="legend-item"><div class="legend-dot" style="background:var(--live)"></div>Healthy</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Moderate</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Alert</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Transit</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Central</div>
-</div>
-</div>
-
-<div class="right-panel">
-<div class="panel-box">
-<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>Intelligence Events</div>
-<div class="event-list">
-<div class="event-item alert"><div class="event-dot" style="background:var(--danger)"></div><div>Corridor deviation detected on Northern Corridor — Malaba queue exceeds 6h baseline</div></div>
-<div class="event-item"><div class="event-dot" style="background:var(--warn)"></div><div>Mombasa congestion risk rising — 14 vessels awaiting berth, throughput down 8%</div></div>
-<div class="event-item info"><div class="event-dot" style="background:var(--blue)"></div><div>Dar telemetry — Mesh-01 batch AAM-44xx signal degradation in TZ central corridor</div></div>
-<div class="event-item"><div class="event-dot" style="background:var(--teal)"></div><div>Central Corridor efficiency improved — Dar–Dodoma segment at 94% throughput</div></div>
-</div>
-</div>
-
-<div class="panel-box">
-<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>System Architecture</div>
-<div class="arch-diagram">
-<div class="arch-row" style="border-left-color:var(--teal)"><span style="color:var(--teal);font-weight:700;">MESH-01</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Physical Layer</span></div>
-<div class="arch-arrow">↓</div>
-<div class="arch-row" style="border-left-color:var(--blue)"><span style="color:var(--blue);font-weight:700;">DATA INTEGRATION</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Fabric Layer</span></div>
-<div class="arch-arrow">↓</div>
-<div class="arch-row" style="border-left-color:var(--cyan)"><span style="color:var(--cyan);font-weight:700;">INTELLIGENCE GRID</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Engine Layer</span></div>
-<div class="arch-arrow">↓</div>
-<div class="arch-row" style="border-left-color:var(--gold)"><span style="color:var(--gold);font-weight:700;">AAMUSH LIVE</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Command Layer</span></div>
-<div class="arch-arrow">↓</div>
-<div class="arch-row" style="border-left-color:var(--text)"><span style="color:var(--text);font-weight:700;">COMMAND</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Decision Layer</span></div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="performance-bar">
-<div class="perf-title">AAMush Performance Assurance</div>
-<div class="perf-metrics">
-<div class="perf-item"><div class="perf-label">Telemetry</div><div class="perf-value">99.2%</div></div>
-<div class="perf-item"><div class="perf-label">Data</div><div class="perf-value">97.8%</div></div>
-<div class="perf-item"><div class="perf-label">Event</div><div class="perf-value" style="color:var(--warn)">94.6%</div></div>
-<div class="perf-item"><div class="perf-label">Recovery</div><div class="perf-value">98.4%</div></div>
-<div class="perf-item"><div class="perf-label">Coverage</div><div class="perf-value white">06/06</div></div>
-</div>
-</div>
-
-<div class="bottom-section">
-<div class="net-panel">
-<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Network Status</div>
-<div class="net-row"><span class="net-label">Mesh-01</span><span class="net-status ok">OPERATIONAL</span></div>
-<div class="net-row"><span class="net-label">Integration</span><span class="net-status sync">SYNCHRONIZED</span></div>
-<div class="net-row"><span class="net-label">Grid</span><span class="net-status proc">PROCESSING</span></div>
-<div class="net-row"><span class="net-label">AAMush Live</span><span class="net-status on">ONLINE</span></div>
-</div>
-
-<div class="console-panel">
-<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Telemetry Console</div>
-<div class="console-output" id="console"></div>
-</div>
-</div>
-
-<div class="footer-bar"><span>Developed by Dr. James K. Mushi, PhD • AAMush Inc. • EduAccess Advisory Center | AESF</span></div>
-
-<button class="dev-briefcase-btn" onclick="openBriefcase()" title="Developer Briefcase"><svg viewBox="0 0 24 24"><path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 4h4v3h-4V4zm10 16H4V9h16v11z"/></svg></button>
-
-<div class="modal-overlay" id="cityModal" onclick="closeCityModal(event)">
-<div class="modal-box" onclick="event.stopPropagation()">
-<div class="modal-header"><div class="modal-title" id="cityModalTitle">City Intelligence</div><button class="modal-close" onclick="closeCityModal()">×</button></div>
-<div class="modal-body">
-<div id="cityModalContent" style="font-size:11px;color:var(--text2);line-height:1.5;">Loading intelligence...</div>
-<div class="intel-grid" id="cityIntelGrid">
-<div class="intel-cell"><div class="intel-label">Status</div><div class="intel-value ok" id="ci-status">NORMAL</div></div>
-<div class="intel-cell"><div class="intel-label">Assets</div><div class="intel-value" id="ci-assets">—</div></div>
-<div class="intel-cell"><div class="intel-label">Latency</div><div class="intel-value" id="ci-latency">—</div></div>
-<div class="intel-cell"><div class="intel-label">Confidence</div><div class="intel-value ok" id="ci-confidence">—</div></div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="modal-overlay" id="briefcaseModal" onclick="closeBriefcase(event)">
-<div class="modal-box" onclick="event.stopPropagation()" style="max-width:480px;">
-<div class="modal-header"><div class="modal-title">AAMush Developer Briefcase</div><button class="modal-close" onclick="closeBriefcase()">×</button></div>
-<div class="modal-body">
-<div class="briefcase-tabs">
-<div class="briefcase-tab active" onclick="switchTab(this,'tab-profile')">Profile</div>
-<div class="briefcase-tab" onclick="switchTab(this,'tab-mesh')">Mesh-01 Manual</div>
-<div class="briefcase-tab" onclick="switchTab(this,'tab-arch')">Architecture</div>
-<div class="briefcase-tab" onclick="switchTab(this,'tab-investor')">Investor</div>
-<div class="briefcase-tab" onclick="switchTab(this,'tab-tech')">Technical</div>
-</div>
-<div class="briefcase-content">
-<div class="tab-pane active" id="tab-profile">
-<h4>Platform Identity</h4>
-<p><strong>AAMush Trade Intelligence Grid™</strong> is a regional digital infrastructure designed to connect physical trade movement with cargo, corridor, border and predictive intelligence across East Africa.</p>
-<p>The platform operates across six strategic nodes: Dar es Salaam, Mombasa, Nairobi, Kampala, Kigali and Bujumbura — with Dodoma as the Central Corridor hub.</p>
-<h4>Developer Attribution</h4>
-<div style="display:flex;align-items:center;gap:14px;margin:12px 0;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;border:1px solid var(--border);">
-<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABIAEgDASIAAhEBAxEB/8QAGwAAAgIDAQAAAAAAAAAAAAAAAAUEBgECAwf/xAAwEAACAgIAAwYEBgMBAAAAAAABAgADBBEFEiEGEyIxQVEUYXGBMjORocHRJGKx8P/EABkBAAIDAQAAAAAAAAAAAAAAAAIEAAEFA//EAB0RAAIDAQADAQAAAAAAAAAAAAABAgMREgQhQTH/2gAMAwEAAhEDEQA/AKpSokutAde8i1ftJaKxAIU9faPpCMmSKwN61M3OlbKg0XbqB7D3M649RZAebX2iW65k4pcP9uUfQQLpOENRdEFZPH+Fr4bh02hTYgcn3jLJ4HjPTz0r3T69Oo/SLOC5DJUDYNa9Y8tzOajw9RqZass3evZsumvM59FSvoNVjV2aVl8+s4koqjl6+m5PyCMjMbnXfh/mQMpOUkAaG5rUyc4KTMa6CrscUR7mVldVGtQmeXfeaG4Q2gUyLQqlQTvZHvJ2M+qgfQRdQwAGz6SRVZtR/wAkiSSGdD6qHvKy7ZGRku6/m83XQ11jum4BAIuy/wDFyVvrH4mJI+c5+TFuGo6eM0p4/pKwcXNGRjj4mxRY/Kyt7e4jN+A8S+NZ0yGsTZAJPl9txNXxfJbPRqSjMCNBlJ5dfSWE8YuVkNlhXJY+SVkJ19DMx9bprR4awDi2Y7lHcsyKCX38/L/3tI2YF7st67g2ZbdY7O34tEge85ZD7pImn4kGq9f0yfMmpW+vhrinTWwnKg6NkIzgsJ6n0PtO1b6AEhC0AQGSqj1P0i6kl+jTi2NarBygHznDLJvptFfi7kgtr03FtmXYylV8I9/WSuGZa4dbGwE94RoD1gWW9LlBQqx9Mxh5BrtVku7m1fwvy7B+ssC54yKVx0ubIyH1zuV0FES2Lwy7IBFtlII5juslfp0lj4dxzs5wfHqNdF+XeRsgIFVP184pKDY3GeI14lgvgLis+17+osAfkdf0fvF91mq9R52/z8fMwOF5WDetiszlWU+mh0P9So/GCxNMNN+0eosSgosRurbm5Im12dX6wkRLep+cJ205cisKTMldDcyp6mZbRWIDxyZdSw09lOI5GJTegqFborAltdDEFnnPX+DqDwjC5jvVCaH2Ep+iCHhXYXCat1zbLHsAB5kOgN78op4v2Fz8e0tw8fFVE9FJ04/iekUAEvs+o8vpNuZkPXxL+4laXh5NxfhLcHrxca5+a6xDZYAeiny0P7iojRlk7aXi/tBYoOxXWq/zK8RuEijmrMD4YToABCF00C0mQ9+IzcHY1CEEI1PUAz1Ts9mV2cEw25gNVBT9ukISmQaVZVY5ybF0W9/lMvmItZbvF0B7whKLPKc/J+Kz78gn8ywkfT0kcsN+cIQwTUuIQhIWf//Z" alt="Dr. James K. Mushi" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--accent-teal);box-shadow:0 0 12px rgba(0,212,170,0.2);">
 <div>
-<div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:0.5px;">Dr. James K. Mushi, PhD</div>
-<div style="font-size:9px;color:var(--text2);margin-top:2px;">Founder & Lead Architect</div>
-<div style="font-size:9px;color:var(--teal);margin-top:2px;">AAMush Inc. • EduAccess Advisory Center | AESF</div>
+
+<h1>
+Autonomous Commodity–Logistics Mesh
+</h1>
+
+<p>
+Live corridor intelligence across Dar es Salaam,
+Bujumbura, Kigali, Kampala, Nairobi and Mombasa.
+Demo telemetry is simulated until connected to the
+AAMush Mesh-01 gateway.
+</p>
+
 </div>
+
 </div>
-<div class="attribution">
-<strong>Developed by Dr. James K. Mushi, PhD</strong><br>
-Developed by AAMush Inc.<br>
-Associated institutional identities:<br>
-EduAccess Advisory Center | AESF
+
+
+<div class="stats">
+
+<div class="stat">
+<small>Active Nodes</small>
+<strong id="nodes">6</strong>
+<span class="up">● ONLINE</span>
 </div>
+
+<div class="stat">
+<small>Moving Assets</small>
+<strong id="assets">47</strong>
+<span class="up">LIVE</span>
 </div>
-<div class="tab-pane" id="tab-mesh">
-<h4>Mesh-01 Physical Layer</h4>
-<p>Mesh-01 is the telemetry and device infrastructure of the AAMush Trade Intelligence Grid™. It captures authenticated data from participating vehicles and assets.</p>
-<p><strong>Telemetry captured:</strong></p>
-<p>• GPS coordinates (latitude, longitude, altitude)<br>• Speed and heading<br>• Timestamp (UTC + EAT)<br>• Connectivity status (GSM, satellite, mesh relay)<br>• Device health (battery, firmware, signal strength)</p>
-<p><strong>Authentication:</strong> Each Mesh-01 device is cryptographically paired to a registered asset. Data is signed at the edge before transmission.</p>
-<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc.</div>
+
+<div class="stat">
+<small>Matched Capacity</small>
+<strong id="tons">1,240T</strong>
+<span class="up">TODAY</span>
 </div>
-<div class="tab-pane" id="tab-arch">
-<h4>Four-Layer Architecture</h4>
-<p><strong>1. Physical Layer — Mesh-01</strong><br>Captures authenticated telemetry from vehicles/assets.</p>
-<p><strong>2. Data Layer — Integration Fabric</strong><br>Aggregates Mesh-01, port, customs, logistics and border feeds.</p>
-<p><strong>3. Intelligence Layer — Engine</strong><br>Calculates ETA, detects anomalies, predicts bottlenecks, generates alerts.</p>
-<p><strong>4. Command Layer — AAMush Live</strong><br>Visualises the six-node network, displays real-time intelligence, enables decision-making.</p>
-<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc.</div>
+
+<div class="stat">
+<small>Mesh Uptime</small>
+<strong>99.9%</strong>
+<span class="up">STABLE</span>
 </div>
-<div class="tab-pane" id="tab-investor">
-<h4>Investor Proposition</h4>
-<p><strong>The Problem:</strong> East African trade generates enormous operational information, but it is fragmented across actors and systems.</p>
-<p><strong>The Solution:</strong> AAMush creates an intelligence layer above those systems — transforming fragmented data into visibility, measurement, prediction, decision and intervention.</p>
-<p><strong>Economic Logic:</strong> Less uncertainty → fewer avoidable delays → better asset utilisation → more predictable trade → stronger regional economic activity.</p>
-<p><strong>Revenue Streams:</strong> Hardware (Mesh-01), SaaS subscriptions, government command centres, corridor analytics, enterprise APIs, digital-twin modelling.</p>
-<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc.</div>
+
 </div>
-<div class="tab-pane" id="tab-tech">
-<h4>Technical Specifications</h4>
-<p><strong>Frontend:</strong> HTML5, CSS3, SVG, vanilla JavaScript. No framework dependencies for prototype.</p>
-<p><strong>Data Integrity:</strong> LIVE / CALCULATED / PREDICTED / SIMULATED / API-READY labels protect credibility.</p>
-<p><strong>Security:</strong> Edge-signed telemetry, encrypted transit, role-based access control, data sovereignty per jurisdiction.</p>
-<p><strong>Scalability:</strong> Stateless API design, horizontally scalable ingestion, time-series optimised storage.</p>
-<p><strong>Nodes:</strong> Dar es Salaam (TZ), Mombasa (KE), Nairobi (KE), Kampala (UG), Kigali (RW), Bujumbura (BI), Dodoma (TZ).</p>
-<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc. • EduAccess Advisory Center | AESF</div>
+
+
+<div class="mapbox">
+
+<div id="map"></div>
+
+
+<div class="map-overlay">
+
+<b>
+REGIONAL CORRIDOR INTELLIGENCE
+</b>
+
+<div class="legend">
+
+<span class="lg">
+<i style="background:#18bfff"></i>
+Northern
+</span>
+
+<span class="lg">
+<i style="background:#ffd24a"></i>
+Central
+</span>
+
+<span class="lg">
+<i style="background:#19e69a"></i>
+Node
+</span>
+
 </div>
+
 </div>
+
+
+<div class="panel hidden" id="panel">
+
+<button class="close" onclick="closePanel()">×</button>
+
+<h2 id="pname"></h2>
+
+<div class="sub" id="pcountry"></div>
+
+<div class="grid">
+
+<div class="metric">
+<small>FEEDERS</small>
+<b id="feeders"></b>
 </div>
+
+<div class="metric">
+<small>ASSETS</small>
+<b id="passets"></b>
 </div>
+
+<div class="metric">
+<small>CAPACITY</small>
+<b id="pcap"></b>
 </div>
+
+<div class="metric">
+<small>STATUS</small>
+<b style="color:#43e6a3">
+ONLINE
+</b>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+Developed by Dr. James K. Mushi, PhD
+•
+Developed by AAMush Inc.
+•
+Demo intelligence layer
+
+</div>
+
+</main>
+
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-function u(){var n=new Date();var h=String(n.getHours()).padStart(2,'0');var m=String(n.getMinutes()).padStart(2,'0');var s=String(n.getSeconds()).padStart(2,'0');document.getElementById('clk').textContent=h+':'+m+':'+s+' EAT';}
-setInterval(u,1000);u();
 
-var consoleLines=[
-{delay:0,text:'<span class="ts">[13:00:01]</span><span class="tag">[SYSTEM]</span> initialized'},
-{delay:600,text:'<span class="ts">[13:00:02]</span><span class="tag">[MESH-01]</span> seven nodes registered'},
-{delay:1200,text:'<span class="ts">[13:00:03]</span><span class="tag">[GRID]</span> correlation engine ready'},
-{delay:1800,text:'<span class="ts">[13:00:04]</span><span class="tag">[LIVE]</span> waiting for telemetry feeds'},
-{delay:2500,text:'<span class="ts">[13:00:06]</span><span class="tag">[BORDER]</span> Malaba dwell alert — 6.8h'},
-{delay:3200,text:'<span class="ts">[13:00:08]</span><span class="tag">[ETA]</span> SH-8847 delay risk elevated'},
-{delay:4000,text:'<span class="ts">[13:00:12]</span><span class="tag">[MESH]</span> AAM-4401 signal recovery detected'},
-{delay:5000,text:'<span class="ts">[13:00:15]</span><span class="tag">[SYSTEM]</span> all corridors nominal except Northern'}
-];
-var consoleEl=document.getElementById('console');
-consoleLines.forEach(function(line,i){
-setTimeout(function(){
-var div=document.createElement('div');div.className='console-line';div.style.animationDelay='0s';div.innerHTML=line.text;
-consoleEl.appendChild(div);consoleEl.scrollTop=consoleEl.scrollHeight;
-},line.delay);
-});
+const cities={
 
-var movers=[
-{path:'c1',progress:0.0,speed:0.003,color:'#ffd600'},
-{path:'c2',progress:0.2,speed:0.0025,color:'#00d4aa'},
-{path:'c3',progress:0.5,speed:0.002,color:'#ffd600'},
-{path:'c4',progress:0.1,speed:0.0035,color:'#00d4aa'},
-{path:'c5',progress:0.3,speed:0.002,color:'#00a8e8'},
-{path:'c6',progress:0.4,speed:0.003,color:'#00e5ff'},
-{path:'c7',progress:0.6,speed:0.0028,color:'#00e5ff'},
-{path:'c8',progress:0.2,speed:0.0032,color:'#00e5ff'}
-];
-var tl=document.getElementById('tl');
-function gp(id,pct){var p=document.getElementById(id);if(!p)return{x:0,y:0};return p.getPointAtLength(p.getTotalLength()*pct);}
-function ct(t){var g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','truck');g.setAttribute('id',t.id);var c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r','3');c.setAttribute('fill',t.color);c.setAttribute('class','moving-dot');g.appendChild(c);return g;}
-movers.forEach(function(m){m.el=ct(m);tl.appendChild(m.el);});
-function a(){movers.forEach(function(m){var p=document.getElementById(m.path);if(!p)return;m.progress+=m.speed;if(m.progress>=1)m.progress=0;var pt=gp(m.path,m.progress);m.el.setAttribute('transform','translate('+pt.x+','+pt.y+')');});requestAnimationFrame(a);}
-setTimeout(a,100);
+"Dar es Salaam":{
+lat:-6.7924,
+lon:39.2083,
+country:"Tanzania • Central Corridor",
+feeders:5,
+assets:12,
+cap:"450T",
+type:"port"
+},
 
-var cityData={
-mombasa:{name:'Mombasa',status:'NORMAL',assets:'312',latency:'420 ms',confidence:'98.5%',desc:'Port operations nominal. 14 vessels at anchorage. Container throughput within baseline. Customs processing synchronized with KRA systems. Northern Corridor origin node.'},
-nairobi:{name:'Nairobi',status:'CONGESTED',assets:'244',latency:'650 ms',confidence:'98.1%',desc:'Corridor flow experiencing moderate congestion. Northern Corridor throughput down 8%. Mesh-01 devices operating within normal parameters. Intersection of Northern and Central Corridors.'},
-kampala:{name:'Kampala',status:'NORMAL',assets:'198',latency:'380 ms',confidence:'99.2%',desc:'Hub operations stable. Border integration with Malaba and Busia active. URA customs feed synchronized. Central Corridor routing optimal.'},
-kigali:{name:'Kigali',status:'NORMAL',assets:'156',latency:'290 ms',confidence:'99.6%',desc:'All systems operational. Katuna border flow nominal. RRA data integration active. Corridor to Bujumbura operating at 94% efficiency. Served by both Northern and Central Corridors.'},
-bujumbura:{name:'Bujumbura',status:'STANDBY',assets:'89',latency:'520 ms',confidence:'97.3%',desc:'Terminal operations on standby schedule. Rusumo border dwell elevated. Mesh-01 coverage at 91%. Awaiting next shipment batch. Destination for Central Corridor via Dodoma.'},
-dodoma:{name:'Dodoma',status:'NORMAL',assets:'124',latency:'410 ms',confidence:'98.4%',desc:'Central Corridor hub. Tanzania political capital. Mesh-01 relay station active. Routes to Kigali and Bujumbura operational. Dar es Salaam connection nominal.'},
-dar:{name:'Dar es Salaam',status:'NORMAL',assets:'385',latency:'340 ms',confidence:'98.9%',desc:'Port operations active. TRA customs integration online. TPA berth allocation nominal. Origin of Central Corridor (via Dodoma) and coastal link to Mombasa. Dispatching 12 trucks per hour.'}
+"Bujumbura":{
+lat:-3.3614,
+lon:29.3599,
+country:"Burundi • Central Corridor",
+feeders:2,
+assets:7,
+cap:"180T"
+},
+
+"Kigali":{
+lat:-1.9441,
+lon:30.0619,
+country:"Rwanda • Northern/Central Gateway",
+feeders:4,
+assets:9,
+cap:"320T"
+},
+
+"Kampala":{
+lat:0.3476,
+lon:32.5825,
+country:"Uganda • Northern Corridor",
+feeders:3,
+assets:8,
+cap:"260T"
+},
+
+"Nairobi":{
+lat:-1.2921,
+lon:36.8219,
+country:"Kenya • Northern Corridor",
+feeders:5,
+assets:11,
+cap:"390T"
+},
+
+"Mombasa":{
+lat:-4.0435,
+lon:39.6682,
+country:"Kenya • Northern Corridor / Port",
+feeders:6,
+assets:14,
+cap:"580T",
+type:"port"
+}
+
 };
 
-function openCityModal(city){
-var d=cityData[city];if(!d)return;
-document.getElementById('cityModalTitle').textContent=d.name+' Intelligence';
-document.getElementById('cityModalContent').textContent=d.desc;
-document.getElementById('ci-status').textContent=d.status;
-document.getElementById('ci-status').className='intel-value '+(d.status==='NORMAL'?'ok':d.status==='CONGESTED'?'warn':'ok');
-document.getElementById('ci-assets').textContent=d.assets;
-document.getElementById('ci-latency').textContent=d.latency;
-document.getElementById('ci-confidence').textContent=d.confidence;
-document.getElementById('cityModal').classList.add('active');
+
+const map=L.map("map",{
+ zoomControl:true,
+ attributionControl:true
+}).setView([-2.8,34.0],6);
+
+
+const dark=L.tileLayer(
+"https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+{
+ maxZoom:19,
+ attribution:
+ "&copy; OpenStreetMap contributors &copy; CARTO"
 }
-function closeCityModal(e){if(e&&e.target!==document.getElementById('cityModal'))return;document.getElementById('cityModal').classList.remove('active');}
-function openBriefcase(){document.getElementById('briefcaseModal').classList.add('active');}
-function closeBriefcase(e){if(e&&e.target!==document.getElementById('briefcaseModal'))return;document.getElementById('briefcaseModal').classList.remove('active');}
-function switchTab(tabEl,paneId){
-document.querySelectorAll('.briefcase-tab').forEach(function(t){t.classList.remove('active');});
-document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
-tabEl.classList.add('active');document.getElementById(paneId).classList.add('active');
+).addTo(map);
+
+
+const normal=L.tileLayer(
+"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+ maxZoom:19,
+ attribution:
+ "&copy; OpenStreetMap contributors"
 }
-setInterval(function(){
-var metrics=document.querySelectorAll('.metric-value');
-metrics.forEach(function(m){
-var txt=m.textContent;
-if(txt.indexOf('ms')>-1){var val=parseInt(txt);var nv=val+Math.floor((Math.random()-0.5)*40);m.textContent=nv+'ms';}
+);
+
+
+L.control.layers({
+ "Dark Intelligence":dark,
+ "Standard Map":normal
+}).addTo(map);
+
+
+const north=[
+"Mombasa",
+"Nairobi",
+"Kampala",
+"Kigali"
+];
+
+
+const central=[
+"Dar es Salaam",
+"Bujumbura",
+"Kigali"
+];
+
+
+function drawRoute(names,color){
+
+ return L.polyline(
+  names.map(n=>[
+   cities[n].lat,
+   cities[n].lon
+  ]),
+  {
+   color:color,
+   weight:4,
+   opacity:.85,
+   dashArray:"10 8"
+  }
+ ).addTo(map);
+
+}
+
+
+drawRoute(north,"#18bfff");
+
+drawRoute(central,"#ffd24a");
+
+
+Object.entries(cities).forEach(
+([name,d])=>{
+
+ const icon=L.divIcon({
+
+  className:"",
+
+  html:
+  `<div class="node-icon ${d.type||""}"></div>`,
+
+  iconSize:[18,18],
+
+  iconAnchor:[9,9]
+
+ });
+
+
+ const marker=L.marker(
+  [d.lat,d.lon],
+  {icon}
+ ).addTo(map);
+
+
+ marker.bindTooltip(
+  name,
+  {
+   permanent:true,
+   direction:"top",
+   offset:[0,-8],
+   className:"route-label"
+  }
+ );
+
+
+ marker.on(
+  "click",
+  ()=>showNode(name)
+ );
+
 });
-},4000);
+
+
+function showNode(name){
+
+ const d=cities[name];
+
+ document.getElementById(
+  "pname"
+ ).textContent=name;
+
+ document.getElementById(
+  "pcountry"
+ ).textContent=d.country;
+
+ document.getElementById(
+  "feeders"
+ ).textContent=d.feeders;
+
+ document.getElementById(
+  "passets"
+ ).textContent=d.assets;
+
+ document.getElementById(
+  "pcap"
+ ).textContent=d.cap;
+
+ document.getElementById(
+  "panel"
+ ).classList.remove("hidden");
+
+ map.flyTo(
+  [d.lat,d.lon],
+  8,
+  {duration:.8}
+ );
+
+}
+
+
+function closePanel(){
+
+ document.getElementById(
+  "panel"
+ ).classList.add("hidden");
+
+ map.flyTo(
+  [-2.8,34],
+  6,
+  {duration:.7}
+ );
+
+}
+
+
+/* MOVING LOGISTICS ASSETS */
+
+const paths=[
+
+[
+"Mombasa",
+"Nairobi",
+"Kampala",
+"Kigali"
+],
+
+[
+"Dar es Salaam",
+"Bujumbura",
+"Kigali"
+]
+
+];
+
+
+const trucks=[];
+
+
+paths.forEach(
+(path,pi)=>{
+
+ for(let i=0;i<4;i++){
+
+  const marker=L.marker(
+
+   [
+    cities[path[0]].lat,
+    cities[path[0]].lon
+   ],
+
+   {
+    icon:L.divIcon({
+     className:"truck-icon",
+     html:"🚛",
+     iconSize:[22,22],
+     iconAnchor:[11,11]
+    })
+   }
+
+  ).addTo(map);
+
+
+  trucks.push({
+
+   marker,
+   path,
+
+   offset:
+   (i/4)*.9+
+   pi*.13
+
+  });
+
+ }
+
+});
+
+
+let tick=0;
+
+
+function moveTrucks(){
+
+ tick+=.0035;
+
+ trucks.forEach(t=>{
+
+  let x=(tick+t.offset)%1;
+
+  let segment=
+  x*(t.path.length-1);
+
+  let i=Math.floor(segment);
+
+  let f=segment-i;
+
+  if(i>=t.path.length-1){
+
+   i=t.path.length-2;
+
+   f=1;
+
+  }
+
+  const a=cities[t.path[i]];
+
+  const b=cities[t.path[i+1]];
+
+
+  t.marker.setLatLng([
+
+   a.lat+(b.lat-a.lat)*f,
+
+   a.lon+(b.lon-a.lon)*f
+
+  ]);
+
+ });
+
+ requestAnimationFrame(moveTrucks);
+
+}
+
+
+moveTrucks();
+
+
+/* SIMULATED LIVE TELEMETRY */
+
+setInterval(()=>{
+
+ document.getElementById(
+  "assets"
+ ).textContent=
+ 45+Math.floor(Math.random()*7);
+
+
+ document.getElementById(
+  "tons"
+ ).textContent=
+ (1220+Math.floor(Math.random()*61))+"T";
+
+},2200);
+
 </script>
 
 </body>
