@@ -2,659 +2,450 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="PowerToken">
-<title>PowerToken — Smart Electricity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAMush Technologies — Intelligence & Continuity Command</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  :root {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --surface-raised: #1c1c1c;
-    --surface-muted: #0f0f0f;
-    --border: #2a2a2a;
-    --text-primary: #f5f5f5;
-    --text-secondary: #a0a0a0;
-    --text-tertiary: #666;
-    --text-quaternary: #444;
-    --accent: #10b981;
-    --accent-dim: rgba(16, 185, 129, 0.12);
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --blue: #3b82f6;
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
-  }
-  html, body { height: 100%; background: var(--bg); font-family: var(--font-sans); color: var(--text-primary); overflow: hidden; }
-  #app { width: 100%; height: 100%; max-width: 430px; margin: 0 auto; position: relative; background: var(--bg); }
-  .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; overflow: hidden; }
-  .screen.active { display: flex; }
-  .screen-enter { animation: slideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
-  .screen-exit { animation: slideOut 0.25s cubic-bezier(0.55, 0, 1, 0.45); }
-  @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-30%); opacity: 0; } }
-  @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
-  .status-bar { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-size: 14px; font-weight: 600; }
-  .status-bar .time { font-variant-numeric: tabular-nums; }
-  .status-bar .icons { display: flex; gap: 5px; align-items: center; }
-  .status-bar .icons svg { width: 16px; height: 16px; }
-
-  .content { flex: 1; overflow-y: auto; padding: 0 20px 20px; -webkit-overflow-scrolling: touch; }
-  .content::-webkit-scrollbar { display: none; }
-
-  .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary { background: var(--text-primary); color: var(--bg); }
-  .btn-green { background: var(--accent); color: #fff; }
-  .btn-outline { background: transparent; color: var(--text-primary); border: 1.5px solid var(--border); }
-  .btn-amount { width: 31%; padding: 14px 4px; font-size: 13px; background: var(--surface-raised); color: var(--text-primary); border: 1px solid var(--border); }
-  .btn-amount:active { background: var(--surface); }
-
-  .input-group { margin-bottom: 16px; }
-  .input-label { display: block; font-size: 12px; color: var(--text-tertiary); margin-bottom: 6px; font-weight: 500; }
-  .input-field { width: 100%; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--surface); color: var(--text-primary); font-family: inherit; outline: none; transition: border-color 0.2s; }
-  .input-field:focus { border-color: var(--text-primary); }
-  .input-field::placeholder { color: var(--text-quaternary); }
-
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
-  .card-dark { background: var(--text-primary); color: var(--bg); border-radius: 20px; padding: 28px 24px; margin-bottom: 20px; text-align: center; }
-  .card-dark .label { font-size: 12px; opacity: 0.6; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
-  .card-dark .value { font-size: 42px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
-  .card-dark .unit { font-size: 16px; opacity: 0.6; font-weight: 500; }
-  .card-dark .status { font-size: 12px; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
-  .dot.offline { background: var(--text-quaternary); animation: none; }
-  .dot.warning { background: var(--warning); animation: pulse 2s infinite; }
-
-  .section-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-  .section-title a { font-size: 12px; color: var(--text-tertiary); text-decoration: none; }
-
-  .meter-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.2s; }
-  .meter-card:active { background: var(--surface-raised); }
-  .meter-icon { width: 44px; height: 44px; background: var(--surface-raised); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .meter-icon svg { width: 22px; height: 22px; }
-  .meter-info { flex: 1; }
-  .meter-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-  .meter-id { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
-  .meter-status { font-size: 12px; font-weight: 500; color: var(--accent); }
-  .meter-status.off { color: var(--text-quaternary); }
-
-  .txn-row { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
-  .txn-row:last-child { border-bottom: none; }
-  .txn-icon { width: 40px; height: 40px; background: var(--accent-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; }
-  .txn-icon.warning { background: rgba(245, 158, 11, 0.12); }
-  .txn-icon.danger { background: rgba(239, 68, 68, 0.12); }
-  .txn-icon svg { width: 18px; height: 18px; }
-  .txn-info { flex: 1; }
-  .txn-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-  .txn-date { font-size: 11px; color: var(--text-tertiary); margin-top: 3px; }
-  .txn-amount { font-size: 14px; font-weight: 600; color: var(--text-primary); text-align: right; }
-  .txn-kwh { font-size: 11px; color: var(--text-tertiary); text-align: right; margin-top: 2px; }
-
-  .notif-row { display: flex; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--border); gap: 12px; }
-  .notif-row:last-child { border-bottom: none; }
-  .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warning); margin-top: 5px; flex-shrink: 0; }
-  .notif-dot.green { background: var(--accent); }
-  .notif-dot.red { background: var(--danger); }
-  .notif-dot.gray { background: var(--text-quaternary); }
-  .notif-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-  .notif-text strong { color: var(--text-primary); font-weight: 600; }
-  .notif-time { font-size: 11px; color: var(--text-quaternary); margin-top: 4px; }
-
-  .bottom-nav { display: flex; justify-content: space-around; padding: 10px 0 24px; border-top: 1px solid var(--border); background: var(--bg); }
-  .nav-item { text-align: center; cursor: pointer; padding: 6px 16px; border-radius: 10px; transition: all 0.2s; color: var(--text-quaternary); }
-  .nav-item:active { background: var(--surface-raised); }
-  .nav-item.active { color: var(--text-primary); }
-  .nav-item svg { width: 22px; height: 22px; margin: 0 auto 3px; display: block; }
-  .nav-label { font-size: 10px; font-weight: 500; }
-
-  .back-btn { font-size: 24px; cursor: pointer; padding: 4px; margin-bottom: 12px; display: inline-block; color: var(--text-primary); }
-  .back-btn:active { opacity: 0.5; }
-
-  .app-header { text-align: center; margin-bottom: 32px; }
-  .app-logo { width: 64px; height: 64px; background: var(--text-primary); border-radius: 18px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(255,255,255,0.08); }
-  .app-logo svg { width: 32px; height: 32px; }
-  .app-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-  .app-subtitle { font-size: 13px; color: var(--text-tertiary); margin-top: 6px; }
-
-  .otp-boxes { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
-  .otp-box { width: 52px; height: 56px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; color: var(--text-primary); }
-  .otp-box.filled { border-color: var(--text-primary); background: var(--surface-raised); }
-
-  .processing-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-  .processing-overlay.show { opacity: 1; pointer-events: all; }
-  .processing-card { background: var(--surface); border-radius: 20px; padding: 36px 28px; text-align: center; width: 240px; border: 1px solid var(--border); }
-  .spinner { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-  .processing-title { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
-  .processing-sub { font-size: 12px; color: var(--text-tertiary); }
-
-  .success-check { width: 72px; height: 72px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: bounce 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
-  .success-check svg { width: 36px; height: 36px; }
-
-  .receipt-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 0 8px 20px; }
-  .receipt-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
-  .receipt-row:last-child { margin-bottom: 0; }
-  .receipt-label { color: var(--text-tertiary); }
-  .receipt-value { color: var(--text-primary); font-weight: 500; }
-  .receipt-value.mono { font-family: var(--font-mono); font-size: 12px; }
-
-  .amount-display { font-size: 36px; font-weight: 700; text-align: center; margin: 8px 0 20px; font-variant-numeric: tabular-nums; }
-  .amount-display .currency { font-size: 18px; opacity: 0.6; }
-
-  .quick-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-green { background: var(--accent-dim); color: var(--accent); }
-  .badge-orange { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
-  .badge-red { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
-
-  .demo-banner { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--surface-raised); border: 1px solid var(--border); border-radius: 20px; padding: 8px 16px; font-size: 11px; color: var(--text-tertiary); z-index: 50; display: flex; align-items: center; gap: 6px; }
-  .demo-banner .dot { width: 6px; height: 6px; background: var(--warning); animation: pulse 2s infinite; }
-
-  .rate-box { background: var(--surface); border-radius: 14px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border); }
-  .rate-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
-  .rate-row:last-child { margin-bottom: 0; padding-top: 10px; border-top: 1px solid var(--border); }
-  .rate-label { color: var(--text-tertiary); }
-  .rate-value { color: var(--text-primary); font-weight: 500; }
-  .rate-value.highlight { color: var(--accent); font-weight: 700; }
-
-  .link-text { color: var(--text-primary); font-weight: 600; cursor: pointer; }
-  .center-text { text-align: center; }
-  .mt-8 { margin-top: 8px; }
-  .mt-16 { margin-top: 16px; }
-  .mt-24 { margin-top: 24px; }
-  .mb-8 { margin-bottom: 8px; }
-  .mb-16 { margin-bottom: 16px; }
-  .text-secondary { color: var(--text-secondary); }
-  .text-tertiary { color: var(--text-tertiary); }
-  .text-sm { font-size: 12px; }
-  .text-lg { font-size: 18px; }
-  .font-mono { font-family: var(--font-mono); }
-  .flex { display: flex; }
-  .items-center { align-items: center; }
-  .gap-2 { gap: 8px; }
-  .gap-3 { gap: 12px; }
-  .justify-center { justify-content: center; }
-  .w-full { width: 100%; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{--bg:#05080f;--panel:rgba(10,16,32,0.95);--border:rgba(0,168,232,0.12);--border-bright:rgba(0,212,170,0.35);--text:#dce4f0;--text2:#6b7a99;--teal:#00d4aa;--blue:#00a8e8;--cyan:#00e5ff;--gold:#ffd600;--live:#00c853;--warn:#ff9100;--danger:#ff1744;--font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:linear-gradient(180deg,rgba(6,12,24,0.98),rgba(6,12,24,0.9));border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
+.brand-group{display:flex;flex-direction:column;gap:2px;}
+.brand-main{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--text);text-transform:uppercase;}
+.brand-sub{font-size:10px;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.system-status{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);}
+.status-pulse{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 10px var(--live);animation:pulse-dot 2s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
+.sub-header{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;background:rgba(8,14,28,0.6);border-bottom:1px solid var(--border);}
+.sub-left{display:flex;flex-direction:column;gap:2px;}
+.sub-title{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--blue);text-transform:uppercase;}
+.sub-desc{font-size:10px;color:var(--text2);letter-spacing:0.5px;}
+.clock{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--cyan);letter-spacing:1px;}
+.metrics-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.metric-cell{background:rgba(8,14,28,0.85);padding:10px 8px;text-align:center;transition:background 0.3s;}
+.metric-cell:hover{background:rgba(0,168,232,0.06);}
+.metric-label{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:4px;}
+.metric-value{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--teal);}
+.metric-value.gold{color:var(--gold);}.metric-value.blue{color:var(--blue);}.metric-value.white{color:var(--text);}
+.main-layout{display:grid;grid-template-columns:1fr 340px;gap:1px;background:var(--border);min-height:calc(100vh - 180px);}
+.map-section{background:var(--panel);position:relative;display:flex;flex-direction:column;min-height:420px;}
+.map-title{position:absolute;top:16px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);z-index:10;background:rgba(5,8,15,0.7);padding:4px 12px;border-radius:4px;border:1px solid var(--border);}
+.map-svg{width:100%;flex:1;min-height:380px;}
+.corridor-line{fill:none;stroke-width:2;stroke-linecap:round;opacity:0.5;}
+.corridor-active{fill:none;stroke-width:2;stroke-linecap:round;opacity:0.8;stroke-dasharray:6 4;}
+.node-group{cursor:pointer;transition:transform 0.2s;}
+.node-group:hover{transform:scale(1.15);}
+.node-outer{fill:rgba(0,212,170,0.08);stroke:var(--teal);stroke-width:1.5;}
+.node-inner{fill:var(--teal);}
+.node-label{font-family:var(--font);font-size:9px;font-weight:700;fill:var(--text);text-anchor:middle;}
+.node-sublabel{font-family:var(--font);font-size:7px;fill:var(--text2);text-anchor:middle;}
+.moving-dot{fill:var(--gold);filter:drop-shadow(0 0 4px var(--gold));}
+.map-legend{position:absolute;bottom:12px;left:12px;display:flex;gap:12px;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:4px;font-size:9px;color:var(--text2);}
+.legend-item{display:flex;align-items:center;gap:4px;}
+.legend-dot{width:6px;height:6px;border-radius:50%;}
+.right-panel{display:flex;flex-direction:column;gap:1px;background:var(--border);}
+.panel-box{background:var(--panel);padding:14px;flex:1;overflow:hidden;}
+.panel-title{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.panel-title svg{width:12px;height:12px;}
+.event-list{display:flex;flex-direction:column;gap:6px;}
+.event-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:rgba(0,0,0,0.2);border-radius:4px;border-left:2px solid var(--warn);font-size:10px;line-height:1.4;}
+.event-item.alert{border-left-color:var(--danger);}.event-item.info{border-left-color:var(--blue);}
+.event-dot{width:5px;height:5px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.arch-diagram{display:flex;flex-direction:column;gap:6px;font-size:10px;}
+.arch-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:rgba(0,0,0,0.15);border-radius:4px;border-left:2px solid var(--teal);}
+.arch-arrow{text-align:center;color:var(--text2);font-size:10px;padding:2px 0;}
+.performance-bar{grid-column:1/-1;background:linear-gradient(90deg,rgba(8,14,28,0.95),rgba(10,20,40,0.95));padding:10px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.perf-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-right:20px;}
+.perf-metrics{display:flex;gap:32px;flex:1;justify-content:center;}
+.perf-item{text-align:center;}
+.perf-label{font-size:8px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.perf-value{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--teal);}
+.bottom-section{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-top:1px solid var(--border);}
+.net-panel,.console-panel{background:var(--panel);padding:14px;min-height:140px;}
+.net-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:10px;}
+.net-label{color:var(--text2);}
+.net-status{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1px;}
+.net-status.ok{color:var(--live);}.net-status.sync{color:var(--blue);}.net-status.proc{color:var(--gold);}.net-status.on{color:var(--teal);}
+.console-output{font-family:var(--mono);font-size:9px;line-height:1.8;color:var(--text2);}
+.console-line{opacity:0;animation:fadeIn 0.3s forwards;}
+@keyframes fadeIn{to{opacity:1;}}
+.console-line .ts{color:var(--blue);margin-right:6px;}
+.console-line .tag{color:var(--teal);margin-right:6px;}
+.footer-bar{display:flex;align-items:center;justify-content:center;padding:10px;background:rgba(5,8,15,0.9);border-top:1px solid var(--border);font-size:9px;color:var(--text2);letter-spacing:1px;}
+.dev-briefcase-btn{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:300;box-shadow:0 4px 20px rgba(0,212,170,0.3);transition:transform 0.2s,box-shadow 0.2s;}
+.dev-briefcase-btn:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(0,212,170,0.5);}
+.dev-briefcase-btn svg{width:22px;height:22px;fill:#000;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:400;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal-box{background:var(--panel);border:1px solid var(--border-bright);border-radius:10px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.6);animation:modalIn 0.3s ease;}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(0.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
+.modal-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);}
+.modal-close{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all 0.2s;}
+.modal-close:hover{background:rgba(255,23,68,0.15);color:var(--danger);border-color:var(--danger);}
+.modal-body{padding:18px;}
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.intel-cell{background:rgba(0,0,0,0.2);padding:10px;border-radius:6px;border:1px solid var(--border);}
+.intel-label{font-size:8px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.intel-value{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text);}
+.intel-value.ok{color:var(--live);}.intel-value.warn{color:var(--warn);}
+.briefcase-tabs{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap;}
+.briefcase-tab{padding:5px 10px;border-radius:4px;background:rgba(0,0,0,0.2);border:1px solid var(--border);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);cursor:pointer;transition:all 0.2s;}
+.briefcase-tab:hover,.briefcase-tab.active{background:rgba(0,212,170,0.1);border-color:var(--teal);color:var(--teal);}
+.briefcase-content{font-size:10px;line-height:1.6;color:var(--text2);}
+.briefcase-content h4{color:var(--teal);font-size:11px;margin:10px 0 6px;letter-spacing:0.5px;}
+.briefcase-content p{margin-bottom:8px;}
+.briefcase-content .attribution{margin-top:14px;padding-top:10px;border-top:1px solid var(--border);font-size:9px;color:var(--text2);}
+.briefcase-content .attribution strong{color:var(--text);}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:rgba(0,212,170,0.2);border-radius:2px;}
+@media(max-width:900px){.main-layout{grid-template-columns:1fr;}.metrics-bar{grid-template-columns:repeat(3,1fr);}.bottom-section{grid-template-columns:1fr;}.perf-metrics{gap:16px;flex-wrap:wrap;}}
 </style>
 </head>
 <body>
-<div id="app">
 
-<!-- STATUS BAR -->
-<div class="status-bar" id="status-bar">
-  <span class="time" id="clock">15:04</span>
-  <span style="font-size:13px; font-weight:700;">PowerToken</span>
-  <div class="icons">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7.46 3 3.34 4.78.29 7.67c-.18.18-.29.43-.29.71 0 .28.11.53.29.71l11 11c.39.39 1.02.39 1.41 0l11-11c.18-.18.29-.43.29-.71 0-.28-.11-.53-.29-.71C20.66 4.78 16.54 3 12 3z"/></svg>
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
-  </div>
+<header class="top-bar">
+<div class="brand-group">
+<div class="brand-main">AAMush Technologies™</div>
+<div class="brand-sub">Intelligence & Continuity Command</div>
+</div>
+<div class="system-status"><span class="status-pulse"></span><span>System Operational</span></div>
+</header>
+
+<div class="sub-header">
+<div class="sub-left">
+<div class="sub-title">AAMush Intelligence Command</div>
+<div class="sub-desc">East African Trade Corridor Intelligence</div>
+</div>
+<div class="clock" id="clk">13:00:00 EAT</div>
 </div>
 
-<!-- ==================== SCREEN 1: LOGIN ==================== -->
-<div class="screen active" id="screen-login">
-  <div class="content" style="display:flex; flex-direction:column; justify-content:center; padding-top:40px;">
-    <div class="app-header">
-      <div class="app-logo">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#0a0a0a"/></svg>
-      </div>
-      <div class="app-title">PowerToken</div>
-      <div class="app-subtitle">Smart electricity for every home</div>
-    </div>
-    <div class="input-group">
-      <label class="input-label">Phone number</label>
-      <input class="input-field" type="tel" value="+255 754 692 521" readonly>
-    </div>
-    <button class="btn btn-primary" onclick="goTo('screen-otp')">Send OTP</button>
-    <div class="center-text mt-16">
-      <span class="text-secondary text-sm">New user? </span>
-      <span class="link-text text-sm" onclick="goTo('screen-register')">Register</span>
-    </div>
-  </div>
+<div class="metrics-bar">
+<div class="metric-cell"><div class="metric-label">Nodes</div><div class="metric-value">06</div></div>
+<div class="metric-cell"><div class="metric-label">Assets</div><div class="metric-value">1,284</div></div>
+<div class="metric-cell"><div class="metric-label">Events</div><div class="metric-value gold">37</div></div>
+<div class="metric-cell"><div class="metric-label">Latency</div><div class="metric-value blue">842ms</div></div>
+<div class="metric-cell"><div class="metric-label">Health</div><div class="metric-value">99.8%</div></div>
+<div class="metric-cell"><div class="metric-label">Confidence</div><div class="metric-value white">HIGH</div></div>
 </div>
 
-<!-- ==================== SCREEN 2: OTP ==================== -->
-<div class="screen" id="screen-otp">
-  <div class="content" style="padding-top:20px;">
-    <span class="back-btn" onclick="goTo('screen-login')">←</span>
-    <div class="app-header" style="margin-bottom:28px;">
-      <div class="app-title" style="font-size:20px;">Verify OTP</div>
-      <div class="app-subtitle">Code sent to +255 754 692 521</div>
-    </div>
-    <div class="otp-boxes">
-      <div class="otp-box filled">5</div>
-      <div class="otp-box filled">2</div>
-      <div class="otp-box filled">8</div>
-      <div class="otp-box filled">4</div>
-    </div>
-    <button class="btn btn-primary" onclick="goTo('screen-register')">Verify & Continue</button>
-    <div class="center-text mt-16 text-tertiary text-sm">Resend code in <span id="otp-timer">0:45</span></div>
-  </div>
+<div class="main-layout">
+
+<div class="map-section">
+<div class="map-title">Regional Operational Map</div>
+<svg class="map-svg" viewBox="0 0 700 420" preserveAspectRatio="xMidYMid meet">
+<defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<pattern id="gr" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="rgba(0,168,232,0.04)" stroke-width="1"/></pattern>
+<rect width="700" height="420" fill="url(#gr)"/>
+<path d="M600 40 Q640 80 620 140" fill="none" stroke="rgba(0,168,232,0.06)" stroke-width="2"/>
+<text x="620" y="60" fill="rgba(0,168,232,0.12)" font-size="9" font-family="Inter">Indian Ocean</text>
+<ellipse cx="360" cy="150" rx="45" ry="28" fill="rgba(0,168,232,0.03)" stroke="rgba(0,168,232,0.06)" stroke-width="1"/>
+<text x="345" y="154" fill="rgba(0,168,232,0.1)" font-size="7" font-family="Inter">Lake Victoria</text>
+
+<!-- Background corridors -->
+<path class="corridor-line" d="M520 360 L520 100" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M520 100 L420 150" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M420 150 L320 200" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M320 200 L220 260" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M220 260 L140 340" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M520 360 L400 280" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M400 280 L220 260" stroke="rgba(255,255,255,0.04)"/>
+<path class="corridor-line" d="M400 280 L140 340" stroke="rgba(255,255,255,0.04)"/>
+
+<!-- Active corridors -->
+<path class="corridor-active" d="M520 100 L420 150" stroke="var(--teal)" id="c1"/>
+<path class="corridor-active" d="M420 150 L320 200" stroke="var(--teal)" id="c2"/>
+<path class="corridor-active" d="M320 200 L220 260" stroke="var(--warn)" id="c3"/>
+<path class="corridor-active" d="M220 260 L140 340" stroke="var(--teal)" id="c4"/>
+<path class="corridor-active" d="M520 360 L520 100" stroke="var(--teal)" id="c5"/>
+<path class="corridor-active" d="M520 360 L400 280" stroke="var(--blue)" id="c6"/>
+<path class="corridor-active" d="M400 280 L220 260" stroke="var(--blue)" id="c7"/>
+<path class="corridor-active" d="M400 280 L140 340" stroke="var(--blue)" id="c8"/>
+
+<g id="tl"></g>
+
+<g class="node-group" data-city="mombasa" onclick="openCityModal('mombasa')">
+<circle cx="520" cy="100" r="16" class="node-outer" filter="url(#glow)"/>
+<circle cx="520" cy="100" r="5" class="node-inner"/>
+<text x="520" y="78" class="node-label">Mombasa</text>
+<text x="520" y="68" class="node-sublabel">KE • Port</text>
+</g>
+
+<g class="node-group" data-city="nairobi" onclick="openCityModal('nairobi')">
+<circle cx="420" cy="150" r="16" class="node-outer" filter="url(#glow)"/>
+<circle cx="420" cy="150" r="5" class="node-inner" style="fill:var(--warn)"/>
+<text x="420" y="128" class="node-label">Nairobi</text>
+<text x="420" y="118" class="node-sublabel">KE • Hub</text>
+</g>
+
+<g class="node-group" data-city="kampala" onclick="openCityModal('kampala')">
+<circle cx="320" cy="200" r="16" class="node-outer" filter="url(#glow)"/>
+<circle cx="320" cy="200" r="5" class="node-inner"/>
+<text x="320" y="235" class="node-label">Kampala</text>
+<text x="320" y="245" class="node-sublabel">UG • Hub</text>
+</g>
+
+<g class="node-group" data-city="kigali" onclick="openCityModal('kigali')">
+<circle cx="220" cy="260" r="16" class="node-outer" filter="url(#glow)"/>
+<circle cx="220" cy="260" r="5" class="node-inner"/>
+<text x="220" y="295" class="node-label">Kigali</text>
+<text x="220" y="305" class="node-sublabel">RW • Hub</text>
+</g>
+
+<g class="node-group" data-city="bujumbura" onclick="openCityModal('bujumbura')">
+<circle cx="140" cy="340" r="16" class="node-outer" filter="url(#glow)"/>
+<circle cx="140" cy="340" r="5" class="node-inner" style="fill:var(--blue)"/>
+<text x="140" y="375" class="node-label">Bujumbura</text>
+<text x="140" y="385" class="node-sublabel">BI • Terminal</text>
+</g>
+
+<g class="node-group" data-city="dodoma" onclick="openCityModal('dodoma')">
+<circle cx="400" cy="280" r="14" class="node-outer" filter="url(#glow)" style="stroke:var(--blue)"/>
+<circle cx="400" cy="280" r="4" class="node-inner" style="fill:var(--blue)"/>
+<text x="400" y="310" class="node-label">Dodoma</text>
+<text x="400" y="320" class="node-sublabel">TZ • Central</text>
+</g>
+
+<g class="node-group" data-city="dar" onclick="openCityModal('dar')">
+<circle cx="520" cy="360" r="16" class="node-outer" filter="url(#glow)"/>
+<circle cx="520" cy="360" r="5" class="node-inner"/>
+<text x="520" y="395" class="node-label">Dar es Salaam</text>
+<text x="520" y="405" class="node-sublabel">TZ • Port</text>
+</g>
+
+<text x="545" y="230" fill="rgba(0,212,170,0.3)" font-size="8" font-family="Inter" transform="rotate(90,545,230)">Northern Corridor</text>
+<text x="470" y="330" fill="rgba(0,168,232,0.3)" font-size="8" font-family="Inter" transform="rotate(-35,470,330)">Central Corridor</text>
+<text x="280" y="340" fill="var(--gold)" font-size="9" font-family="Inter" opacity="0.7">moving logistics ● →</text>
+</svg>
+
+<div class="map-legend">
+<div class="legend-item"><div class="legend-dot" style="background:var(--live)"></div>Healthy</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Moderate</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Alert</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Transit</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Central</div>
+</div>
 </div>
 
-<!-- ==================== SCREEN 3: REGISTER ==================== -->
-<div class="screen" id="screen-register">
-  <div class="content" style="padding-top:20px;">
-    <span class="back-btn" onclick="goTo('screen-login')">←</span>
-    <div class="app-header" style="margin-bottom:28px;">
-      <div class="app-title" style="font-size:20px;">Link Your Meter</div>
-      <div class="app-subtitle">Enter your meter number to get started</div>
-    </div>
-    <div class="input-group">
-      <label class="input-label">Full name</label>
-      <input class="input-field" type="text" value="James K. Mushi" readonly>
-    </div>
-    <div class="input-group">
-      <label class="input-label">Meter number</label>
-      <input class="input-field" type="text" value="12345678901" readonly>
-    </div>
-    <div class="input-group">
-      <label class="input-label">Nickname (optional)</label>
-      <input class="input-field" type="text" value="Home — Sinza" readonly>
-    </div>
-    <button class="btn btn-primary" onclick="goTo('screen-dashboard')">Link Meter</button>
-  </div>
+<div class="right-panel">
+<div class="panel-box">
+<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>Intelligence Events</div>
+<div class="event-list">
+<div class="event-item alert"><div class="event-dot" style="background:var(--danger)"></div><div>Corridor deviation detected on Northern Corridor — Malaba queue exceeds 6h baseline</div></div>
+<div class="event-item"><div class="event-dot" style="background:var(--warn)"></div><div>Mombasa congestion risk rising — 14 vessels awaiting berth, throughput down 8%</div></div>
+<div class="event-item info"><div class="event-dot" style="background:var(--blue)"></div><div>Dar telemetry — Mesh-01 batch AAM-44xx signal degradation in TZ central corridor</div></div>
+<div class="event-item"><div class="event-dot" style="background:var(--teal)"></div><div>Central Corridor efficiency improved — Dar–Dodoma segment at 94% throughput</div></div>
+</div>
 </div>
 
-<!-- ==================== SCREEN 4: DASHBOARD ==================== -->
-<div class="screen" id="screen-dashboard">
-  <div class="content" style="padding-top:16px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-      <div>
-        <div class="text-tertiary text-sm">Welcome back</div>
-        <div style="font-size:16px; font-weight:600;">James</div>
-      </div>
-      <div style="width:40px; height:40px; background:var(--surface-raised); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="goTo('screen-notifications')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      </div>
-    </div>
-
-    <div class="card-dark">
-      <div class="label">Current balance</div>
-      <div class="value">18.4 <span class="unit">kWh</span></div>
-      <div class="status">
-        <div class="dot"></div>
-        <span>Power ON · Meter online</span>
-      </div>
-    </div>
-
-    <div class="section-title">
-      <span>Quick buy</span>
-      <a href="#" onclick="goTo('screen-buy-custom'); return false;">Custom →</a>
-    </div>
-    <div class="quick-grid">
-      <button class="btn btn-amount" onclick="goToBuy(5000)">5,000</button>
-      <button class="btn btn-amount" onclick="goToBuy(10000)">10,000</button>
-      <button class="btn btn-amount" onclick="goToBuy(20000)">20,000</button>
-      <button class="btn btn-amount" onclick="goToBuy(50000)">50,000</button>
-      <button class="btn btn-amount" onclick="goToBuy(100000)">100K</button>
-      <button class="btn btn-amount" style="font-size:12px;" onclick="goTo('screen-buy-custom')">Other</button>
-    </div>
-
-    <div class="section-title">My meters</div>
-    <div class="meter-card" onclick="goTo('screen-buy-custom')">
-      <div class="meter-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
-      </div>
-      <div class="meter-info">
-        <div class="meter-name">Home — Sinza</div>
-        <div class="meter-id">Meter #12345678901</div>
-      </div>
-      <div class="meter-status">● Online</div>
-    </div>
-    <div class="meter-card" style="opacity:0.5;">
-      <div class="meter-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
-      </div>
-      <div class="meter-info">
-        <div class="meter-name">Shop — Kariakoo</div>
-        <div class="meter-id">Meter #98765432109</div>
-      </div>
-      <div class="meter-status off">○ Offline</div>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="goTo('screen-dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-      <div class="nav-label">Home</div>
-    </div>
-    <div class="nav-item" onclick="goTo('screen-history')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke-linecap="round"/></svg>
-      <div class="nav-label">History</div>
-    </div>
-    <div class="nav-item" onclick="goTo('screen-notifications')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <div class="nav-label">Alerts</div>
-    </div>
-  </div>
+<div class="panel-box">
+<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>System Architecture</div>
+<div class="arch-diagram">
+<div class="arch-row" style="border-left-color:var(--teal)"><span style="color:var(--teal);font-weight:700;">MESH-01</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Physical Layer</span></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-row" style="border-left-color:var(--blue)"><span style="color:var(--blue);font-weight:700;">DATA INTEGRATION</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Fabric Layer</span></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-row" style="border-left-color:var(--cyan)"><span style="color:var(--cyan);font-weight:700;">INTELLIGENCE GRID</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Engine Layer</span></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-row" style="border-left-color:var(--gold)"><span style="color:var(--gold);font-weight:700;">AAMUSH LIVE</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Command Layer</span></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-row" style="border-left-color:var(--text)"><span style="color:var(--text);font-weight:700;">COMMAND</span><span style="color:var(--text2);margin-left:auto;font-size:9px;">Decision Layer</span></div>
+</div>
+</div>
+</div>
 </div>
 
-<!-- ==================== SCREEN 5: BUY CUSTOM ==================== -->
-<div class="screen" id="screen-buy-custom">
-  <div class="content" style="padding-top:20px;">
-    <span class="back-btn" onclick="goTo('screen-dashboard')">←</span>
-    <div class="app-header" style="margin-bottom:20px;">
-      <div class="app-title" style="font-size:20px;">Buy Electricity</div>
-      <div class="app-subtitle">Meter: Home — Sinza</div>
-    </div>
-
-    <div class="amount-display">
-      <span class="currency">TZS</span> <span id="buy-amount-display">20,000</span>
-    </div>
-
-    <div class="quick-grid" style="margin-bottom:16px;">
-      <button class="btn btn-amount" onclick="setAmount(5000)">5K</button>
-      <button class="btn btn-amount" onclick="setAmount(10000)">10K</button>
-      <button class="btn btn-amount" onclick="setAmount(20000)">20K</button>
-      <button class="btn btn-amount" onclick="setAmount(50000)">50K</button>
-      <button class="btn btn-amount" onclick="setAmount(100000)">100K</button>
-      <button class="btn btn-amount" onclick="setAmount(150000)">150K</button>
-    </div>
-
-    <div class="rate-box">
-      <div class="rate-row">
-        <span class="rate-label">Rate</span>
-        <span class="rate-value">295 TZS / kWh</span>
-      </div>
-      <div class="rate-row">
-        <span class="rate-label">You will receive</span>
-        <span class="rate-value highlight" id="kwh-display">67.8 kWh</span>
-      </div>
-      <div class="rate-row">
-        <span class="rate-label">Fee</span>
-        <span class="rate-value">0 TZS</span>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label class="input-label">M-Pesa phone number</label>
-      <input class="input-field" type="tel" value="+255 754 692 521" readonly>
-    </div>
-
-    <button class="btn btn-green" onclick="startPayment()">
-      <span class="flex items-center justify-center gap-2">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="sans-serif">T</text></svg>
-        Pay with M-Pesa
-      </span>
-    </button>
-    <div class="center-text mt-8 text-tertiary text-sm">You will receive an STK Push on your phone</div>
-  </div>
+<div class="performance-bar">
+<div class="perf-title">AAMush Performance Assurance</div>
+<div class="perf-metrics">
+<div class="perf-item"><div class="perf-label">Telemetry</div><div class="perf-value">99.2%</div></div>
+<div class="perf-item"><div class="perf-label">Data</div><div class="perf-value">97.8%</div></div>
+<div class="perf-item"><div class="perf-label">Event</div><div class="perf-value" style="color:var(--warn)">94.6%</div></div>
+<div class="perf-item"><div class="perf-label">Recovery</div><div class="perf-value">98.4%</div></div>
+<div class="perf-item"><div class="perf-label">Coverage</div><div class="perf-value white">06/06</div></div>
+</div>
 </div>
 
-<!-- ==================== SCREEN 6: SUCCESS ==================== -->
-<div class="screen" id="screen-success">
-  <div class="content" style="display:flex; flex-direction:column; justify-content:center; padding-top:40px;">
-    <div class="success-check">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M19.3 5.9l-9.6 9.6-4.7-4.7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="center-text">
-      <div style="font-size:20px; font-weight:700; margin-bottom:4px;">Payment confirmed!</div>
-      <div class="text-secondary text-sm mb-16">TZS <span id="success-amount">20,000</span> · <span id="success-kwh">67.8</span> kWh credited</div>
-    </div>
-
-    <div class="receipt-box">
-      <div class="receipt-row">
-        <span class="receipt-label">M-Pesa receipt</span>
-        <span class="receipt-value mono">QJ7G9H2K8L1M</span>
-      </div>
-      <div class="receipt-row">
-        <span class="receipt-label">Meter</span>
-        <span class="receipt-value">Home — Sinza</span>
-      </div>
-      <div class="receipt-row">
-        <span class="receipt-label">Date</span>
-        <span class="receipt-value" id="success-date">29 Jul 2026, 15:04</span>
-      </div>
-      <div class="receipt-row">
-        <span class="receipt-label">New balance</span>
-        <span class="receipt-value highlight" style="color:var(--accent);">86.2 kWh</span>
-      </div>
-    </div>
-
-    <div class="center-text mb-16">
-      <span class="badge badge-green">⚡ Power restored</span>
-    </div>
-
-    <button class="btn btn-primary" onclick="goTo('screen-dashboard')">Back to home</button>
-    <button class="btn btn-outline mt-8" onclick="goTo('screen-history')">View receipt</button>
-  </div>
+<div class="bottom-section">
+<div class="net-panel">
+<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Network Status</div>
+<div class="net-row"><span class="net-label">Mesh-01</span><span class="net-status ok">OPERATIONAL</span></div>
+<div class="net-row"><span class="net-label">Integration</span><span class="net-status sync">SYNCHRONIZED</span></div>
+<div class="net-row"><span class="net-label">Grid</span><span class="net-status proc">PROCESSING</span></div>
+<div class="net-row"><span class="net-label">AAMush Live</span><span class="net-status on">ONLINE</span></div>
 </div>
 
-<!-- ==================== SCREEN 7: HISTORY ==================== -->
-<div class="screen" id="screen-history">
-  <div class="content" style="padding-top:16px;">
-    <div class="section-title" style="font-size:16px; margin-bottom:16px;">Transaction history</div>
-
-    <div class="txn-row">
-      <div class="txn-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M12 2v20M17 7l-5-5-5 5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="txn-info">
-        <div class="txn-title">Electricity top-up</div>
-        <div class="txn-date">Today, 15:04 · Home — Sinza</div>
-      </div>
-      <div>
-        <div class="txn-amount">20,000</div>
-        <div class="txn-kwh">+67.8 kWh</div>
-      </div>
-    </div>
-
-    <div class="txn-row">
-      <div class="txn-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M12 2v20M17 7l-5-5-5 5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="txn-info">
-        <div class="txn-title">Electricity top-up</div>
-        <div class="txn-date">25 Jul, 09:15 · Home — Sinza</div>
-      </div>
-      <div>
-        <div class="txn-amount">10,000</div>
-        <div class="txn-kwh">+33.9 kWh</div>
-      </div>
-    </div>
-
-    <div class="txn-row">
-      <div class="txn-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M12 2v20M17 7l-5-5-5 5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="txn-info">
-        <div class="txn-title">Electricity top-up</div>
-        <div class="txn-date">18 Jul, 16:40 · Shop — Kariakoo</div>
-      </div>
-      <div>
-        <div class="txn-amount">50,000</div>
-        <div class="txn-kwh">+169.5 kWh</div>
-      </div>
-    </div>
-
-    <div class="txn-row">
-      <div class="txn-icon warning">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="1.5"><path d="M12 2v20M7 17l5 5 5-5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="txn-info">
-        <div class="txn-title">Low balance alert</div>
-        <div class="txn-date">15 Jul, 08:00 · Auto-generated</div>
-      </div>
-      <div>
-        <div class="txn-amount" style="color:var(--warning);">Alert</div>
-        <div class="txn-kwh">3.2 kWh left</div>
-      </div>
-    </div>
-
-    <div class="txn-row">
-      <div class="txn-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M12 2v20M17 7l-5-5-5 5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="txn-info">
-        <div class="txn-title">Electricity top-up</div>
-        <div class="txn-date">10 Jul, 11:22 · Home — Sinza</div>
-      </div>
-      <div>
-        <div class="txn-amount">5,000</div>
-        <div class="txn-kwh">+16.9 kWh</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="goTo('screen-dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-      <div class="nav-label">Home</div>
-    </div>
-    <div class="nav-item active" onclick="goTo('screen-history')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke-linecap="round"/></svg>
-      <div class="nav-label">History</div>
-    </div>
-    <div class="nav-item" onclick="goTo('screen-notifications')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <div class="nav-label">Alerts</div>
-    </div>
-  </div>
+<div class="console-panel">
+<div class="panel-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Telemetry Console</div>
+<div class="console-output" id="console"></div>
+</div>
 </div>
 
-<!-- ==================== SCREEN 8: NOTIFICATIONS ==================== -->
-<div class="screen" id="screen-notifications">
-  <div class="content" style="padding-top:16px;">
-    <div class="section-title" style="font-size:16px; margin-bottom:8px;">Notifications</div>
+<div class="footer-bar"><span>Developed by Dr. James K. Mushi, PhD • AAMush Inc. • EduAccess Advisory Center | AESF</span></div>
 
-    <div class="notif-row">
-      <div class="notif-dot green"></div>
-      <div>
-        <div class="notif-text"><strong>Payment confirmed</strong> — TZS 20,000 received. 67.8 kWh credited to Home — Sinza.</div>
-        <div class="notif-time">Today, 15:04</div>
-      </div>
-    </div>
+<button class="dev-briefcase-btn" onclick="openBriefcase()" title="Developer Briefcase"><svg viewBox="0 0 24 24"><path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 4h4v3h-4V4zm10 16H4V9h16v11z"/></svg></button>
 
-    <div class="notif-row">
-      <div class="notif-dot"></div>
-      <div>
-        <div class="notif-text"><strong>Low balance warning</strong> — Your meter Home — Sinza has only 3.2 kWh remaining. Top up soon to avoid disconnection.</div>
-        <div class="notif-time">15 Jul, 08:00</div>
-      </div>
-    </div>
-
-    <div class="notif-row">
-      <div class="notif-dot green"></div>
-      <div>
-        <div class="notif-text"><strong>Power restored</strong> — Payment received. Relay activated for meter #12345678901.</div>
-        <div class="notif-time">10 Jul, 11:25</div>
-      </div>
-    </div>
-
-    <div class="notif-row">
-      <div class="notif-dot red"></div>
-      <div>
-        <div class="notif-text"><strong>Disconnection alert</strong> — Meter #12345678901 has been disconnected due to zero balance.</div>
-        <div class="notif-time">10 Jul, 06:00</div>
-      </div>
-    </div>
-
-    <div class="notif-row">
-      <div class="notif-dot gray"></div>
-      <div>
-        <div class="notif-text"><strong>Meter offline</strong> — Shop — Kariakoo has not reported in 24 hours. Check GSM signal.</div>
-        <div class="notif-time">8 Jul, 18:30</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="goTo('screen-dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-      <div class="nav-label">Home</div>
-    </div>
-    <div class="nav-item" onclick="goTo('screen-history')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke-linecap="round"/></svg>
-      <div class="nav-label">History</div>
-    </div>
-    <div class="nav-item active" onclick="goTo('screen-notifications')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <div class="nav-label">Alerts</div>
-    </div>
-  </div>
+<div class="modal-overlay" id="cityModal" onclick="closeCityModal(event)">
+<div class="modal-box" onclick="event.stopPropagation()">
+<div class="modal-header"><div class="modal-title" id="cityModalTitle">City Intelligence</div><button class="modal-close" onclick="closeCityModal()">×</button></div>
+<div class="modal-body">
+<div id="cityModalContent" style="font-size:11px;color:var(--text2);line-height:1.5;">Loading intelligence...</div>
+<div class="intel-grid" id="cityIntelGrid">
+<div class="intel-cell"><div class="intel-label">Status</div><div class="intel-value ok" id="ci-status">NORMAL</div></div>
+<div class="intel-cell"><div class="intel-label">Assets</div><div class="intel-value" id="ci-assets">—</div></div>
+<div class="intel-cell"><div class="intel-label">Latency</div><div class="intel-value" id="ci-latency">—</div></div>
+<div class="intel-cell"><div class="intel-label">Confidence</div><div class="intel-value ok" id="ci-confidence">—</div></div>
+</div>
+</div>
+</div>
 </div>
 
-<!-- PROCESSING OVERLAY -->
-<div class="processing-overlay" id="processing-overlay">
-  <div class="processing-card">
-    <div class="spinner"></div>
-    <div class="processing-title">Processing payment...</div>
-    <div class="processing-sub">Waiting for M-Pesa confirmation</div>
-  </div>
+<div class="modal-overlay" id="briefcaseModal" onclick="closeBriefcase(event)">
+<div class="modal-box" onclick="event.stopPropagation()" style="max-width:480px;">
+<div class="modal-header"><div class="modal-title">AAMush Developer Briefcase</div><button class="modal-close" onclick="closeBriefcase()">×</button></div>
+<div class="modal-body">
+<div class="briefcase-tabs">
+<div class="briefcase-tab active" onclick="switchTab(this,'tab-profile')">Profile</div>
+<div class="briefcase-tab" onclick="switchTab(this,'tab-mesh')">Mesh-01 Manual</div>
+<div class="briefcase-tab" onclick="switchTab(this,'tab-arch')">Architecture</div>
+<div class="briefcase-tab" onclick="switchTab(this,'tab-investor')">Investor</div>
+<div class="briefcase-tab" onclick="switchTab(this,'tab-tech')">Technical</div>
 </div>
-
-<!-- DEMO BANNER -->
-<div class="demo-banner">
-  <div class="dot"></div>
-  <span>Demo mode — no real payments</span>
+<div class="briefcase-content">
+<div class="tab-pane active" id="tab-profile">
+<h4>Platform Identity</h4>
+<p><strong>AAMush Trade Intelligence Grid™</strong> is a regional digital infrastructure designed to connect physical trade movement with cargo, corridor, border and predictive intelligence across East Africa.</p>
+<p>The platform operates across six strategic nodes: Dar es Salaam, Mombasa, Nairobi, Kampala, Kigali and Bujumbura — with Dodoma as the Central Corridor hub.</p>
+<h4>Developer Attribution</h4>
+<div style="display:flex;align-items:center;gap:14px;margin:12px 0;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;border:1px solid var(--border);">
+<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#000;border:2px solid var(--teal);box-shadow:0 0 12px rgba(0,212,170,0.2);font-family:var(--font);">JKM</div>
+<div>
+<div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:0.5px;">Dr. James K. Mushi, PhD</div>
+<div style="font-size:9px;color:var(--text2);margin-top:2px;">Founder & Lead Architect</div>
+<div style="font-size:9px;color:var(--teal);margin-top:2px;">AAMush Inc. • EduAccess Advisory Center | AESF</div>
 </div>
-
+</div>
+<div class="attribution">
+<strong>Developed by Dr. James K. Mushi, PhD</strong><br>
+Developed by AAMush Inc.<br>
+Associated institutional identities:<br>
+EduAccess Advisory Center | AESF
+</div>
+</div>
+<div class="tab-pane" id="tab-mesh">
+<h4>Mesh-01 Physical Layer</h4>
+<p>Mesh-01 is the telemetry and device infrastructure of the AAMush Trade Intelligence Grid™. It captures authenticated data from participating vehicles and assets.</p>
+<p><strong>Telemetry captured:</strong></p>
+<p>• GPS coordinates (latitude, longitude, altitude)<br>• Speed and heading<br>• Timestamp (UTC + EAT)<br>• Connectivity status (GSM, satellite, mesh relay)<br>• Device health (battery, firmware, signal strength)</p>
+<p><strong>Authentication:</strong> Each Mesh-01 device is cryptographically paired to a registered asset. Data is signed at the edge before transmission.</p>
+<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc.</div>
+</div>
+<div class="tab-pane" id="tab-arch">
+<h4>Four-Layer Architecture</h4>
+<p><strong>1. Physical Layer — Mesh-01</strong><br>Captures authenticated telemetry from vehicles/assets.</p>
+<p><strong>2. Data Layer — Integration Fabric</strong><br>Aggregates Mesh-01, port, customs, logistics and border feeds.</p>
+<p><strong>3. Intelligence Layer — Engine</strong><br>Calculates ETA, detects anomalies, predicts bottlenecks, generates alerts.</p>
+<p><strong>4. Command Layer — AAMush Live</strong><br>Visualises the six-node network, displays real-time intelligence, enables decision-making.</p>
+<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc.</div>
+</div>
+<div class="tab-pane" id="tab-investor">
+<h4>Investor Proposition</h4>
+<p><strong>The Problem:</strong> East African trade generates enormous operational information, but it is fragmented across actors and systems.</p>
+<p><strong>The Solution:</strong> AAMush creates an intelligence layer above those systems — transforming fragmented data into visibility, measurement, prediction, decision and intervention.</p>
+<p><strong>Economic Logic:</strong> Less uncertainty → fewer avoidable delays → better asset utilisation → more predictable trade → stronger regional economic activity.</p>
+<p><strong>Revenue Streams:</strong> Hardware (Mesh-01), SaaS subscriptions, government command centres, corridor analytics, enterprise APIs, digital-twin modelling.</p>
+<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc.</div>
+</div>
+<div class="tab-pane" id="tab-tech">
+<h4>Technical Specifications</h4>
+<p><strong>Frontend:</strong> HTML5, CSS3, SVG, vanilla JavaScript. No framework dependencies for prototype.</p>
+<p><strong>Data Integrity:</strong> LIVE / CALCULATED / PREDICTED / SIMULATED / API-READY labels protect credibility.</p>
+<p><strong>Security:</strong> Edge-signed telemetry, encrypted transit, role-based access control, data sovereignty per jurisdiction.</p>
+<p><strong>Scalability:</strong> Stateless API design, horizontally scalable ingestion, time-series optimised storage.</p>
+<p><strong>Nodes:</strong> Dar es Salaam (TZ), Mombasa (KE), Nairobi (KE), Kampala (UG), Kigali (RW), Bujumbura (BI), Dodoma (TZ).</p>
+<div class="attribution"><strong>Developed by Dr. James K. Mushi, PhD</strong> • AAMush Inc. • EduAccess Advisory Center | AESF</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <script>
-  // Clock
-  function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    document.getElementById('clock').textContent = h + ':' + m;
-    document.getElementById('success-date').textContent = now.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) + ', ' + h + ':' + m;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
+function u(){var n=new Date();var h=String(n.getHours()).padStart(2,'0');var m=String(n.getMinutes()).padStart(2,'0');var s=String(n.getSeconds()).padStart(2,'0');document.getElementById('clk').textContent=h+':'+m+':'+s+' EAT';}
+setInterval(u,1000);u();
 
-  // OTP timer
-  let otpTime = 45;
-  const otpTimer = setInterval(() => {
-    otpTime--;
-    const el = document.getElementById('otp-timer');
-    if (el) el.textContent = '0:' + String(otpTime).padStart(2,'0');
-    if (otpTime <= 0) clearInterval(otpTimer);
-  }, 1000);
+var consoleLines=[
+{delay:0,text:'<span class="ts">[13:00:01]</span><span class="tag">[SYSTEM]</span> initialized'},
+{delay:600,text:'<span class="ts">[13:00:02]</span><span class="tag">[MESH-01]</span> seven nodes registered'},
+{delay:1200,text:'<span class="ts">[13:00:03]</span><span class="tag">[GRID]</span> correlation engine ready'},
+{delay:1800,text:'<span class="ts">[13:00:04]</span><span class="tag">[LIVE]</span> waiting for telemetry feeds'},
+{delay:2500,text:'<span class="ts">[13:00:06]</span><span class="tag">[BORDER]</span> Malaba dwell alert — 6.8h'},
+{delay:3200,text:'<span class="ts">[13:00:08]</span><span class="tag">[ETA]</span> SH-8847 delay risk elevated'},
+{delay:4000,text:'<span class="ts">[13:00:12]</span><span class="tag">[MESH]</span> AAM-4401 signal recovery detected'},
+{delay:5000,text:'<span class="ts">[13:00:15]</span><span class="tag">[SYSTEM]</span> all corridors nominal except Northern'}
+];
+var consoleEl=document.getElementById('console');
+consoleLines.forEach(function(line,i){
+setTimeout(function(){
+var div=document.createElement('div');div.className='console-line';div.style.animationDelay='0s';div.innerHTML=line.text;
+consoleEl.appendChild(div);consoleEl.scrollTop=consoleEl.scrollHeight;
+},line.delay);
+});
 
-  // Navigation
-  let currentAmount = 20000;
+var movers=[
+{path:'c1',progress:0.0,speed:0.003,color:'#ffd600'},
+{path:'c2',progress:0.2,speed:0.0025,color:'#00d4aa'},
+{path:'c3',progress:0.5,speed:0.002,color:'#ffd600'},
+{path:'c4',progress:0.1,speed:0.0035,color:'#00d4aa'},
+{path:'c5',progress:0.3,speed:0.002,color:'#00a8e8'},
+{path:'c6',progress:0.4,speed:0.003,color:'#00e5ff'},
+{path:'c7',progress:0.6,speed:0.0028,color:'#00e5ff'},
+{path:'c8',progress:0.2,speed:0.0032,color:'#00e5ff'}
+];
+var tl=document.getElementById('tl');
+function gp(id,pct){var p=document.getElementById(id);if(!p)return{x:0,y:0};return p.getPointAtLength(p.getTotalLength()*pct);}
+function ct(t){var g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','truck');g.setAttribute('id',t.id);var c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r','3');c.setAttribute('fill',t.color);c.setAttribute('class','moving-dot');g.appendChild(c);return g;}
+movers.forEach(function(m){m.el=ct(m);tl.appendChild(m.el);});
+function a(){movers.forEach(function(m){var p=document.getElementById(m.path);if(!p)return;m.progress+=m.speed;if(m.progress>=1)m.progress=0;var pt=gp(m.path,m.progress);m.el.setAttribute('transform','translate('+pt.x+','+pt.y+')');});requestAnimationFrame(a);}
+setTimeout(a,100);
 
-  function goTo(screenId) {
-    document.querySelectorAll('.screen').forEach(s => {
-      s.classList.remove('active', 'screen-enter');
-    });
-    const target = document.getElementById(screenId);
-    target.classList.add('active', 'screen-enter');
-    setTimeout(() => target.classList.remove('screen-enter'), 350);
-  }
+var cityData={
+mombasa:{name:'Mombasa',status:'NORMAL',assets:'312',latency:'420 ms',confidence:'98.5%',desc:'Port operations nominal. 14 vessels at anchorage. Container throughput within baseline. Customs processing synchronized with KRA systems. Northern Corridor origin node.'},
+nairobi:{name:'Nairobi',status:'CONGESTED',assets:'244',latency:'650 ms',confidence:'98.1%',desc:'Corridor flow experiencing moderate congestion. Northern Corridor throughput down 8%. Mesh-01 devices operating within normal parameters. Intersection of Northern and Central Corridors.'},
+kampala:{name:'Kampala',status:'NORMAL',assets:'198',latency:'380 ms',confidence:'99.2%',desc:'Hub operations stable. Border integration with Malaba and Busia active. URA customs feed synchronized. Central Corridor routing optimal.'},
+kigali:{name:'Kigali',status:'NORMAL',assets:'156',latency:'290 ms',confidence:'99.6%',desc:'All systems operational. Katuna border flow nominal. RRA data integration active. Corridor to Bujumbura operating at 94% efficiency. Served by both Northern and Central Corridors.'},
+bujumbura:{name:'Bujumbura',status:'STANDBY',assets:'89',latency:'520 ms',confidence:'97.3%',desc:'Terminal operations on standby schedule. Rusumo border dwell elevated. Mesh-01 coverage at 91%. Awaiting next shipment batch. Destination for Central Corridor via Dodoma.'},
+dodoma:{name:'Dodoma',status:'NORMAL',assets:'124',latency:'410 ms',confidence:'98.4%',desc:'Central Corridor hub. Tanzania political capital. Mesh-01 relay station active. Routes to Kigali and Bujumbura operational. Dar es Salaam connection nominal.'},
+dar:{name:'Dar es Salaam',status:'NORMAL',assets:'385',latency:'340 ms',confidence:'98.9%',desc:'Port operations active. TRA customs integration online. TPA berth allocation nominal. Origin of Central Corridor (via Dodoma) and coastal link to Mombasa. Dispatching 12 trucks per hour.'}
+};
 
-  function goToBuy(amount) {
-    currentAmount = amount;
-    setAmount(amount);
-    goTo('screen-buy-custom');
-  }
-
-  function setAmount(amount) {
-    currentAmount = amount;
-    document.getElementById('buy-amount-display').textContent = amount.toLocaleString();
-    const kwh = (amount / 295).toFixed(1);
-    document.getElementById('kwh-display').textContent = kwh + ' kWh';
-    document.getElementById('success-amount').textContent = amount.toLocaleString();
-    document.getElementById('success-kwh').textContent = kwh;
-  }
-
-  function startPayment() {
-    const overlay = document.getElementById('processing-overlay');
-    overlay.classList.add('show');
-    setTimeout(() => {
-      overlay.classList.remove('show');
-      goTo('screen-success');
-    }, 2500);
-  }
+function openCityModal(city){
+var d=cityData[city];if(!d)return;
+document.getElementById('cityModalTitle').textContent=d.name+' Intelligence';
+document.getElementById('cityModalContent').textContent=d.desc;
+document.getElementById('ci-status').textContent=d.status;
+document.getElementById('ci-status').className='intel-value '+(d.status==='NORMAL'?'ok':d.status==='CONGESTED'?'warn':'ok');
+document.getElementById('ci-assets').textContent=d.assets;
+document.getElementById('ci-latency').textContent=d.latency;
+document.getElementById('ci-confidence').textContent=d.confidence;
+document.getElementById('cityModal').classList.add('active');
+}
+function closeCityModal(e){if(e&&e.target!==document.getElementById('cityModal'))return;document.getElementById('cityModal').classList.remove('active');}
+function openBriefcase(){document.getElementById('briefcaseModal').classList.add('active');}
+function closeBriefcase(e){if(e&&e.target!==document.getElementById('briefcaseModal'))return;document.getElementById('briefcaseModal').classList.remove('active');}
+function switchTab(tabEl,paneId){
+document.querySelectorAll('.briefcase-tab').forEach(function(t){t.classList.remove('active');});
+document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
+tabEl.classList.add('active');document.getElementById(paneId).classList.add('active');
+}
+setInterval(function(){
+var metrics=document.querySelectorAll('.metric-value');
+metrics.forEach(function(m){
+var txt=m.textContent;
+if(txt.indexOf('ms')>-1){var val=parseInt(txt);var nv=val+Math.floor((Math.random()-0.5)*40);m.textContent=nv+'ms';}
+});
+},4000);
 </script>
+
 </body>
 </html>
